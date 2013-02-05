@@ -1,4 +1,4 @@
-#!/var/local/Comp4350/venv/bin/python
+#!./venv/bin/python
 from flask.ext.script import Manager, Shell, Server
 from ESA import app, assets_env
 import os
