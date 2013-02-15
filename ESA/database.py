@@ -2,6 +2,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
+import config
 
 DB_USER = 'comp4350app'
 DB_PWD  = 'comp4350app'
@@ -24,5 +25,6 @@ class DbInstance(object):
         self.session = Session()
 
     def setEngine(self, user, pwd, schema):
-        self.engine = create_engine('mysql://' + user + ':' + pwd + '@localhost/' + schema)
+        self.engine = create_engine(config.SQLALCHEMY_DATABASE_URI);
+        #self.engine = create_engine('mysql://' + user + ':' + pwd + '@localhost/' + schema)
 
