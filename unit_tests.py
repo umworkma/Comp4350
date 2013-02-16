@@ -1,18 +1,17 @@
 import os
 import unittest
-import tempfile
 import ESA
+from ESA import config_test
+from ESA import models
 
-class FlaskrTestCase(unittest.TestCase):
+class ESATestCase(unittest.TestCase):
 
     def setUp(self):
-        self.db_fd, ESA.app.config['DATABASE'] = tempfile.mkstemp()
         ESA.app.config['TESTING'] = True
         self.app = ESA.app.test_client()
-
+        
     def tearDown(self):
-        os.close(self.db_fd)
-        os.unlink(ESA.app.config['DATABASE'])
+        pass
 
     def test_main_page(self):
         rv = self.app.get('/')

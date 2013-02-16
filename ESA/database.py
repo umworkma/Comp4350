@@ -2,7 +2,6 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
-import config
 
 DB_USER = 'comp4350app'
 DB_PWD  = 'comp4350app'
