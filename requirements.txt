@@ -4,3 +4,4 @@ Flask-Script==0.5.3
 cssmin==0.1.4
 Flask-Testing==0.4
 SQLAlchemy==0.7.8
+Flask-SQLAlchemy==0.09
