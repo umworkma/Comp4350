@@ -6,11 +6,11 @@ from sqlalchemy.orm import sessionmaker
 DB_USER = 'comp4350app'
 DB_PWD  = 'comp4350app'
 DB_SCHEMA = 'appdb'
-engine = None # = create_engine('mysql://comp4350app:comp4350app@localhost/appdb')
-metadata = None # = MetaData(engine)
 
-#Session # = sessionmaker(bind=engine)
-session = None # = Session()
+engine = None
+metadata = None
+session = None
+
 
 class DbInstance(object):
     engine = None;
@@ -25,5 +25,5 @@ class DbInstance(object):
 
     def setEngine(self, user, pwd, schema):
         self.engine = create_engine(config.SQLALCHEMY_DATABASE_URI);
-        #self.engine = create_engine('mysql://' + user + ':' + pwd + '@localhost/' + schema)
+
 
