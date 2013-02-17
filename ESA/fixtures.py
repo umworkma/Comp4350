@@ -36,4 +36,17 @@ class AddressData(DataSet):
         entityFK = 1
         isprimary = 1
 
-all_data = (EntityData, AddressData,)
+class ContactData(DataSet):
+    class contact01:
+        entityFK = 1
+        type = 2
+        value = 'info@ai-kon.org'
+        isprimary = 1
+
+class OrganizationData(DataSet):
+    class organization01:
+        entityFK = 1
+        name = 'Ai-Kon'
+        description = 'Ai-Kon Anime Convention'
+
+all_data = (EntityData, AddressData, OrganizationData, ContactData,)

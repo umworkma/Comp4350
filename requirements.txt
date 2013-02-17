@@ -5,3 +5,4 @@ cssmin==0.1.4
 Flask-Testing==0.4
 SQLAlchemy==0.7.8
 Flask-SQLAlchemy==0.09
+fixtures==0.3.12
