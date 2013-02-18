@@ -1,62 +1,83 @@
 {% extends "layout.html" %}
 {% block content %}
-    <script src="register_organization.js"></script>
+
+<script type="text/javascript">
+    // create json object and send it to server
+    function createJsonObject()
+    {
+        $.getJSON($SCRIPT_ROOT + '/_submit_org_form',{
+            orgname: $('input[name="orgname"]').val(),
+            desc: $('input[name="desc"]').val(),
+            phone: $('input[name="phone"]').val(),
+            address: $('#address').val(),
+            city: $('input[name="city"]').val(),
+            province: $('input[name="province"]').val(),
+            postal: $('input[name="postal"]').val(),
+            email: $('input[name="email"]').val()
+
+        },function(data)
+        {
+            // get a value which sent back from server
+            alert("successfully submitted"
+                    +"\n ***** Your Info *****"
+                    +"\n user name: " + data.orgname
+                    +"\n description: " + data.desc
+                    +"\n phone: " + data.phone
+                    +"\n address: " + data.address
+                    +"\n city: " + data.city
+                    +"\n province: " + data.province
+                    +"\n postal: " + data.postal
+                    +"\n email: " + data.email);
+
+        });
+        return false;
+    }
+</script>
+
     <h2>Register Organization</h2>
-    <div class="row-fluid">
-        <div class="form-horizontal">
-            <div class"control-group">
+    <div class="well form-horizontal">
+        <form id="organization-reg" onsubmit="return createJsonObject()">
+            <fieldset>
+                <legend>Basic Info</legend>
                 <label class="control-label" for="inputName">Name</label>
                 <div class="controls">
                     <input type="text" id="inputName" placeholder="The Awesome Company">
                 </div>
-            </div>
-            <div class"control-group">
                 <label class="control-label" for="inputDescription">Description</label>
                 <div class="controls">
-                    <!--<input type="text" id="inputDescription" placeholder="We make cool things.">-->
                     <textarea rows="3">We make cool things.</textarea>
                 </div>
-            </div>
-            <div class"control-group">
+            </fieldset>
+            <fieldset>
+                <legend>Contact Info</legend>
                 <label class="control-label" for="inputPhone">Phone</label>
                 <div class="controls">
                     <input type="text" id="inputPhone" placeholder="000-123-456-7890">
                 </div>
-            </div>
-            <div class"control-group">
                 <label class="control-label" for="inputAddress">Address</label>
                 <div class="controls">
                     <input type="text" id="inputAddress" placeholder="123 Neat Street">
                 </div>
-            </div>
-            <div class"control-group">
                 <label class="control-label" for="inputCity">City</label>
                 <div class="controls">
                     <input type="text" id="inputCity" placeholder="Coolsville">
                 </div>
-            </div>
-            <div class"control-group">
                 <label class="control-label" for="inputProvince">Province</label>
                 <div class="controls">
                     <input type="text" id="inputProvince" placeholder="Manitoba">
                 </div>
-            </div>
-            <div class"control-group">
                 <label class="control-label" for="inputPostal">Postal Code</label>
                 <div class="controls">
                     <input type="text" id="inputPostal" placeholder="Q1W 2E3">
                 </div>
-            </div>
-            <div class"control-group">
                 <label class="control-label" for="inputEmail">Email</label>
                 <div class="controls">
                     <input type="text" id="inputEmail" placeholder="awesomeco@awesomeco.ca">
                 </div>
-            </div>
+            </fieldset>
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary" onclick="">Submit</button>
-                <button type="button" class="btn">Cancel</button>
+                <input type="submit" class="btn btn-primary" />
             </div>
-        </div><!--/form-horizontal-->
+        </form><!--/form-horizontal-->
     </div><!--/.row-fluid-->
 {% endblock %}

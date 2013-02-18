@@ -16,7 +16,7 @@ def home():
 def register_organization():
     return render_template('register_organization.html')
 
-@app.route('/_submit_org_form')
+@app.route('/_submit_org_form/')
 def submit_org_form():
     #get all user information
     orgname = request.args.get('inputName')
