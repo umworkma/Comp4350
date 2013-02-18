@@ -12,6 +12,9 @@
         {% endassets %}
     </head>
     <body>
+        <script type=text/javascript>
+            var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
         {% block content %}{% endblock %}
     </body>
 </html>
