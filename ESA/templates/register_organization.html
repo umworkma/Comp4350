@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+    <script src="register_organization.js"></script>
     <h2>Register Organization</h2>
     <div class="row-fluid">
         <div class="form-horizontal">
@@ -12,7 +13,8 @@
             <div class"control-group">
                 <label class="control-label" for="inputDescription">Description</label>
                 <div class="controls">
-                    <input type="text" id="inputDescription" placeholder="We make cool things.">
+                    <!--<input type="text" id="inputDescription" placeholder="We make cool things.">-->
+                    <textarea rows="3">We make cool things.</textarea>
                 </div>
             </div>
             <div class"control-group">
@@ -52,7 +54,7 @@
                 </div>
             </div>
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" onclick="">Submit</button>
                 <button type="button" class="btn">Cancel</button>
             </div>
         </div><!--/form-horizontal-->
