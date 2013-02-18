@@ -1,4 +1,12 @@
 Flask==0.9
 Flask-Assets==0.8
+Flask-SQLAlchemy==0.9
 Flask-Script==0.5.3
+Flask-Testing==0.4
+Jinja2==2.6
+SQLAlchemy==0.8.0b2
+Werkzeug==0.8.3
 cssmin==0.1.4
+fixture==1.4
+twill==0.9
+webassets==0.8

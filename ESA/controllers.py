@@ -3,16 +3,27 @@ import models
 
 # Organizations
 def getAllOrganizations():
-    org = models.Organization()
-    results = org.getAll()
-    return results
+    controller = models.Organization()
+    results = controller.getAll()
+    print results
+    jsonified = [org.serialize for org in results]
+    return jsonified
 
-def insertOrganization(jsonParams):
-    data = json.loads(jsonParams)
-    print data
+def insertOrganization(name, description):
+    controller = models.Organization()
+    result = controller.insert(name, description);
+    print result
 
-def getOrganization():
-    return
+def updateOrganization(entityid, name, description):
+    controller = models.Organization()
+    result = controller.update(entityid, name, description);
+    print result
+
+def getOrganizationByID(entityid):
+    controller = models.Organization()
+    results = controller.getByID(entityid)
+    jsonified = [org.serialize for org in results]
+    return jsonified
 
 def removeOrganization():
     return
