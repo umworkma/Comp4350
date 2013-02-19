@@ -45,6 +45,7 @@ class Address(db.Model):
     address3 = db.Column(db.String(45))
     city = db.Column(db.String(45))
     province = db.Column(db.String(45))
+    country = db.Column(db.String(45))
     postalcode = db.Column(db.String(45))
     entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'))
     isprimary = db.Column(db.Boolean)
