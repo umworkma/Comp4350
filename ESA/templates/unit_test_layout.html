@@ -1,22 +1,21 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>ESA Service</title>
+        <title>ESA Service - QUnit Testing</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         {# <link rel="shortcut icon" href="{{ url_for_static('favicon.ico') }}"> #}
         <!-- CSS and Java-Script files are auto generated from Flask-Assets management(assets.py) -->
-        {% assets "common_css" %}
+        <!-- CSS -->
+        {% assets "qunit_css" %}
         <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
         {% endassets %}
-        {% assets "common_js" %}
+        <!-- Javascript files -->
+        {% assets "qunit_js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
-        <script type=text/javascript>
-            var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-        </script>
+        <script type="text/javascript">$SCRIPT_ROOT = {{request.script_root|tojson|safe}};</script>
     </head>
     <body>
-        <h1>Employee Scheduling Application</h1>
-    {% block content %}{% endblock %}
+        {% block body %}{% endblock %}
     </body>
 </html>

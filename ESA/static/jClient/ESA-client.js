@@ -1,15 +1,15 @@
 // create json object and send it to server
 function createJsonObject() {
     data = {
-        orgname: $('input[name="orgname"]').val(),
-        desc: $('#desc').val(),
-        pwd: $('input[name="pwd"]').val(),
-        phone: $('input[name="phone"]').val(),
-        address: $('input[name="address"]').val(),
-        city: $('input[name="city"]').val(),
+        orgname:  $('input[name="orgname"]').val(),
+        desc:     $('#desc').val(),
+        pwd:      $('input[name="pwd"]').val(),
+        phone:    $('input[name="phone"]').val(),
+        address:  $('input[name="address"]').val(),
+        city:     $('input[name="city"]').val(),
         province: $('input[name="province"]').val(),
-        postal: $('input[name="postal"]').val(),
-        email: $('input[name="email"]').val()
+        postal:   $('input[name="postal"]').val(),
+        email:    $('input[name="email"]').val()
     },
 
     success = function(data) {
@@ -32,4 +32,5 @@ function createJsonObject() {
     $.post($SCRIPT_ROOT + '/_submit_org_form', data, success, "json");
 
     return false;
+    
 }
