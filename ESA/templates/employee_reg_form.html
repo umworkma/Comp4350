@@ -3,13 +3,13 @@
 {% block body %}
 
 <script type="text/javascript">
-    // create json object and send it to server
     function createJsonObject()
     {
         $.getJSON($SCRIPT_ROOT + '/_submit_form',{
             username: $('input[name="username"]').val(),
             fname: $('input[name="fname"]').val(),
             lname: $('input[name="lname"]').val(),
+            email: $('input[name="email"]').val(),
             pwd1: $('input[name="pwd1"]').val(),
             phonenum: $('input[name="phonenum"]').val(),
             address: $('#address').val()
@@ -22,6 +22,7 @@
                     +"\n user name: " + data.username
                     +"\n first name: " + data.fname
                     +"\n last name: " + data.lname
+                    +"\n email: " + data.email
                     +"\n password: " + data.pwd1
                     +"\n phone number: " + data.phonenum
                     +"\n address: " + data.address);
@@ -41,19 +42,25 @@
                         <label>User Name</label>
                     </div>
                     <div>
-                        <input name="username" type="text" class="input-xlarge">
+                        <input name="username" required type="text" class="input-xlarge">
                     </div>
                     <div>
                         <label>First Name</label>
                     </div>
                     <div>
-                        <input name="fname" type="text" class="input-xlarge">
+                        <input name="fname" required type="text" class="input-xlarge">
                     </div>
                     <div>
                         <label>Last Name</label>
                     </div>
                     <div>
-                        <input name="lname" type="text" class="input-xlarge">
+                        <input name="lname" required type="text" class="input-xlarge">
+                    </div>
+                    <div>
+                        <label>Email</label>
+                    </div>
+                    <div>
+                        <input name="email" required data-validation-matches-match="email" data-validation-matches-messag="hey" type="email" class="input-xlarge">
                     </div>
                 </fieldset>
                 <fieldset>

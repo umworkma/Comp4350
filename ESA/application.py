@@ -8,16 +8,18 @@ def submit_form():
     username = request.args.get('username')
     fname = request.args.get('fname')
     lname = request.args.get('lname')
+    email = request.args.get('email')
     pwd1 = request.args.get('pwd1')
     phonenum = request.args.get('phonenum')
     address = request.args.get('address')
     #create a jason object and send it back to client 
-    return jsonify(username=username, fname=fname, lname=lname, pwd1=pwd1, phonenum=phonenum, address=address)
+    return jsonify(username=username, fname=fname, lname=lname, email=email, pwd1=pwd1, phonenum=phonenum, address=address)
 
 
 @app.route('/employee_reg_form.html')
 def load_employee_reg_form():
     return render_template('employee_reg_form.html')
+      
 
 
 @app.route('/')
