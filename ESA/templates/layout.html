@@ -1,12 +1,36 @@
 <!doctype html>
 <html lang="en">
-<title>Employee Registration Form</title>
+    <head>
+        <title>Employee Registration Form</title>
 
-<script type=text/javascript>
-  var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-</script>
-<link href="http://bootsnipp.com/bundles/bootstrapper/css/bootstrap.min.css" media="all" type="text/css" rel="stylesheet" />
-<script src="http://bootsnipp.com/bundles/bootstrapper/js/jquery-1.8.2.min.js"></script>
-<script src="http://bootsnipp.com/bundles/bootstrapper/js/bootstrap.min.js"></script>
+        <script type=text/javascript>
+          var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
+        <link href="http://bootsnipp.com/bundles/bootstrapper/css/bootstrap.min.css" media="all" type="text/css" rel="stylesheet" />
+        <script src="http://bootsnipp.com/bundles/bootstrapper/js/jquery-1.8.2.min.js"></script>
+        <script src="http://bootsnipp.com/bundles/bootstrapper/js/bootstrap.min.js"></script>
+
+
+        <div class="btn-group pull-right" style="padding-right: 24px;">
+            <!-- TODO: put if here to change button if logged in -->
+            <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">Log In <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <!-- dropdown menu links -->
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Organization</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Employee</a></li>
+            </ul>
+        </div>
+        <div class="btn-group pull-right" style="padding-right: 24px;">
+            <!-- TODO: if here so button is not shown if logged in -->
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Sign Up <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <!-- dropdown menu links -->
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Organization</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Employee</a></li>
+            </ul>
+        </div>
+
+        <h1>Employment Scheduling Application</h1>
+    </head>
 {% block body %}
 {% endblock %}
