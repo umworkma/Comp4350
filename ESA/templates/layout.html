@@ -12,22 +12,26 @@
 
 
         <div class="btn-group pull-right" style="padding-right: 24px;">
-            <!-- TODO: put if here to change button if logged in -->
-            <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">Log In <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                <!-- dropdown menu links -->
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Organization</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Employee</a></li>
-            </ul>
+            {% if not session.logged_in %}
+                <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">Log In <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <!-- dropdown menu links -->
+                    <li class="disabled" role="presentation"><a role="menuitem" tabindex="-1" href="#">Organization</a></li>
+                    <li class="disabled" role="presentation"><a role="menuitem" tabindex="-1" href="#">Employee</a></li>
+                </ul>
+            {% else %}
+                <button class="btn btn-info" dropdown-toggle" data-toggle="dropdown"">Log Out</button>
+            {% endif %}
         </div>
         <div class="btn-group pull-right" style="padding-right: 24px;">
-            <!-- TODO: if here so button is not shown if logged in -->
-            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Sign Up <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                <!-- dropdown menu links -->
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Organization</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Employee</a></li>
-            </ul>
+            {% if not session.logged_in %}
+                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Sign Up <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <!-- dropdown menu links -->
+                    <li class="disabled" role="presentation"><a role="menuitem" tabindex="-1" href="#">Organization</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="employee_reg_form.html">Employee</a></li>
+                </ul>
+            {% endif %}
         </div>
 
         <h1>Employment Scheduling Application</h1>
