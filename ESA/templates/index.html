@@ -1,8 +1,97 @@
 {% extends "layout.html" %}
 {% block body %}
+<style>
+/* CUSTOMIZE THE CAROUSEL
+    -------------------------------------------------- */
 
-<h2>TESTING</h2>
-<p> Whenever you are done writing code and testing, please add the link to the 
-page so that we can test !!</p>
-   <a href="/employee_reg_form.html">Employee Registration Form</a>
+    /* Carousel base class */
+    .carousel {
+      margin-bottom: 60px;
+    }
+
+    .carousel .container {
+      position: relative;
+      z-index: 9;
+    }
+
+    .carousel-control {
+      height: 80px;
+      margin-top: 0;
+      font-size: 120px;
+      text-shadow: 0 1px 1px rgba(0,0,0,.4);
+      background-color: transparent;
+      border: 0;
+      z-index: 10;
+    }
+
+    .carousel .item {
+      height: 500px;
+    }
+    .carousel img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      height: 500px;
+    }
+
+    .carousel-caption {
+      background-color: transparent;
+      position: static;
+      max-width: 550px;
+      padding: 0 20px;
+      margin-top: 200px;
+    }
+    .carousel-caption h1,
+    .carousel-caption .lead {
+      margin: 0;
+      line-height: 1.25;
+      color: #fff;
+      text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    }
+    .carousel-caption .btn {
+      margin-top: 10px;
+    }
+</style>
+
+<h1>Employment Scheduling Application</h1>
+<!-- Carousel 
+================================================== -->
+    <div id="myCarousel" class="carousel slide">
+		<div class="carousel-inner">
+			<div class="item active">
+				<img src="../images/random-rose.jpg" alt="">
+				<div class="container">
+					<div class="carousel-caption">
+					  <h1>It's all coming up roses.</h1>
+					  <p class="lead">Here is a rose. Isn't it pretty?</p>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<img src="../images/awesome-marketing-post.jpg" alt="">
+				<div class="container">
+					<div class="carousel-caption">
+						<h1>Awesome Co. is awesome.</h1>
+						<p class="lead">Oh yeah. We're just that cool.</p>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<img src="../images/all-the-data.png" alt="">
+				<div class="container">
+					<div class="carousel-caption">
+						<h1>Omnomnom data!</h1>
+						<p class="lead">Gimme. Now!</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+		<a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div><!-- /.carousel -->
+
+<h2>Testing</h2>
+<a href="employee_reg_form.html">Register Employee</a>
+
 {% endblock %}
