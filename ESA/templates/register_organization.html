@@ -7,9 +7,10 @@
     {
         $.getJSON($SCRIPT_ROOT + '/_submit_org_form',{
             orgname: $('input[name="orgname"]').val(),
-            desc: $('input[name="desc"]').val(),
+            desc: $('#desc').val(),
+            pwd: $('input[name="pwd"]').val(),
             phone: $('input[name="phone"]').val(),
-            address: $('#address').val(),
+            address: $('input[name="address"]').val(),
             city: $('input[name="city"]').val(),
             province: $('input[name="province"]').val(),
             postal: $('input[name="postal"]').val(),
@@ -22,6 +23,7 @@
                     +"\n ***** Your Info *****"
                     +"\n user name: " + data.orgname
                     +"\n description: " + data.desc
+                    +"\n password: " + data.pwd
                     +"\n phone: " + data.phone
                     +"\n address: " + data.address
                     +"\n city: " + data.city
@@ -39,40 +41,44 @@
         <form id="organization-reg" onsubmit="return createJsonObject()">
             <fieldset>
                 <legend>Basic Info</legend>
-                <label class="control-label" for="inputName">Name</label>
+                <label class="control-label" for="orgname">Name</label>
                 <div class="controls">
-                    <input type="text" id="inputName" placeholder="The Awesome Company">
+                    <input type="text" name="orgname" placeholder="The Awesome Company">
                 </div>
-                <label class="control-label" for="inputDescription">Description</label>
+                <label class="control-label" for="desc">Description</label>
                 <div class="controls">
-                    <textarea rows="3">We make cool things.</textarea>
+                    <textarea id="desc" rows="3">We make cool things.</textarea>
+                </div>
+                <label class="control-label" for="pwd">Password</label>
+                <div class="controls">
+                    <input type="text" name="pwd" placeholder="password">
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Contact Info</legend>
-                <label class="control-label" for="inputPhone">Phone</label>
+                <label class="control-label" for="phone">Phone</label>
                 <div class="controls">
-                    <input type="text" id="inputPhone" placeholder="000-123-456-7890">
+                    <input type="text" name="phone" placeholder="000-123-456-7890">
                 </div>
-                <label class="control-label" for="inputAddress">Address</label>
+                <label class="control-label" for="address">Address</label>
                 <div class="controls">
-                    <input type="text" id="inputAddress" placeholder="123 Neat Street">
+                    <input type="text" name="address" placeholder="123 Neat Street">
                 </div>
-                <label class="control-label" for="inputCity">City</label>
+                <label class="control-label" for="city">City</label>
                 <div class="controls">
-                    <input type="text" id="inputCity" placeholder="Coolsville">
+                    <input type="text" name="city" placeholder="Coolsville">
                 </div>
-                <label class="control-label" for="inputProvince">Province</label>
+                <label class="control-label" for="province">Province</label>
                 <div class="controls">
-                    <input type="text" id="inputProvince" placeholder="Manitoba">
+                    <input type="text" name="province" placeholder="Manitoba">
                 </div>
-                <label class="control-label" for="inputPostal">Postal Code</label>
+                <label class="control-label" for="postal">Postal Code</label>
                 <div class="controls">
-                    <input type="text" id="inputPostal" placeholder="Q1W 2E3">
+                    <input type="text" name="postal" placeholder="Q1W 2E3">
                 </div>
-                <label class="control-label" for="inputEmail">Email</label>
+                <label class="control-label" for="email">Email</label>
                 <div class="controls">
-                    <input type="text" id="inputEmail" placeholder="awesomeco@awesomeco.ca">
+                    <input type="text" name="email" placeholder="awesomeco@awesomeco.ca">
                 </div>
             </fieldset>
             <div class="form-actions">

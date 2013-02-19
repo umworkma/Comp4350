@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, session
+from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify
 from ESA import app
 
 import config
@@ -19,16 +19,17 @@ def register_organization():
 @app.route('/_submit_org_form/')
 def submit_org_form():
     #get all user information
-    orgname = request.args.get('inputName')
-    description = request.args.get('inputDescription')
-    phone = request.args.get('inputPhone')
-    address = request.args.get('inputAddress')
-    city = request.args.get('inputCity')
-    province = request.args.get('inputProvince')
-    postal = request.args.get('inputPostal')
-    email = request.args.get('inputEmail')
+    orgname = request.args.get('orgname')
+    desc = request.args.get('desc')
+    pwd = request.args.get('pwd')
+    phone = request.args.get('phone')
+    address = request.args.get('address')
+    city = request.args.get('city')
+    province = request.args.get('province')
+    postal = request.args.get('postal')
+    email = request.args.get('email')
     #create a jason object and send it back to client 
-    return jsonify(orgname=orgname, description=description, phone=phone, address=address, city=city, province=province, postal=postal, email=email)
+    return jsonify(orgname=orgname, desc=desc, pwd=pwd, phone=phone, address=address, city=city, province=province, postal=postal, email=email)
 
 @app.teardown_request
 def shutdown_session(exception=None):
