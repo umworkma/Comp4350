@@ -1,3 +1,5 @@
 *.pyc
 venv/
 ESA/static/bootstrap/
+ESA/static/jquery/
+ESA/static/qunit/

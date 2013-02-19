@@ -4,20 +4,18 @@
         <title>ESA Service</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         {# <link rel="shortcut icon" href="{{ url_for_static('favicon.ico') }}"> #}
+        <!-- CSS and Java-Script files are auto generated from Flask-Assets management(assets.py) -->
         {% assets "common_css" %}
-            <link rel="stylesheet" type="test/css" href="{{ ASSET_URL }}" />
+        <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
         {% endassets %}
         {% assets "common_js" %}
-            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
         <script type=text/javascript>
             var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
         </script>
-        <link href="http://bootsnipp.com/bundles/bootstrapper/css/bootstrap.min.css" media="all" type="text/css" rel="stylesheet" />
-        <script src="http://bootsnipp.com/bundles/bootstrapper/js/jquery-1.8.2.min.js"></script>
-        <script src="http://bootsnipp.com/bundles/bootstrapper/js/bootstrap.min.js"></script>
     </head>
     <body>
-        {% block content %}{% endblock %}
+    {% block content %}{% endblock %}
     </body>
 </html>

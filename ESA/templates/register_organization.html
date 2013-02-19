@@ -1,89 +1,53 @@
 {% extends "layout.html" %}
 {% block content %}
-
-<script type="text/javascript">
-    // create json object and send it to server
-    function createJsonObject()
-    {
-        $.getJSON($SCRIPT_ROOT + '/_submit_org_form',{
-            orgname: $('input[name="orgname"]').val(),
-            desc: $('#desc').val(),
-            pwd: $('input[name="pwd"]').val(),
-            phone: $('input[name="phone"]').val(),
-            address: $('input[name="address"]').val(),
-            city: $('input[name="city"]').val(),
-            province: $('input[name="province"]').val(),
-            postal: $('input[name="postal"]').val(),
-            email: $('input[name="email"]').val()
-
-        },function(data)
-        {
-            // get a value which sent back from server
-            alert("successfully submitted"
-                    +"\n ***** Your Info *****"
-                    +"\n user name: " + data.orgname
-                    +"\n description: " + data.desc
-                    +"\n password: " + data.pwd
-                    +"\n phone: " + data.phone
-                    +"\n address: " + data.address
-                    +"\n city: " + data.city
-                    +"\n province: " + data.province
-                    +"\n postal: " + data.postal
-                    +"\n email: " + data.email);
-
-        });
-        return false;
-    }
-</script>
-
-    <h2>Register Organization</h2>
-    <div class="well form-horizontal">
-        <form id="organization-reg" onsubmit="return createJsonObject()">
-            <fieldset>
-                <legend>Basic Info</legend>
-                <label class="control-label" for="orgname">Name</label>
-                <div class="controls">
-                    <input type="text" name="orgname" placeholder="The Awesome Company">
+        <h2>Register Organization</h2>
+        <div class="well form-horizontal">
+            <form id="organization-reg" onsubmit="return createJsonObject()" method="post">
+                <fieldset>
+                    <legend>Basic Info</legend>
+                    <label class="control-label" for="orgname">Name</label>
+                    <div class="controls">
+                        <input type="text" name="orgname" placeholder="The Awesome Company">
+                    </div>
+                    <label class="control-label" for="desc">Description</label>
+                    <div class="controls">
+                        <textarea id="desc" rows="3">We make cool things.</textarea>
+                    </div>
+                    <label class="control-label" for="pwd">Password</label>
+                    <div class="controls">
+                        <input type="password" name="pwd" placeholder="password">
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Contact Info</legend>
+                    <label class="control-label" for="phone">Phone</label>
+                    <div class="controls">
+                        <input type="text" name="phone" placeholder="000-123-456-7890">
+                    </div>
+                    <label class="control-label" for="address">Address</label>
+                    <div class="controls">
+                        <input type="text" name="address" placeholder="123 Neat Street">
+                    </div>
+                    <label class="control-label" for="city">City</label>
+                    <div class="controls">
+                        <input type="text" name="city" placeholder="Coolsville">
+                    </div>
+                    <label class="control-label" for="province">Province</label>
+                    <div class="controls">
+                        <input type="text" name="province" placeholder="Manitoba">
+                    </div>
+                    <label class="control-label" for="postal">Postal Code</label>
+                    <div class="controls">
+                        <input type="text" name="postal" placeholder="Q1W 2E3">
+                    </div>
+                    <label class="control-label" for="email">Email</label>
+                    <div class="controls">
+                        <input type="text" name="email" placeholder="awesomeco@awesomeco.ca">
+                    </div>
+                </fieldset>
+                <div class="form-actions">
+                    <input type="submit" class="btn btn-primary" />
                 </div>
-                <label class="control-label" for="desc">Description</label>
-                <div class="controls">
-                    <textarea id="desc" rows="3">We make cool things.</textarea>
-                </div>
-                <label class="control-label" for="pwd">Password</label>
-                <div class="controls">
-                    <input type="text" name="pwd" placeholder="password">
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Contact Info</legend>
-                <label class="control-label" for="phone">Phone</label>
-                <div class="controls">
-                    <input type="text" name="phone" placeholder="000-123-456-7890">
-                </div>
-                <label class="control-label" for="address">Address</label>
-                <div class="controls">
-                    <input type="text" name="address" placeholder="123 Neat Street">
-                </div>
-                <label class="control-label" for="city">City</label>
-                <div class="controls">
-                    <input type="text" name="city" placeholder="Coolsville">
-                </div>
-                <label class="control-label" for="province">Province</label>
-                <div class="controls">
-                    <input type="text" name="province" placeholder="Manitoba">
-                </div>
-                <label class="control-label" for="postal">Postal Code</label>
-                <div class="controls">
-                    <input type="text" name="postal" placeholder="Q1W 2E3">
-                </div>
-                <label class="control-label" for="email">Email</label>
-                <div class="controls">
-                    <input type="text" name="email" placeholder="awesomeco@awesomeco.ca">
-                </div>
-            </fieldset>
-            <div class="form-actions">
-                <input type="submit" class="btn btn-primary" />
-            </div>
-        </form><!--/form-horizontal-->
-    </div><!--/.row-fluid-->
+            </form><!--/form-horizontal-->
+        </div><!--/.row-fluid-->
 {% endblock %}
