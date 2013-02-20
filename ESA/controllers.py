@@ -3,9 +3,8 @@ import models
 
 
 # Organizations
-def getAllOrganizations():
-    db = models.init_app(self.app)
-    results = db.Organization.query.all()
+def getAllOrganizations(db):
+    results = models.Organization.query.all()
     print results
     return results
     '''controller = models.Organization()
@@ -15,7 +14,7 @@ def getAllOrganizations():
     return jsonified'''
 
 
-def registerOrganization(jsonString):
+def registerOrganization(jsonString, db):
     result = False
     failCause = 'Unknown'
 
@@ -91,8 +90,8 @@ def registerOrganization(jsonString):
     if(existing != None):
         failCause = 'duplicate'
     else:
-        db = models.init_app(self.app)
-        db.session.add(org1)
+        #db = models.init_app(self.app)
+        db.session.add(org)
         db.session.commit()
         result = True
 

@@ -59,11 +59,11 @@ class ESATestCase(TestCase):
         json += '"email": "abuse@testorg.ca"'
         json += '}'
 
-        allOrgsBefore = controllers.getAllOrganizations()
-        result = controllers.registerOrganization(json)
-        allOrgsAfter = controllers.getAllOrganizations()
+        allOrgsBefore = controllers.getAllOrganizations(self.db)
+        result = controllers.registerOrganization(json, self.db)
+        allOrgsAfter = controllers.getAllOrganizations(self.db)
 
-        salf.assertEquals(result, True)
+        self.assertEquals(result, True)
 
 if __name__ == "__main__":
     unittest.main()

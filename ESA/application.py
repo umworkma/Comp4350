@@ -7,6 +7,7 @@ import models
 app.config.from_object(config)
 
 db = models.init_app(app)
+app.db = db
 
 @app.route('/')
 def home():
