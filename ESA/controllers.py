@@ -5,101 +5,45 @@ import models
 # Organizations
 def getAllOrganizations(db):
     results = models.Organization.query.all()
-    print results
     return results
-    '''controller = models.Organization()
-    results = controller.getAll()
-    print results
-    jsonified = [org.serialize for org in results]
-    return jsonified'''
+
+def getAllOrganizationsJSON(db):
+    allOrgs = getAllOrganizations(db)
+    isFirst = True
+    jsonString = '{"Organizations":['
+    for org in allOrgs:
+        if(isFirst == False):
+            jsonString += ','
+        else:
+            isFirst = False
+        jsonString += organizationToJSON(org)
+    jsonString += ']}'
+    return jsonString
 
 
 def registerOrganization(jsonString, db):
     result = False
     failCause = 'Unknown'
 
-    """ Parse the given JSON data and create our basic organization. """
+    ''' Parse the given JSON data and create our basic organization. '''
     data = json.loads(jsonString)
-    org = models.Organization()
-    org.entity = models.Entity(type=models.TYPE_ORGANIZATION)
-
-    primaryAddress = models.Address()
-    primaryAddress.isprimary = True
-    
-    email = models.Contact()
-    email.type = models.TYPE_EMAIL
-
-    primaryPhone = models.Contact()
-    primaryPhone.type = models.TYPE_PHONE
-    primaryPhone.isprimary = True
-
-    """ Iterate over given key-value pairs and update model fields as needed. """
-    for key,value in data.iteritems():
-        if(key == models.ORGANIZATION_NAME_KEY):
-            org.name = value
-        if(key == models.ORGANIZATION_DESCRIPTION_KEY):
-            org.description = value
-
-        if(key == models.ADDRESS_ADDRESS1_KEY):
-            primaryAddress.address1 = value
-            isValidAddress = True
-        if(key == models.ADDRESS_ADDRESS2_KEY):
-            primaryAddress.address2 = value
-            isValidAddress = True
-        if(key == models.ADDRESS_ADDRESS3_KEY):
-            primaryAddress.address3 = value
-            isValidAddress = True
-        if(key == models.ADDRESS_CITY_KEY):
-            primaryAddress.city = value
-            isValidAddress = True
-        if(key == models.ADDRESS_PROVINCE_KEY):
-            primaryAddress.province = value
-            isValidAddress = True
-        if(key == models.ADDRESS_COUNTRY_KEY):
-            primaryAddress.country = value
-            isValidAddress = True
-        if(key == models.ADDRESS_POSTALCODE_KEY):
-            primaryAddress.postalcode = value
-            isValidAddress = True
-
-        if(key == models.CONTACT_EMAIL_KEY):
-            email.value = value
-            isValidEmail = True
-
-        if(key == models.CONTACT_PHONE_KEY):
-            primaryPhone.value = value
-            isValidPhone = True
-
-    
-    """ If the additional info types were included in the call, append
-        them to the organization (entity). """
-    if(isValidAddress == True):
-        org.entity.addresses.append(primaryAddress)
-
-    if(isValidPhone == True):
-        org.entity.contacts.append(primaryPhone)
-    else:
-        email.isprimary = True
-
-    if(isValidEmail == True):
-        org.entity.contacts.append(email)
+    org = extractOrganizationFromJSON(data)
 
 
-    """ Check for duplicate organization. """
+    ''' Check for duplicate organization. '''
     existing = models.Organization.query.filter_by(name = org.name).first()
     if(existing != None):
         failCause = 'duplicate'
     else:
-        #db = models.init_app(self.app)
         db.session.add(org)
         db.session.commit()
         result = True
 
     
     if(result == True):
-        resultJson = "{'result': 'true'}"
+        resultJson = '{"result": "True"}'
     else:
-        resultJson = "{'result': " + failCause + "}"
+        resultJson = '{' + '"result": "{val}"'.format(val=failCause) + '}'
     return resultJson
 
 
@@ -122,3 +66,137 @@ def getOrganizationByID(entityid):
 
 def removeOrganization():
     return
+
+
+""" Converts an Organization (including the entity object) into JSON format. """
+def organizationToJSON(org):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.ORGANIZATION_ENTITYFK_KEY,val=org.entityFK if (org.entityFK is not None) else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.ORGANIZATION_NAME_KEY,val=org.name)
+    jsonString += '"{key}":"{val}",'.format(key=models.ORGANIZATION_DESCRIPTION_KEY,val=org.description)
+    jsonString += '"Entity":{val}'.format(val=entityToJSON(org.entity))
+    jsonString += '}'
+    return jsonString
+
+""" Converts an Entity (including related objects) into JSON format. """
+def entityToJSON(entity):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.ENTITY_PK_KEY,val=entity.pk if (entity.pk is not None) else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.ENTITY_TYPE_KEY,val=entity.type if (entity.type is not None) else '"None"')
+    jsonString += '"addresses":['
+
+    isFirst = True
+    for addr in entity.addresses:
+        if(isFirst == False):
+            jsonString += ','
+        else:
+            isFirst = False
+        jsonString += addressToJSON(addr)
+    jsonString += ']'
+    
+    isFirst = True
+    jsonString += ', "contacts":['
+    for contact in entity.contacts:
+        if(isFirst == False):
+            jsonString += ','
+        else:
+            isFirst = False
+        jsonString += contactToJSON(contact)
+    jsonString += ']}'
+    return jsonString
+
+""" Converts an Address into JSON format. """
+def addressToJSON(address):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.ADDRESS_ENTITYFK_KEY,val=address.entityFK if address.entityFK != None else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.ADDRESS_ADDRESS1_KEY,val=address.address1)
+    jsonString += '"{key}":"{val}",'.format(key=models.ADDRESS_ADDRESS2_KEY,val=address.address2)
+    jsonString += '"{key}":"{val}",'.format(key=models.ADDRESS_ADDRESS3_KEY,val=address.address3)
+    jsonString += '"{key}":"{val}",'.format(key=models.ADDRESS_CITY_KEY,val=address.city)
+    jsonString += '"{key}":"{val}",'.format(key=models.ADDRESS_PROVINCE_KEY,val=address.province)
+    jsonString += '"{key}":"{val}",'.format(key=models.ADDRESS_COUNTRY_KEY,val=address.country)
+    jsonString += '"{key}":"{val}",'.format(key=models.ADDRESS_POSTALCODE_KEY,val=address.postalcode)
+    jsonString += '"{key}":"{val}"'.format(key=models.ADDRESS_ISPRIMARY_KEY,val=address.isprimary if address.isprimary != None else 'False')
+    jsonString += '}'
+    return jsonString
+
+""" Converts a Contact into JSON format. """
+def contactToJSON(contact):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.CONTACT_ENTITYFK_KEY,val=contact.entityFK if contact.entityFK != None else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.CONTACT_TYPE_KEY,val=contact.type)
+    jsonString += '"{key}":"{val}",'.format(key=models.CONTACT_VALUE_KEY,val=contact.value)
+    jsonString += '"{key}":"{val}"'.format(key=models.CONTACT_ISPRIMARY_KEY,val=contact.isprimary if contact.isprimary != None else 'False')
+    jsonString += '}'
+    return jsonString
+
+
+""" Converts an Organization in JSON format to an Organization object. """
+def extractOrganizationFromJSON(organization):
+    newOrg = models.Organization()
+    for orgKey,orgValue in organization.iteritems():
+        if(orgKey == models.ORGANIZATION_ENTITYFK_KEY and orgValue != 'None'):
+            newOrg.entityFK = int(orgValue)
+        if(orgKey == models.ORGANIZATION_NAME_KEY):
+            newOrg.name = orgValue
+        if(orgKey == models.ORGANIZATION_DESCRIPTION_KEY):
+            newOrg.description = orgValue
+        if(orgKey == 'Entity'):
+            newOrg.entity = extractEntityFromJSON(orgValue)
+    return newOrg
+
+
+""" Converts an Entity in JSON format to an Entity object. """
+def extractEntityFromJSON(entity):
+    newEntity = models.Entity()
+    for entityKey,entityValue in entity.iteritems():
+        if(entityKey == models.ENTITY_PK_KEY and entityValue != 'None'):
+            newEntity.pk = int(entityValue)
+        if(entityKey == models.ENTITY_TYPE_KEY):
+            newEntity.type = int(entityValue)
+        if(entityKey == 'addresses'):
+            for address in entityValue:
+                newAddress = extractAddressFromJSON(address)
+                newEntity.addresses.append(newAddress)
+        
+        if(entityKey == 'contacts'):
+            for contact in entityValue:
+                newContact = extractContactFromJSON(contact)
+                newEntity.contacts.append(newContact)
+    return newEntity
+    
+
+""" Converts an Address in JSON format to an Address object. """
+def extractAddressFromJSON(address):
+    newAddress = models.Address()
+    for addrKey,addrValue in address.iteritems():
+        if(addrKey == models.ADDRESS_ENTITYFK_KEY and addrValue != 'None'):
+            newAddress.entityFK = int(addrValue)
+        if(addrKey == models.ADDRESS_ADDRESS1_KEY and addrValue != 'None'):
+            newAddress.address1 = addrValue
+        if(addrKey == models.ADDRESS_ADDRESS2_KEY and addrValue != 'None'):
+            newAddress.address2 = addrValue
+        if(addrKey == models.ADDRESS_ADDRESS3_KEY and addrValue != 'None'):
+            newAddress.address3 = addrValue
+        if(addrKey == models.ADDRESS_CITY_KEY and addrValue != 'None'):
+            newAddress.city = addrValue
+        if(addrKey == models.ADDRESS_PROVINCE_KEY and addrValue != 'None'):
+            newAddress.province = addrValue
+        if(addrKey == models.ADDRESS_COUNTRY_KEY and addrValue != 'None'):
+            newAddress.country = addrValue
+        if(addrKey == models.ADDRESS_POSTALCODE_KEY and addrValue != 'None'):
+            newAddress.postalcode = addrValue
+        if(addrKey == models.ADDRESS_ISPRIMARY_KEY):
+            newAddress.isprimary = True if (addrValue == 'True') else False
+    return newAddress
+
+
+""" Extracts a Contact in JSON format to a Contact object. """
+def extractContactFromJSON(contact):
+    newContact = models.Contact()
+    for contactKey,contactValue in contact.iteritems():
+        if(contactKey == models.CONTACT_ENTITYFK_KEY and contactValue != 'None'):
+            newContact.entityFK = int(contactValue)
+        if(contactKey == models.CONTACT_TYPE_KEY):
+            newContact.type = int(contactValue)
+        if(contactKey == models.CONTACT_VALUE_KEY):
+            newContact.value = contactValue
+        if(contactKey == models.CONTACT_ISPRIMARY_KEY):
+            newContact.isprimary = True if (contactValue == 'True') else False
+    return newContact

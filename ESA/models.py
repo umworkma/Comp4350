@@ -8,9 +8,14 @@ TYPE_EMPLOYEE       = 2
 TYPE_PHONE          = 1
 TYPE_EMAIL          = 2
 
+ENTITY_PK_KEY = 'entity_pk'
+ENTITY_TYPE_KEY = 'entity_type'
+
+ORGANIZATION_ENTITYFK_KEY = 'org_entityfk'
 ORGANIZATION_NAME_KEY = 'org_name'
 ORGANIZATION_DESCRIPTION_KEY = 'org_desc'
 
+ADDRESS_ENTITYFK_KEY = 'addr_entityfk'
 ADDRESS_ADDRESS1_KEY = 'address1'
 ADDRESS_ADDRESS2_KEY = 'address2'
 ADDRESS_ADDRESS3_KEY = 'address3'
@@ -18,9 +23,14 @@ ADDRESS_CITY_KEY = 'city'
 ADDRESS_PROVINCE_KEY = 'province'
 ADDRESS_COUNTRY_KEY = 'country'
 ADDRESS_POSTALCODE_KEY = 'postalcode'
+ADDRESS_ISPRIMARY_KEY = 'isprimary'
 
+CONTACT_ENTITYFK_KEY = 'contact_entityfk'
 CONTACT_EMAIL_KEY = 'email'
 CONTACT_PHONE_KEY = 'phone'
+CONTACT_TYPE_KEY = 'type'
+CONTACT_VALUE_KEY = 'value'
+CONTACT_ISPRIMARY_KEY = 'isprimary'
 
 
 # DB Initialization
@@ -98,10 +108,3 @@ class Organization(db.Model):
 
     def __repr__(self):
         return "<Organization('%s','%s','%s')>" % (self.entityFK, self.name, self.description)
-
-    def getAll(self):
-        return Organization.query.all()
-
-    def serialize(self):
-        return jsonify(self)
-
