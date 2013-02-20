@@ -8,6 +8,21 @@ TYPE_EMPLOYEE       = 2
 TYPE_PHONE          = 1
 TYPE_EMAIL          = 2
 
+ORGANIZATION_NAME_KEY = 'org_name'
+ORGANIZATION_DESCRIPTION_KEY = 'org_desc'
+
+ADDRESS_ADDRESS1_KEY = 'address1'
+ADDRESS_ADDRESS2_KEY = 'address2'
+ADDRESS_ADDRESS3_KEY = 'address3'
+ADDRESS_CITY_KEY = 'city'
+ADDRESS_PROVINCE_KEY = 'province'
+ADDRESS_COUNTRY_KEY = 'country'
+ADDRESS_POSTALCODE_KEY = 'postalcode'
+
+CONTACT_EMAIL_KEY = 'email'
+CONTACT_PHONE_KEY = 'phone'
+
+
 # DB Initialization
 db = SQLAlchemy()
 
@@ -82,5 +97,11 @@ class Organization(db.Model):
     entity = db.relationship('Entity',uselist=False, cascade='all, delete')
 
     def __repr__(self):
-        return "<Organization('%s','%s','%s')>" % (self.EntityFK, self.name, self.description)
+        return "<Organization('%s','%s','%s')>" % (self.entityFK, self.name, self.description)
+
+    def getAll(self):
+        return Organization.query.all()
+
+    def serialize(self):
+        return jsonify(self)
 
