@@ -1,29 +1,47 @@
 // create json object and send it to server
 function createJsonObject() {
     data = {
-        orgname:  $('input[name="orgname"]').val(),
-        desc:     $('#desc').val(),
-        pwd:      $('input[name="pwd"]').val(),
-        phone:    $('input[name="phone"]').val(),
-        address:  $('input[name="address"]').val(),
-        city:     $('input[name="city"]').val(),
-        province: $('input[name="province"]').val(),
-        postal:   $('input[name="postal"]').val(),
-        email:    $('input[name="email"]').val()
+        org_name: $('input[name="org_name"]').val(),
+        org_desc: $('#org_desc').val(),
+        Entity:   {
+        	entity_type: 1,
+        	addresses: [
+        		{
+					address1: 	$('input[name="address1"]').val(),
+        			address2: 	$('input[name="address2"]').val(),
+        			address3: 	$('input[name="address3"]').val(),
+        			city:     	$('input[name="city"]').val(),
+        			province: 	$('input[name="province"]').val(),
+        			postal:		$('input[name="postalcode"]').val(),
+				}
+			],
+			contacts: [
+				{
+					type: 		1
+        			value:    	$('input[name="phone"]').val(),
+        			isprimary:	True
+				},
+				{
+					type:		2
+					value:		$('input[name="email"]').val()
+					isprimary:	False
+				}
+			]
+		}
     },
 
     success = function(data) {
         // get a value which sent back from server
         alert("successfully submitted"
                 +"\n ***** Your Info *****"
-                +"\n user name: " + data.orgname
-                +"\n description: " + data.desc
+                +"\n user name: " + data.org_name
+                +"\n description: " + data.org_desc
                 +"\n password: " + data.pwd
                 +"\n phone: " + data.phone
-                +"\n address: " + data.address
+                +"\n address: " + data.address1
                 +"\n city: " + data.city
                 +"\n province: " + data.province
-                +"\n postal: " + data.postal
+                +"\n postal: " + data.postalcode
                 +"\n email: " + data.email);
 
     },
@@ -32,5 +50,5 @@ function createJsonObject() {
     $.post($SCRIPT_ROOT + '/_submit_org_form', data, success, "json");
 
     return false;
-    
+
 }

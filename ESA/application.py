@@ -3,6 +3,7 @@ from ESA import app
 
 import config
 import models
+import controllers
 
 app.config.from_object(config)
 
@@ -26,19 +27,23 @@ def register_organization():
 def submit_org_form():
     if request.method == 'POST':
         #get all user information
-        orgname  = request.form['orgname']
-        desc     = request.form['desc']
+        '''orgname  = request.form['org_name']
+        desc     = request.form['org_desc']
         pwd      = request.form['pwd']
         phone    = request.form['phone']
-        address  = request.form['address']
+        address  = request.form['address1']
         city     = request.form['city']
         province = request.form['province']
-        postal   = request.form['postal']
-        email    = request.form['email']
+        postal   = request.form['postalcode']
+        email    = request.form['email']'''
+        dataDict = json.loads(request.data)
+        result = controllers.registerOrganization(dataDict,db)
+        return result
 
         #create a jason object and send it back to client 
         # return jsonify(request.form)
-        return jsonify(orgname=orgname, desc=desc, pwd=pwd, phone=phone, address=address, city=city, province=province, postal=postal, email=email)
+        #return jsonify(orgname=orgname, desc=desc, pwd=pwd, phone=phone, address=address, city=city, province=province, postal=postal, email=email)
+        
 
     else:
         return jsonify(msg='Other request method[%s]' % request.method)

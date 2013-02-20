@@ -5,13 +5,13 @@
             <form id="organization-reg" onsubmit="return createJsonObject()" method="post">
                 <fieldset>
                     <legend>Basic Info</legend>
-                    <label class="control-label" for="orgname">Name</label>
+                    <label class="control-label" for="org_name">Name</label>
                     <div class="controls">
-                        <input type="text" name="orgname" placeholder="The Awesome Company">
+                        <input type="text" name="org_name" placeholder="The Awesome Company">
                     </div>
-                    <label class="control-label" for="desc">Description</label>
+                    <label class="control-label" for="org_desc">Description</label>
                     <div class="controls">
-                        <textarea id="desc" rows="3">We make cool things.</textarea>
+                        <textarea id="org_desc" rows="3">We make cool things.</textarea>
                     </div>
                     <label class="control-label" for="pwd">Password</label>
                     <div class="controls">
@@ -20,13 +20,15 @@
                 </fieldset>
                 <fieldset>
                     <legend>Contact Info</legend>
-                    <label class="control-label" for="phone">Phone</label>
+                    <label class="control-label" for="address1">Address</label>
                     <div class="controls">
-                        <input type="text" name="phone" placeholder="000-123-456-7890">
+                        <input type="text" name="address1" placeholder="123 Neat Street">
                     </div>
-                    <label class="control-label" for="address">Address</label>
                     <div class="controls">
-                        <input type="text" name="address" placeholder="123 Neat Street">
+                        <input type="text" name="address2" placeholder="">
+                    </div>
+                    <div class="controls">
+                        <input type="text" name="address3" placeholder="">
                     </div>
                     <label class="control-label" for="city">City</label>
                     <div class="controls">
@@ -36,9 +38,17 @@
                     <div class="controls">
                         <input type="text" name="province" placeholder="Manitoba">
                     </div>
-                    <label class="control-label" for="postal">Postal Code</label>
+                    <label class="control-label" for="country">Country</label>
+					<div class="controls">
+						<input type="text" name="country" placeholder="Canada">
+                    </div>
+                    <label class="control-label" for="postalcode">Postal Code</label>
                     <div class="controls">
-                        <input type="text" name="postal" placeholder="Q1W 2E3">
+                        <input type="text" name="postalcode" placeholder="Q1W 2E3">
+                    </div>
+                    <label class="control-label" for="phone">Phone</label>
+					<div class="controls">
+						<input type="text" name="phone" placeholder="000-123-456-7890">
                     </div>
                     <label class="control-label" for="email">Email</label>
                     <div class="controls">
