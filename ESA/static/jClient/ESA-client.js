@@ -48,7 +48,7 @@ function createJsonObject() {
     },
 
     // ajax post request
-    $.post($SCRIPT_ROOT + '/_submit_org_form', data, success, "json");
+    $.post($SCRIPT_ROOT + '/_submit_org_form', JSON.stringify(data), success, "json");
 
     return false;
 

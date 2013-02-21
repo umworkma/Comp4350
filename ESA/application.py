@@ -26,8 +26,7 @@ def register_organization():
 @app.route('/_submit_org_form', methods=['GET', 'POST'])
 def submit_org_form():
     if request.method == 'POST':
-        print request.form
-        result = controllers.registerOrganization(request.form,db)
+        result = controllers.registerOrganization(request.form.keys()[0],db)
         return result
 
     else:
