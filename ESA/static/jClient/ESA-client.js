@@ -14,7 +14,7 @@ function createJsonObject() {
         			province: 	$('input[name="province"]').val(),
         			country:	$('input[name="country"]').val(),
         			postalcode:	$('input[name="postalcode"]').val(),
-        			irprimary:	"True"
+        			isprimary:	"True"
 				}
 			],
 			contacts: [
