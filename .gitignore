@@ -1,4 +1,5 @@
 *.pyc
+test.db
 venv/
 ESA/static/bootstrap/
 ESA/static/jquery/

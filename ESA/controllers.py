@@ -25,9 +25,16 @@ def registerOrganization(jsonString, db):
     result = False
     failCause = 'Unknown'
 
-    ''' Parse the given JSON data and create our basic organization. '''
-    data = json.loads(jsonString)
-    org = extractOrganizationFromJSON(data)
+    # Added this check here to just by pass if the input is a dict object
+    # else turn josn into dict. Dan has email Mr. Zapp regrading to clarify
+    # should all controller code accept json string or dict object. At incoming 
+    # request, Flask will parse JSON string into dict object.
+    if isinstance(request.form, dict): 
+        org = extractOrganizationFromJSON(jsonString)
+    else:
+        ''' Parse the given JSON data and create our basic organization. '''
+        data = json.loads(jsonString)
+        org = extractOrganizationFromJSON(data)
 
 
     ''' Check for duplicate organization. '''

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify, json
 from ESA import app
 
 import config
@@ -26,24 +26,9 @@ def register_organization():
 @app.route('/_submit_org_form', methods=['GET', 'POST'])
 def submit_org_form():
     if request.method == 'POST':
-        #get all user information
-        '''orgname  = request.form['org_name']
-        desc     = request.form['org_desc']
-        pwd      = request.form['pwd']
-        phone    = request.form['phone']
-        address  = request.form['address1']
-        city     = request.form['city']
-        province = request.form['province']
-        postal   = request.form['postalcode']
-        email    = request.form['email']'''
-        dataDict = json.loads(request.data)
-        result = controllers.registerOrganization(dataDict,db)
+        print request.form
+        result = controllers.registerOrganization(request.form,db)
         return result
-
-        #create a jason object and send it back to client 
-        # return jsonify(request.form)
-        #return jsonify(orgname=orgname, desc=desc, pwd=pwd, phone=phone, address=address, city=city, province=province, postal=postal, email=email)
-        
 
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
