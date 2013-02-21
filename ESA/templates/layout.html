@@ -1,15 +1,20 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Employee Registration Form</title>
+        <title>ESA Service</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        {# <link rel="shortcut icon" href="{{ url_for_static('favicon.ico') }}"> #}
+        {% assets "common_css" %}
+            <link rel="stylesheet" type="test/css" href="{{ ASSET_URL }}" />
+        {% endassets %}
+        {% assets "common_js" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+		<script type="text/javascript">$SCRIPT_ROOT = {{request.script_root|tojson|safe}};</script>
 
-        <script type=text/javascript>
-          var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-        </script>
         <link href="http://bootsnipp.com/bundles/bootstrapper/css/bootstrap.min.css" media="all" type="text/css" rel="stylesheet" />
         <script src="http://bootsnipp.com/bundles/bootstrapper/js/jquery-1.8.2.min.js"></script>
         <script src="http://bootsnipp.com/bundles/bootstrapper/js/bootstrap.min.js"></script>
-
 
         <div class="btn-group pull-right" style="padding-right: 24px;">
             {% if not session.logged_in %}
@@ -29,12 +34,15 @@
                 <ul class="dropdown-menu">
                     <!-- dropdown menu links -->
                     <li class="disabled" role="presentation"><a role="menuitem" tabindex="-1" href="#">Organization</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="employee_reg_form.html">Employee</a></li>
+                    <li class="disabled" role="presentation"><a role="menuitem" tabindex="-1" href="#">Employee</a></li>
                 </ul>
             {% endif %}
         </div>
 
         <h1>Employment Scheduling Application</h1>
+		
     </head>
-{% block body %}
-{% endblock %}
+    <body>
+        {% block content %}{% endblock %}
+    </body>
+</html>
