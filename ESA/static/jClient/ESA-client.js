@@ -17,22 +17,23 @@ function createJsonObject() {
 			],
 			contacts: [
 				{
-					type: 		1
+					type: 		1,
         			value:    	$('input[name="phone"]').val(),
-        			isprimary:	True
+        			isprimary:	"True"
 				},
 				{
-					type:		2
-					value:		$('input[name="email"]').val()
-					isprimary:	False
+					type:		2,
+					value:		$('input[name="email"]').val(),
+					isprimary:	"False"
 				}
 			]
 		}
     },
 
     success = function(data) {
+		console.log(data);
         // get a value which sent back from server
-        alert("successfully submitted"
+        /*alert("successfully submitted"
                 +"\n ***** Your Info *****"
                 +"\n user name: " + data.org_name
                 +"\n description: " + data.org_desc
@@ -42,7 +43,7 @@ function createJsonObject() {
                 +"\n city: " + data.city
                 +"\n province: " + data.province
                 +"\n postal: " + data.postalcode
-                +"\n email: " + data.email);
+                +"\n email: " + data.email);*/
 
     },
 
