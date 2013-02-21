@@ -12,7 +12,9 @@ function createJsonObject() {
         			address3: 	$('input[name="address3"]').val(),
         			city:     	$('input[name="city"]').val(),
         			province: 	$('input[name="province"]').val(),
-        			postal:		$('input[name="postalcode"]').val(),
+        			country:	$('input[name="country"]').val(),
+        			postalcode:	$('input[name="postalcode"]').val(),
+        			irprimary:	"True"
 				}
 			],
 			contacts: [
