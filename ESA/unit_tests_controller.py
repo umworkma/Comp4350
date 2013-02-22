@@ -386,16 +386,16 @@ class ESATestCase(TestCase):
         self.assertEqual(control.value, target.value)
         self.assertEqual(control.isprimary, target.isprimary)
 
-    def test_checkForDuplicateOrganization(self):
+    def test__checkForDuplicateOrganization(self):
         # Define an organization.
         testOrg = models.Organization()
-        testOrg.name = 'test_checkForDuplicateOrganization'
+        testOrg.name = 'test__checkForDuplicateOrganization'
         testOrg.description = 'test org description'
         testOrg.entity = models.Entity()
         testOrg.entity.type = models.TYPE_ORGANIZATION
 
         # Check for duplicates (should be no duplicates).
-        isDuplicate = controllers.checkForDuplicateOrganization(testOrg)
+        isDuplicate = controllers._checkForDuplicateOrganization(testOrg)
         self.assertFalse(isDuplicate)
 
         # Insert the organization (should succeed).
@@ -405,8 +405,40 @@ class ESATestCase(TestCase):
         self.assertEqual(result1Dict['result'], 'True')
 
         # Check for duplicates (should be duplicate).
-        isDuplicate = controllers.checkForDuplicateOrganization(testOrg)
+        isDuplicate = controllers._checkForDuplicateOrganization(testOrg)
         self.assertTrue(isDuplicate)
+
+    def test_checkForDuplicateOrganizationNameJSON(self):
+        orgName = 'test_checkForDuplicateOrganization'
+        orgDesc = 'test org description'
+        
+        # Define our input JSON string.
+        orgNameJSON = '{';
+        orgNameJSON += '"{key}":"{val}"'.format(key='org_name', val=orgName)
+        orgNameJSON += '}'
+
+        # Define an organization.
+        testOrg = models.Organization()
+        testOrg.name = orgName
+        testOrg.description = orgDesc
+        testOrg.entity = models.Entity()
+        testOrg.entity.type = models.TYPE_ORGANIZATION
+        testOrgJSON = controllers.organizationToJSON(testOrg)
+
+        # Check for duplicates (should be no duplicates).
+        result1 = controllers.checkForDuplicateOrganizationNameJSON(orgNameJSON)
+        result1Dict = json.loads(result1)
+        self.assertEqual(result1Dict['result'], 'False')
+
+        # Insert the organization (should succeed).
+        result1 = controllers.registerOrganization(testOrgJSON, self.db)
+        result1Dict = json.loads(result1)
+        self.assertEqual(result1Dict['result'], 'True')
+
+        # Check for duplicates (should be duplicate).
+        result1 = controllers.checkForDuplicateOrganizationNameJSON(orgNameJSON)
+        result1Dict = json.loads(result1)
+        self.assertEqual(result1Dict['result'], 'True')
         
 
 if __name__ == "__main__":

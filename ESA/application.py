@@ -37,6 +37,11 @@ def qunit_test():
 def register_organization():
     return render_template('register_organization.html')
 
+@app.route('/_check_dup_org_name', methods=['GET', 'POST'])
+def check_dup_org_name():
+    result = controllers.checkForDuplicateOrganizationNameJSON(request.form.keys()[0])
+    return result
+
 @app.route('/_submit_org_form', methods=['GET', 'POST'])
 def submit_org_form():
     if request.method == 'POST':

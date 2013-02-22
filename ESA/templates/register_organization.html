@@ -7,7 +7,9 @@
                     <legend>Basic Info</legend>
                     <label class="control-label" for="org_name">Name</label>
                     <div class="controls">
-                        <input type="text" name="org_name" placeholder="The Awesome Company">
+                        <input type="text" name="org_name" placeholder="The Awesome Company" oninput="checkForDuplicateOrgName()">
+                        <!-- display msg div box area -->
+						<div class="alert_isValidOrgName"></div>
                     </div>
                     <label class="control-label" for="org_desc">Description</label>
                     <div class="controls">

@@ -39,7 +39,7 @@ def registerOrganization(jsonString, db):
 
     ''' Check for duplicate organization. '''
     #existing = models.Organization.query.filter_by(name = org.name).first()
-    isDuplicate = checkForDuplicateOrganization(org)
+    isDuplicate = _checkForDuplicateOrganization(org)
     if(isDuplicate is True):
         failCause = 'duplicate'
     else:
@@ -55,13 +55,33 @@ def registerOrganization(jsonString, db):
     return resultJson
 
 
-def checkForDuplicateOrganization(org):
+""" Internal method for checking for djuplicates. Currently only checks
+    the organization.name property. Since it doesn't use JSON, this is not
+    meant for the view code to use. """
+def _checkForDuplicateOrganization(org):
     result = False
     if(org is not None and org.name is not None):
         existing = models.Organization.query.filter_by(name = org.name).first()
         if(existing is not None):
             result = True
     return result
+
+
+""" Allows the view to check whether a given organization name already exists
+    in the application. Returns True if duplicated. """
+def checkForDuplicateOrganizationNameJSON(orgNameJSON):
+    result = False
+    orgNameDict = json.loads(orgNameJSON)
+    if(orgNameDict is not None and orgNameDict[models.ORGANIZATION_NAME_KEY] is not None):
+        orgName = orgNameDict[models.ORGANIZATION_NAME_KEY]
+        org = models.Organization()
+        org.name = orgName
+        result = _checkForDuplicateOrganization(org)
+
+    resultJSON = '{'
+    resultJSON += '"result":"{val}"'.format(val=result)
+    resultJSON += '}'
+    return resultJSON
 
 
 def insertOrganization(name, description):
