@@ -38,8 +38,9 @@ def registerOrganization(jsonString, db):
 
 
     ''' Check for duplicate organization. '''
-    existing = models.Organization.query.filter_by(name = org.name).first()
-    if(existing != None):
+    #existing = models.Organization.query.filter_by(name = org.name).first()
+    isDuplicate = checkForDuplicateOrganization(org)
+    if(isDuplicate is True):
         failCause = 'duplicate'
     else:
         db.session.add(org)
@@ -47,12 +48,20 @@ def registerOrganization(jsonString, db):
         result = True
 
     
-    if(result == True):
+    if(result is True):
         resultJson = '{"result": "True"}'
     else:
         resultJson = '{' + '"result": "{val}"'.format(val=failCause) + '}'
     return resultJson
 
+
+def checkForDuplicateOrganization(org):
+    result = False
+    if(org is not None and org.name is not None):
+        existing = models.Organization.query.filter_by(name = org.name).first()
+        if(existing is not None):
+            result = True
+    return result
 
 
 def insertOrganization(name, description):

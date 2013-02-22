@@ -386,5 +386,28 @@ class ESATestCase(TestCase):
         self.assertEqual(control.value, target.value)
         self.assertEqual(control.isprimary, target.isprimary)
 
+    def test_checkForDuplicateOrganization(self):
+        # Define an organization.
+        testOrg = models.Organization()
+        testOrg.name = 'test_checkForDuplicateOrganization'
+        testOrg.description = 'test org description'
+        testOrg.entity = models.Entity()
+        testOrg.entity.type = models.TYPE_ORGANIZATION
+
+        # Check for duplicates (should be no duplicates).
+        isDuplicate = controllers.checkForDuplicateOrganization(testOrg)
+        self.assertFalse(isDuplicate)
+
+        # Insert the organization (should succeed).
+        testOrgJSON = controllers.organizationToJSON(testOrg)
+        result1 = controllers.registerOrganization(testOrgJSON, self.db)
+        result1Dict = json.loads(result1)
+        self.assertEqual(result1Dict['result'], 'True')
+
+        # Check for duplicates (should be duplicate).
+        isDuplicate = controllers.checkForDuplicateOrganization(testOrg)
+        self.assertTrue(isDuplicate)
+        
+
 if __name__ == "__main__":
     unittest.main()
