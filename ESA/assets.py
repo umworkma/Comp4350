@@ -41,8 +41,8 @@ common_css = Bundle(
 
 # js files for ESA application
 common_js = Bundle(
-    'bootstrap/js/bootstrap.js',
     'jquery/jquery-1.9.1.js',
+    'bootstrap/js/bootstrap.js',
     ESA_js,
     # Assets manager output all js file and compress them into one js file
     # Bundle(
@@ -63,8 +63,8 @@ qunit_css = Bundle(
 
 # qunit js bundle for unit testing, including common javascript
 qunit_js = Bundle(
-    'bootstrap/js/bootstrap.js',
     'jquery/jquery-1.9.1.js',
+    'bootstrap/js/bootstrap.js',
     'qunit/qunit-1.11.0.js',
     ESA_js,
     unit_test_js,
