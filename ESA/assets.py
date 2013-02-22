@@ -27,6 +27,7 @@ unit_test_js = Bundle(
 # css file for ESA application
 common_css = Bundle(
     'bootstrap/css/bootstrap.css',
+    'css/ESA-css.css',
 
     # Assets manager output all css files into one css file
     # Bundle(
@@ -57,6 +58,7 @@ common_js = Bundle(
 # qunit css bundle for unit testing 
 qunit_css = Bundle(
     'qunit/qunit-1.11.0.css',
+    'css/ESA-css.css'
 
 )
 

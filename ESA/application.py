@@ -33,7 +33,7 @@ def home():
 def qunit_test():
     return render_template('unit_test.html')
 
-@app.route('/register_organization.html/')
+@app.route('/register_organization/')
 def register_organization():
     return render_template('register_organization.html')
 

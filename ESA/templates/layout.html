@@ -15,6 +15,7 @@
 		<script type="text/javascript">$SCRIPT_ROOT = {{request.script_root|tojson|safe}};</script>
     </head>
     <body>
+        <!-- drop down boxes for sign-up and log-in -->
         <div class="btn-group pull-right" style="padding-right: 24px;">
             {% if not session.logged_in %}
                 <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">Log In <span class="caret"></span></button>
@@ -32,12 +33,13 @@
                 <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Sign Up <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <!-- dropdown menu links -->
-                    <li class="disabled" role="presentation"><a role="menuitem" tabindex="-1" href="#">Organization</a></li>
+                    <li class="" role="presentation"><a role="menuitem" tabindex="-1" href="/register_organization">Organization</a></li>
                     <li class="disabled" role="presentation"><a role="menuitem" tabindex="-1" href="#">Employee</a></li>
                 </ul>
             {% endif %}
         </div>
         <h1>Employment Scheduling Application</h1>
+        <!-- display msg div box area -->
         <div class="msg_area">
         </div>
         {% block content %}{% endblock %}
