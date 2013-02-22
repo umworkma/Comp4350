@@ -98,7 +98,7 @@ class Contact(db.Model):
 
     def __repr__(self):
         return "<Contact('%s','%s','%s','%s','%s')>" % (self.pk, self.entityFK, self.type, self.value, self.isprimary)
-    
+
 class Organization(db.Model):
     __tablename__ = 'organization'
     entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'), primary_key=True)
@@ -108,3 +108,14 @@ class Organization(db.Model):
 
     def __repr__(self):
         return "<Organization('%s','%s','%s')>" % (self.entityFK, self.name, self.description)
+
+class Person(db.Model):
+    __tablename__ = 'person'
+    entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'), primary_key=True)
+    firstname = db.Column(db.String(45))
+    lastname = db.Column(db.String(45))
+    entity = db.relationship('Entity', uselist=False, cascade='all, delete')
+
+    def __repr__(self):
+        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.name, self.description)
+    
