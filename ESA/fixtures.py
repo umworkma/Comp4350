@@ -105,6 +105,7 @@ class AddressData(DataSet):
         province = 'Manitoba'
         country = 'Canada'
         postalcode = '1V1 F2F'
+        entityFK = 5
         isprimary = 1
 
 class ContactData(DataSet):

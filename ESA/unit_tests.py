@@ -45,103 +45,224 @@ class ESATestCase(TestCase):
     def test_entity_model(self):
         for idx in range(1,3):
             org = models.Entity.query.filter_by(pk=idx).first()
-            self.assertEquals(org.type, models.TYPE_ORGANIZATION)
+            self.assertEqual(org.type, models.TYPE_ORGANIZATION)
 
         for idx in range(3,6):
             emp = models.Entity.query.filter_by(pk=idx).first()
-            self.assertEquals(emp.type, models.TYPE_EMPLOYEE)
+            self.assertEqual(emp.type, models.TYPE_EMPLOYEE)
+
+
+    """ Test that organizations are defined and the model represents them correctly. """
+    def test_organization_model(self):
+        aikon = models.Organization.query.filter_by(entityFK=1).first()
+        self.assertEqual(aikon.entityFK, 1)
+        self.assertEqual(aikon.name, 'Ai-Kon')
+        self.assertEqual(aikon.description, 'Ai-Kon Anime Convention')
+
+        uOfM = models.Organization.query.filter_by(entityFK=2).first()
+        self.assertEqual(uOfM.entityFK, 2)
+        self.assertEqual(uOfM.name, 'University of Manitoba')
+        self.assertEqual(uOfM.description, 'The University of Manitoba, is a public university in the province of Manitoba, Canada. Located in Winnipeg, it is Manitoba\'s largest, most comprehensive, and only research-intensive post-secondary educational institution.')
+
+
+    """ Test that organizations are defined and the model represents them correctly. """
+    def test_person_model(self):
+        chris = models.Person.query.filter_by(entityFK=3).first()
+        self.assertEqual(chris.entityFK, 3)
+        self.assertEqual(chris.firstname, 'Chris')
+        self.assertEqual(chris.lastname, 'Workman')
+
+        ryoji = models.Person.query.filter_by(entityFK=4).first()
+        self.assertEqual(ryoji.entityFK, 4)
+        self.assertEqual(ryoji.firstname, 'Ryoji')
+        self.assertEqual(ryoji.lastname, 'Betchaku')
+
+        dan = models.Person.query.filter_by(entityFK=5).first()
+        self.assertEqual(dan.entityFK, 5)
+        self.assertEqual(dan.firstname, 'Dan')
+        self.assertEqual(dan.lastname, 'Nelson')
 
     
     """ Test that addresses are defined and the model represents them correctly. """
     def test_address_model(self):
         aikonPrimaryAddress = models.Address.query.filter_by(entityFK=1, isprimary=1).first()
-        self.assertEquals(aikonPrimaryAddress.entityFK, 1)
-        self.assertEquals(aikonPrimaryAddress.isprimary, 1)
-        self.assertEquals(aikonPrimaryAddress.address1, '123 Vroom Street')
-        self.assertEquals(aikonPrimaryAddress.city, 'Winnipeg')
-        self.assertEquals(aikonPrimaryAddress.province, 'Manitoba')
-        self.assertEquals(aikonPrimaryAddress.country, 'Canada')
-        self.assertEquals(aikonPrimaryAddress.postalcode, 'A1A1A1')
+        self.assertEqual(aikonPrimaryAddress.entityFK, 1)
+        self.assertEqual(aikonPrimaryAddress.isprimary, 1)
+        self.assertEqual(aikonPrimaryAddress.address1, '123 Vroom Street')
+        self.assertEqual(aikonPrimaryAddress.city, 'Winnipeg')
+        self.assertEqual(aikonPrimaryAddress.province, 'Manitoba')
+        self.assertEqual(aikonPrimaryAddress.country, 'Canada')
+        self.assertEqual(aikonPrimaryAddress.postalcode, 'A1A1A1')
 
         uOfMPrimaryAddress = models.Address.query.filter_by(entityFK=2, isprimary=1).first()
-        self.assertEquals(uOfMPrimaryAddress.entityFK, 2)
-        self.assertEquals(uOfMPrimaryAddress.isprimary, 1)
-        self.assertEquals(uOfMPrimaryAddress.address1, '66 Chancellors Circle')
-        self.assertEquals(uOfMPrimaryAddress.city, 'Winnipeg')
-        self.assertEquals(uOfMPrimaryAddress.province, 'Manitoba')
-        self.assertEquals(uOfMPrimaryAddress.country, 'Canada')
-        self.assertEquals(uOfMPrimaryAddress.postalcode, 'R3T2N2')
+        self.assertEqual(uOfMPrimaryAddress.entityFK, 2)
+        self.assertEqual(uOfMPrimaryAddress.isprimary, 1)
+        self.assertEqual(uOfMPrimaryAddress.address1, '66 Chancellors Circle')
+        self.assertEqual(uOfMPrimaryAddress.city, 'Winnipeg')
+        self.assertEqual(uOfMPrimaryAddress.province, 'Manitoba')
+        self.assertEqual(uOfMPrimaryAddress.country, 'Canada')
+        self.assertEqual(uOfMPrimaryAddress.postalcode, 'R3T2N2')
+
+        chrisPrimaryAddress = models.Address.query.filter_by(entityFK=3, isprimary=1).first()
+        self.assertEqual(chrisPrimaryAddress.entityFK, 3)
+        self.assertEqual(chrisPrimaryAddress.isprimary, 1)
+        self.assertEqual(chrisPrimaryAddress.address1, '2116 - 991D Markham Rd')
+        self.assertEqual(chrisPrimaryAddress.city, 'Winnipeg')
+        self.assertEqual(chrisPrimaryAddress.province, 'Manitoba')
+        self.assertEqual(chrisPrimaryAddress.country, 'Canada')
+        self.assertEqual(chrisPrimaryAddress.postalcode, 'R3K 5J1')
+
+        chrisNotPrimaryAddress = models.Address.query.filter_by(entityFK=3, isprimary=0).first()
+        self.assertEqual(chrisNotPrimaryAddress.entityFK, 3)
+        self.assertEqual(chrisNotPrimaryAddress.isprimary, 0)
+        self.assertEqual(chrisNotPrimaryAddress.address1, '16 Premier Place')
+        self.assertEqual(chrisNotPrimaryAddress.city, 'Winnipeg')
+        self.assertEqual(chrisNotPrimaryAddress.province, 'Manitoba')
+        self.assertEqual(chrisNotPrimaryAddress.country, 'Canada')
+        self.assertEqual(chrisNotPrimaryAddress.postalcode, 'R2C 0S9')
+
+        ryojiPrimaryAddress = models.Address.query.filter_by(entityFK=4, isprimary=1).first()
+        self.assertEqual(ryojiPrimaryAddress.entityFK, 4)
+        self.assertEqual(ryojiPrimaryAddress.isprimary, 1)
+        self.assertEqual(ryojiPrimaryAddress.address1, '2194 Pembina Hwy')
+        self.assertEqual(ryojiPrimaryAddress.city, 'Winnipeg')
+        self.assertEqual(ryojiPrimaryAddress.province, 'Manitoba')
+        self.assertEqual(ryojiPrimaryAddress.country, 'Canada')
+        self.assertEqual(ryojiPrimaryAddress.postalcode, 'R1G 5V4')
+
+        danPrimaryAddress = models.Address.query.filter_by(entityFK=5, isprimary=1).first()
+        self.assertEqual(danPrimaryAddress.entityFK, 5)
+        self.assertEqual(danPrimaryAddress.isprimary, 1)
+        self.assertEqual(danPrimaryAddress.address1, '123 Main St')
+        self.assertEqual(danPrimaryAddress.city, 'Selkirk')
+        self.assertEqual(danPrimaryAddress.province, 'Manitoba')
+        self.assertEqual(danPrimaryAddress.country, 'Canada')
+        self.assertEqual(danPrimaryAddress.postalcode, '1V1 F2F')
 
 
     """ Test that contacts are defined and the model represents them properly. """
     def test_contact_model(self):
         aikonContactEmail1 = models.Contact.query.filter_by(entityFK = 1, type = 2, isprimary = 1).first()
-        self.assertEquals(aikonContactEmail1.entityFK, 1)
-        self.assertEquals(aikonContactEmail1.type, 2)
-        self.assertEquals(aikonContactEmail1.value, 'info@ai-kon.org')
-        self.assertEquals(aikonContactEmail1.isprimary, 1)
+        self.assertEqual(aikonContactEmail1.entityFK, 1)
+        self.assertEqual(aikonContactEmail1.type, 2)
+        self.assertEqual(aikonContactEmail1.value, 'info@ai-kon.org')
+        self.assertEqual(aikonContactEmail1.isprimary, 1)
 
         uOfMContactPhone1 = models.Contact.query.filter_by(entityFK = 2, type = 1, isprimary = 1).first()
-        self.assertEquals(uOfMContactPhone1.entityFK, 2)
-        self.assertEquals(uOfMContactPhone1.type, 1)
-        self.assertEquals(uOfMContactPhone1.value, '18004321960')
-        self.assertEquals(uOfMContactPhone1.isprimary, 1)
+        self.assertEqual(uOfMContactPhone1.entityFK, 2)
+        self.assertEqual(uOfMContactPhone1.type, 1)
+        self.assertEqual(uOfMContactPhone1.value, '18004321960')
+        self.assertEqual(uOfMContactPhone1.isprimary, 1)
 
     
     """ Test that an address can be retrieved from the entity relationship. """
     def test_entity_address_relationship(self):
         aikonAddressDirect = models.Address.query.filter_by(entityFK=1).first()
-        self.assertEquals(aikonAddressDirect.address1, '123 Vroom Street')
+        self.assertEqual(aikonAddressDirect.address1, '123 Vroom Street')
         aikonEntity = models.Entity.query.filter_by(pk = 1).first()
-        self.assertEquals(aikonEntity.type, models.TYPE_ORGANIZATION)
+        self.assertEqual(aikonEntity.type, models.TYPE_ORGANIZATION)
         aikonAddressByEntity = aikonEntity.addresses[0]
-        self.assertEquals(aikonAddressByEntity.address1, '123 Vroom Street')
-        self.assertEquals(aikonAddressByEntity, aikonAddressDirect)
+        self.assertEqual(aikonAddressByEntity.address1, '123 Vroom Street')
+        self.assertEqual(aikonAddressByEntity, aikonAddressDirect)
 
         uOfMAddressDirect = models.Address.query.filter_by(entityFK=2).first()
-        self.assertEquals(uOfMAddressDirect.address1, '66 Chancellors Circle')
+        self.assertEqual(uOfMAddressDirect.address1, '66 Chancellors Circle')
         uOfMEntity = models.Entity.query.filter_by(pk = 2).first()
-        self.assertEquals(uOfMEntity.type, models.TYPE_ORGANIZATION)
+        self.assertEqual(uOfMEntity.type, models.TYPE_ORGANIZATION)
         uOfMAddressByEntity = uOfMEntity.addresses[0]
-        self.assertEquals(uOfMAddressByEntity.address1, '66 Chancellors Circle')
-        self.assertEquals(uOfMAddressByEntity, uOfMAddressDirect)
+        self.assertEqual(uOfMAddressByEntity.address1, '66 Chancellors Circle')
+        self.assertEqual(uOfMAddressByEntity, uOfMAddressDirect)
 
     
     """ Test that we can retrieve an entity from the organization relationship. """
     def test_organization_entity_relationship(self):
         aikonEntityDirect = models.Entity.query.filter_by(pk = 1).first()
-        self.assertEquals(aikonEntityDirect.type, models.TYPE_ORGANIZATION)
+        self.assertEqual(aikonEntityDirect.type, models.TYPE_ORGANIZATION)
         aikonOrg = models.Organization.query.filter_by(entityFK = 1).first()
-        self.assertEquals(aikonOrg.name, 'Ai-Kon')
+        self.assertEqual(aikonOrg.name, 'Ai-Kon')
         aikonEntityByOrg = aikonOrg.entity
-        self.assertEquals(aikonEntityByOrg.type, models.TYPE_ORGANIZATION)
-        self.assertEquals(aikonEntityDirect, aikonEntityByOrg)
+        self.assertEqual(aikonEntityByOrg.type, models.TYPE_ORGANIZATION)
+        self.assertEqual(aikonEntityDirect, aikonEntityByOrg)
 
         uOfMEntityDirect = models.Entity.query.filter_by(pk = 2).first()
-        self.assertEquals(uOfMEntityDirect.type, models.TYPE_ORGANIZATION)
+        self.assertEqual(uOfMEntityDirect.type, models.TYPE_ORGANIZATION)
         uOfMOrg = models.Organization.query.filter_by(entityFK = 2).first()
-        self.assertEquals(uOfMOrg.name, 'University of Manitoba')
+        self.assertEqual(uOfMOrg.name, 'University of Manitoba')
         uOfMEntityByOrg = uOfMOrg.entity
-        self.assertEquals(uOfMEntityByOrg.type, models.TYPE_ORGANIZATION)
-        self.assertEquals(uOfMEntityDirect, uOfMEntityByOrg)
+        self.assertEqual(uOfMEntityByOrg.type, models.TYPE_ORGANIZATION)
+        self.assertEqual(uOfMEntityDirect, uOfMEntityByOrg)
+
+
+    """ Test that we can retrieve an entity from the person relationship. """
+    def test_person_entity_relationship(self):
+        currEntityDirect = models.Entity.query.filter_by(pk = 3).first()
+        self.assertEqual(currEntityDirect.type, models.TYPE_EMPLOYEE)
+        currentObject = models.Person.query.filter_by(entityFK = 3).first()
+        self.assertEqual(currentObject.firstname, 'Chris')
+        currEntityByPerson = currentObject.entity
+        self.assertEqual(currEntityByPerson.type, models.TYPE_EMPLOYEE)
+        self.assertEqual(currEntityDirect, currEntityByPerson)
+
+        currEntityDirect = models.Entity.query.filter_by(pk = 4).first()
+        self.assertEqual(currEntityDirect.type, models.TYPE_EMPLOYEE)
+        currentObject = models.Person.query.filter_by(entityFK = 4).first()
+        self.assertEqual(currentObject.firstname, 'Ryoji')
+        currEntityByPerson = currentObject.entity
+        self.assertEqual(currEntityByPerson.type, models.TYPE_EMPLOYEE)
+        self.assertEqual(currEntityDirect, currEntityByPerson)
+
+        currEntityDirect = models.Entity.query.filter_by(pk = 5).first()
+        self.assertEqual(currEntityDirect.type, models.TYPE_EMPLOYEE)
+        currentObject = models.Person.query.filter_by(entityFK = 5).first()
+        self.assertEqual(currentObject.firstname, 'Dan')
+        currEntityByPerson = currentObject.entity
+        self.assertEqual(currEntityByPerson.type, models.TYPE_EMPLOYEE)
+        self.assertEqual(currEntityDirect, currEntityByPerson)
     
     
     """ Test that we can retrieve an address from the organization relationship """
     def test_organization_address_relationship(self):
         aikonOrg = models.Organization.query.filter_by(entityFK = 1).first()
-        self.assertEquals(aikonOrg.entity.addresses[0].address1, '123 Vroom Street')
+        self.assertEqual(aikonOrg.entity.addresses[0].address1, '123 Vroom Street')
 
         uOfMOrg = models.Organization.query.filter_by(entityFK = 2).first()
-        self.assertEquals(uOfMOrg.entity.addresses[0].address1, '66 Chancellors Circle')
+        self.assertEqual(uOfMOrg.entity.addresses[0].address1, '66 Chancellors Circle')
+
+
+    """ Test that we can retrieve an address from the person relationship """
+    def test_person_address_relationship(self):
+        currTarget = models.Person.query.filter_by(entityFK = 3).first()
+        self.assertEqual(currTarget.entity.addresses[0].address1, '2116 - 991D Markham Rd')
+        self.assertEqual(currTarget.entity.addresses[1].address1, '16 Premier Place')
+
+        currTarget = models.Person.query.filter_by(entityFK = 4).first()
+        self.assertEqual(currTarget.entity.addresses[0].address1, '2194 Pembina Hwy')
+
+        currTarget = models.Person.query.filter_by(entityFK = 5).first()
+        self.assertEqual(currTarget.entity.addresses[0].address1, '123 Main St')
 
     
     """ Test that we can get contacts from an entity """
     def test_entity_contact_relationship(self):
         entity = models.Entity.query.filter_by(pk = 1).first()
-        self.assertEquals(entity.contacts[0].value, 'info@ai-kon.org')
+        self.assertEqual(entity.contacts[0].value, 'info@ai-kon.org')
 
         entity = models.Entity.query.filter_by(pk = 2).first()
-        self.assertEquals(entity.contacts[0].value, '18004321960')
+        self.assertEqual(entity.contacts[0].value, '18004321960')
+
+
+    """ Test that we can retrieve a contact from the person relationship """
+    def test_person_contact_relationship(self):
+        currTarget = models.Person.query.filter_by(entityFK = 3).first()
+        self.assertEqual(currTarget.entity.contacts[0].value, 'umworkma@cc.umanitoba.ca')
+        self.assertEqual(currTarget.entity.contacts[1].value, '2042302916')
+        self.assertEqual(currTarget.entity.contacts[2].value, '2042247721')
+
+        currTarget = models.Person.query.filter_by(entityFK = 4).first()
+        self.assertEqual(currTarget.entity.contacts[0].value, '2042916589')
+
+        currTarget = models.Person.query.filter_by(entityFK = 5).first()
+        self.assertEqual(currTarget.entity.contacts[0].value, '2046634588')
 
     
     """ Test adding a complete organization to the database """
@@ -155,11 +276,6 @@ class ESATestCase(TestCase):
                            isprimary=True))
         org1.entity.contacts.append(models.Contact(type=models.TYPE_PHONE,
                                   value='(204) 555-1234', isprimary=True))
-
-        """ Add the relationships """
-        """entity1.addresses = [address1]
-        entity1.contacts = [contact1]
-        org1.entity = entity1"""
         
         """ Add the data objects """       
         self.db.session.add(org1)
@@ -167,26 +283,61 @@ class ESATestCase(TestCase):
 
         """ Retrieve the organization and test that data matches """
         org2 = models.Organization.query.filter_by(name='Test Org').first()
-        self.assertEquals(org2, org1)
-        self.assertNotEquals(org2.entity, None)
-        self.assertEquals(org2.entity.addresses[0].address1, '4350 University Drive')
-        self.assertEquals(org2.entity.contacts[0].value, '(204) 555-1234')
+        self.assertEqual(org2, org1)
+        self.assertIsNotNone(org2.entity)
+        self.assertEqual(org2.entity.addresses[0].address1, '4350 University Drive')
+        self.assertEqual(org2.entity.contacts[0].value, '(204) 555-1234')
 
         """ Try grabbing some of the sub-objects from the database """
         entity2 = models.Entity.query.filter_by(pk=org2.entity.pk).first()
-        self.assertNotEquals(entity2, None)
+        self.assertIsNotNone(entity2)
 
         address2 = models.Address.query.filter_by(pk=org2.entity.addresses[0].pk).first()
-        self.assertEquals(address2.address1, '4350 University Drive')
+        self.assertEqual(address2.address1, '4350 University Drive')
 
         contact2 = models.Contact.query.filter_by(pk=org2.entity.contacts[0].pk).first()
-        self.assertEquals(contact2.value, '(204) 555-1234')
+        self.assertEqual(contact2.value, '(204) 555-1234')
+
+
+    """ Test adding a complete person to the database """
+    def test_add_person(self):
+        """ Define the data objects to be added """
+        target = models.Person(firstname='Test',
+                            lastname='Person')
+        target.entity = models.Entity(type=models.TYPE_EMPLOYEE)
+        target.entity.addresses.append(models.Address(address1='4350 University Drive', address2='Suite 350', address3='C/O The cat down the hall',
+                           city='Winnipeg', province='Manitoba',country='Canada',
+                           postalcode='A1A 1A1', isprimary=True))
+        target.entity.contacts.append(models.Contact(type=models.TYPE_PHONE,
+                                  value='(204) 555-1234', isprimary=True))
+        
+        """ Add the data objects """       
+        self.db.session.add(target)
+        self.db.session.commit()
+
+        """ Retrieve the organization and test that data matches """
+        fetched = models.Person.query.filter_by(firstname='Test', lastname='Person').first()
+        self.assertEqual(fetched, target)
+        self.assertIsNotNone(fetched.entity)
+        self.assertEqual(fetched.entity.addresses[0].address1, '4350 University Drive')
+        self.assertEqual(fetched.entity.contacts[0].value, '(204) 555-1234')
+
+        """ Try grabbing some of the sub-objects from the database """
+        entity2 = models.Entity.query.filter_by(pk=fetched.entity.pk).first()
+        self.assertIsNotNone(entity2)
+
+        address2 = models.Address.query.filter_by(pk=fetched.entity.addresses[0].pk).first()
+        self.assertEqual(address2.address1, '4350 University Drive')
+
+        contact2 = models.Contact.query.filter_by(pk=fetched.entity.contacts[0].pk).first()
+        self.assertEqual(contact2.value, '(204) 555-1234')
+
     
 
     def test_organization_delete(self):
         """ Test that our organization exists prior to deleting. """
         org2 = models.Organization.query.filter_by(entityFK=1).first()
-        self.assertNotEquals(org2, None)
+        self.assertIsNotNone(org2)
 
         """ Delete Organization 1 """
         org1 = models.Organization.query.filter_by(entityFK=1).first()
@@ -195,20 +346,47 @@ class ESATestCase(TestCase):
 
         """ Test that it has been deleted """
         org2 = models.Organization.query.filter_by(entityFK=1).first()
-        self.assertEquals(org2, None)
+        self.assertIsNone(org2)
 
         """ Check if the first entity is no longer entity.pk==1
             This will determine if entity was auto-deleted and that
             other entities still exist """
         entity1 = models.Entity.query.first()
-        self.assertNotEquals(entity1, None)
-        self.assertNotEquals(entity1.pk, 1)
+        self.assertIsNotNone(entity1)
+        self.assertNotEqual(entity1.pk, 1)
 
         """ Test that the addresses and contacts have been deleted """
         address1 = models.Address.query.filter_by(entityFK=1).first()
         contact1 = models.Contact.query.filter_by(entityFK=1).first()
-        self.assertEquals(address1, None)
-        self.assertEquals(contact1, None)
+        self.assertIsNone(address1)
+        self.assertIsNone(contact1)
+
+        """ Reset the DB for other tests, since we removed data other tests may depend on. """
+        self.resetDB()
+
+
+    def test_person_delete(self):
+        """ Test that our organization exists prior to deleting. """
+        target = models.Person.query.filter_by(entityFK=3).first()
+        self.assertIsNotNone(target)
+
+        """ Delete target """
+        self.db.session.delete(target)
+        self.db.session.commit()
+
+        """ Test that it has been deleted """
+        target = models.Organization.query.filter_by(entityFK=3).first()
+        self.assertIsNone(target)
+
+        """ Verify entity record deleted. """
+        entity1 = models.Entity.query.filter_by(pk=3).first()
+        self.assertIsNone(entity1)
+
+        """ Test that the addresses and contacts have been deleted """
+        address1 = models.Address.query.filter_by(entityFK=3).first()
+        contact1 = models.Contact.query.filter_by(entityFK=3).first()
+        self.assertIsNone(address1)
+        self.assertIsNone(contact1)
 
         """ Reset the DB for other tests, since we removed data other tests may depend on. """
         self.resetDB()

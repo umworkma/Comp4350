@@ -75,7 +75,7 @@ class Address(db.Model):
     entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'))
     isprimary = db.Column(db.Boolean)
 
-    def __init__(self, address1=None, address2=None, address3=None, city=None, province=None, postalcode=None, entityFK=None, isprimary=None):
+    def __init__(self, address1=None, address2=None, address3=None, city=None, province=None, country=None, postalcode=None, entityFK=None, isprimary=None):
         self.address1 = address1
         self.address2 = address2
         self.address3 = address3
