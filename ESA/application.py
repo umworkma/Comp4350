@@ -37,6 +37,11 @@ def qunit_test():
 def register_organization():
     return render_template('register_organization.html')
 
+
+@app.route('/employee_reg_form.html')
+def load_employee_reg_form():
+    return render_template('employee_reg_form.html')
+
 @app.route('/_check_dup_org_name', methods=['GET', 'POST'])
 def check_dup_org_name():
     result = controllers.checkForDuplicateOrganizationNameJSON(request.form.keys()[0])
