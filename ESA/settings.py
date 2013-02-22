@@ -11,6 +11,7 @@ class Config(object):
 
 class ProdConfig(Config):
     ENV = "Prod"
+    DEBUG = True
     
 class DevConfig(Config):
     ENV = "Dev"
