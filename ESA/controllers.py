@@ -210,9 +210,9 @@ def extractEmployeeFromJSON(employee):
         if(employeeKey == models.EMPLOYEE_USER_NAME_KEY):
             employee.username = employeeValue
         if(employeeKey == models.EMPLOYEE_FIRST_NAME_KEY):
-            employee.fname = employeeValue
+            employee.firstname = employeeValue
         if(employeeKey == models.EMPLOYEE_LAST_NAME_KEY):
-            employee.lname = employeeValue
+            employee.lastname = employeeValue
         if(employeeKey == models.EMPLOYEE_PASSWORD_KEY):
             employee.password = employeeValue
         if(employeeKey == 'Entity'):
