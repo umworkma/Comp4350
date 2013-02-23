@@ -6,8 +6,8 @@ def registerEmployee(jsonString, db):
     result = False
     failCause = 'Unknown'
     data = json.loads(jsonString)
-    #employee = extractEmployeeFromJSON(data)
-	isDuplicate = _checkForDuplicateEmployee(" ")
+    employee = extractEmployeeFromJSON(data)
+	isDuplicate = _checkForDuplicateEmployee(employee)
 	# if(isduplicate is true):
 		# failcause = 'duplicate'
 	# else:
@@ -22,6 +22,17 @@ def registerEmployee(jsonString, db):
 		# return resultjson
 
 
+""" Internal method for checking for duplicate employee. Currently only checks
+    the employee.username property. """
+
+def _checkForDuplicateEmployee(employee):
+    result = False
+    # if(employee is not None and employee.username is not None):
+        # existing = models.Employee.query.filter_by(username = employee.username).first()
+        # if(existing is not None):
+            # result = True
+    return result
+ 
 
 
 """ Allows the view to check whether a given  username already exists
@@ -42,17 +53,6 @@ def checkForDuplicateEmployeeUserNameJSON(employeeUserNameJSON):
 
 
 
-""" Internal method for checking for duplicate employee. Currently only checks
-    the employee.username property. """
-
-def _checkForDuplicateEmployee(employee):
-    result = False
-    # if(employee is not None and employee.username is not None):
-        # existing = models.Employee.query.filter_by(username = employee.username).first()
-        # if(existing is not None):
-            # result = True
-    return result
- 
 
 # Organizations
 def getAllOrganizations(db):
