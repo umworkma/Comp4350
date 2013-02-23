@@ -19,7 +19,7 @@ EMPLOYEE_ENTITY_KEY = 'emp_entityfk'
 EMPLOYEE_USER_NAME_KEY = 'username'
 EMPLOYEE_FIRST_NAME_KEY = 'fname'
 EMPLOYEE_LAST_NAME_KEY = 'lname'
-EMPLOYEE_PASSWORD_KEY = 'password'
+EMPLOYEE_PASSWORD_KEY = 'pwd1'
 
 ADDRESS_ENTITYFK_KEY = 'addr_entityfk'
 ADDRESS_ADDRESS1_KEY = 'address1'
@@ -118,8 +118,10 @@ class Organization(db.Model):
 class Person(db.Model):
     __tablename__ = 'person'
     entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'), primary_key=True)
+	username = db.Column(db.String(45))
     firstname = db.Column(db.String(45))
     lastname = db.Column(db.String(45))
+	password = db.Column(db.String(45))
     entity = db.relationship('Entity', uselist=False, cascade='all, delete')
 
     def __repr__(self):
