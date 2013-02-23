@@ -15,6 +15,12 @@ ORGANIZATION_ENTITYFK_KEY = 'org_entityfk'
 ORGANIZATION_NAME_KEY = 'org_name'
 ORGANIZATION_DESCRIPTION_KEY = 'org_desc'
 
+EMPLOYEE_ENTITY_KEY = 'emp_entityfk'
+EMPLOYEE_USER_NAME_KEY = 'username'
+EMPLOYEE_FIRST_NAME_KEY = 'fname'
+EMPLOYEE_LAST_NAME_KEY = 'lname'
+EMPLOYEE_PASSWORD_KEY = 'password'
+
 ADDRESS_ENTITYFK_KEY = 'addr_entityfk'
 ADDRESS_ADDRESS1_KEY = 'address1'
 ADDRESS_ADDRESS2_KEY = 'address2'
@@ -122,12 +128,13 @@ class Address(db.Model):
     entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'))
     isprimary = db.Column(db.Boolean)
 
-    def __init__(self, address1=None, address2=None, address3=None, city=None, province=None, postalcode=None, entityFK=None, isprimary=None):
+    def __init__(self, address1=None, address2=None, address3=None, city=None, province=None, country=None, postalcode=None, entityFK=None, isprimary=None):
         self.address1 = address1
         self.address2 = address2
         self.address3 = address3
         self.city = city
         self.province = province
+        self.country = country
         self.postalcode = postalcode
         self.entityFK = entityFK
         self.isprimary = isprimary
@@ -152,9 +159,22 @@ class Organization(db.Model):
     name = db.Column(db.String(45))
     description = db.Column(db.Text)
     entity = db.relationship('Entity',uselist=False, cascade='all, delete')
+    #membership = db.relationship('Member', uselist=False, cascade='all, delete')
 
     def __repr__(self):
         return "<Organization('%s','%s','%s')>" % (self.entityFK, self.name, self.description)
+
+
+class Person(db.Model):
+    __tablename__ = 'person'
+    entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'), primary_key=True)
+    firstname = db.Column(db.String(45))
+    lastname = db.Column(db.String(45))
+    entity = db.relationship('Entity', uselist=False, cascade='all, delete')
+    #membership = db.relationship('Member', uselist=False, cascade='all, delete')
+
+    def __repr__(self):
+        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.fristname, self.lastname)
 
 
 class Member(db.Model):
