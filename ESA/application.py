@@ -64,7 +64,7 @@ def submit_org_form():
 @app.route('/_submit_employee_form', methods=['GET', 'POST'])
 def submit_employee_form():
     if request.method == 'POST':
-        result = controlloers.registerEmployee(request.form.keys()[0],db)
+        result = controllers.registerEmployee(request.form.keys()[0],db)
         return result
     else:
         return jsonify(msg='Other request method[%s]' % request.method)

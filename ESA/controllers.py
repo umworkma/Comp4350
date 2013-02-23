@@ -5,9 +5,8 @@ import models
 def registerEmployee(jsonString, db):
     result = False
     failCause = 'Unknown'
-    'parse json
     data = json.loads(jsonString)
-    org = extractEmployeeFromJSON(data)
+    employee = extractEmployeeFromJSON(data)
 
 
 
