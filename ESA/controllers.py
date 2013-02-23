@@ -207,14 +207,14 @@ def extractEmployeeFromJSON(employee):
     for employeeKey,employeeValue in employee.iteritems():
         if(employeeKey == models.EMPLOYEE_ENTITYFK_KEY and employeeValue != 'None'):
             employee.entityFK = int(employeeValue)
-        if(employeeKey == models.EMPLOYEE_USER_NAME_KEY):
-            employee.username = employeeValue
+        # if(employeeKey == models.EMPLOYEE_USER_NAME_KEY):
+            # employee.username = employeeValue
         if(employeeKey == models.EMPLOYEE_FIRST_NAME_KEY):
             employee.firstname = employeeValue
         if(employeeKey == models.EMPLOYEE_LAST_NAME_KEY):
             employee.lastname = employeeValue
-        if(employeeKey == models.EMPLOYEE_PASSWORD_KEY):
-            employee.password = employeeValue
+        # if(employeeKey == models.EMPLOYEE_PASSWORD_KEY):
+            # employee.password = employeeValue
         if(employeeKey == 'Entity'):
             employee.entity = extractEntityFromJSON(employeeValue)
     return employee
