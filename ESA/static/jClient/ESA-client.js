@@ -212,7 +212,6 @@ function createJsonObjectForOrganization() {
 // create json object and send it to server
 function createJsonObjectForEmployee() {
     data = {
-        org_name: $('input[name="org_name"]').val(),
 		username: $('input[name="username"]').val(),
         fname: $('input[name="fname"]').val(),
         lname: $('input[name="lname"]').val(),
