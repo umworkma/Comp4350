@@ -7,6 +7,23 @@ def registerEmployee(jsonString, db):
     failCause = 'Unknown'
     data = json.loads(jsonString)
     employee = extractEmployeeFromJSON(data)
+	
+	''' Check for duplicate organization. '''
+   
+    isDuplicate = _checkForDuplicateEmployee(employee)
+    if(isDuplicate is True):
+        failCause = 'duplicate'
+    else:
+        db.session.add(employee)
+        db.session.commit()
+        result = True
+		
+    if(result is True):
+        resultJson = '{"result": "True"}'
+    else:
+        resultJson = '{' + '"result": "{val}"'.format(val=failCause) + '}'
+    return resultJson
+
 
 
 
