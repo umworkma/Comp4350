@@ -9,18 +9,18 @@ def registerEmployee(jsonString, db):
     employee = extractEmployeeFromJSON(data)
 	
 	isDuplicate = _checkForDuplicateEmployee(employee)
-    # if(isDuplicate is True):
-        # failCause = 'duplicate'
-    # else:
-		  db.session.add(employee)
-          db.session.commit()
-        # result = True
+	if(isduplicate is true):
+		failcause = 'duplicate'
+	else:
+		db.session.add(employee)
+        db.session.commit()
+		result = true
 	
-    # if(result is True):
-        # resultJson = '{"result": "True"}'
-    # else:
-        # resultJson = '{' + '"result": "{val}"'.format(val=failCause) + '}'
-    # return resultJson
+		if(result is true):
+			resultjson = '{"result": "true"}'
+		else:
+			resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
+		return resultjson
 
 
 
@@ -48,7 +48,7 @@ def checkForDuplicateEmployeeUserNameJSON(employeeUserNameJSON):
 
 def _checkForDuplicateEmployee(employee):
     result = False
-    if(employee is not None and emploee.username is not None):
+    if(employee is not None and employee.username is not None):
         existing = models.Employee.query.filter_by(username = employee.username).first()
         if(existing is not None):
             result = True
