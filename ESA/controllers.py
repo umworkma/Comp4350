@@ -9,18 +9,18 @@ def registerEmployee(jsonString, db):
     employee = extractEmployeeFromJSON(data)
 	
 	isDuplicate = _checkForDuplicateEmployee(employee)
-	if(isduplicate is true):
-		failcause = 'duplicate'
-	else:
-		db.session.add(employee)
-        db.session.commit()
-		result = true
+	# if(isduplicate is true):
+		# failcause = 'duplicate'
+	# else:
+		# db.session.add(employee)
+        # db.session.commit()
+		# result = true
 	
-		if(result is true):
-			resultjson = '{"result": "true"}'
-		else:
-			resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
-		return resultjson
+		# if(result is true):
+			# resultjson = '{"result": "true"}'
+		# else:
+			# resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
+		# return resultjson
 
 
 
