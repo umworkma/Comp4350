@@ -42,6 +42,11 @@ def register_organization():
 def load_employee_reg_form():
     return render_template('employee_reg_form.html')
 
+@app.route('/_check_dup_employee_user_name', methods=['GET', 'POST'])
+def check_dup_org_name():
+    result = controllers.checkForDuplicateEmployeeUserNameJSON(request.form.keys()[0])
+    return result	
+	
 @app.route('/_check_dup_org_name', methods=['GET', 'POST'])
 def check_dup_org_name():
     result = controllers.checkForDuplicateOrganizationNameJSON(request.form.keys()[0])
@@ -56,6 +61,13 @@ def submit_org_form():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
+@app.route('/_submit_employee_form', methods=['GET', 'POST'])
+def submit_employee_form():
+    if request.method == 'POST':
+        result = controlloers.registerEmployee(request.form.keys()[0],db)
+        return result
+    else:
+        return jsonify(msg='Other request method[%s]' % request.method)
 
 @app.teardown_request
 def shutdown_session(exception=None):

@@ -1,6 +1,45 @@
 from flask import *
 import models
 
+# Employees
+def registerEmployee(jsonString, db):
+    result = False
+    failCause = 'Unknown'
+    'parse json
+    data = json.loads(jsonString)
+    org = extractEmployeeFromJSON(data)
+
+
+
+""" Allows the view to check whether a given  username already exists
+    in the application. Returns True if duplicated. """
+def checkForDuplicateEmployeeUserNameJSON(employeeUserNameJSON):
+    result = False
+    employeeUserNameDict = json.loads(employeeUserNameJSON)
+    if(employeeUserNameDict is not None and employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY] is not None):
+        employeeUserName = employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY]
+        employee = models.Employee()
+        employee.username = employeeUserName
+        result = _checkForDuplicateEmployee(employee)
+
+    resultJSON = '{'
+    resultJSON += '"result":"{val}"'.format(val=result)
+    resultJSON += '}'
+    return resultJSON
+
+
+
+""" Internal method for checking for duplicate employee. Currently only checks
+    the employee.username property. """
+
+def _checkForDuplicateEmployee(employee):
+    result = False
+    if(employee is not None and emploee.username is not None):
+        existing = models.Employee.query.filter_by(username = employee.username).first()
+        if(existing is not None):
+            result = True
+    return result
+ 
 
 # Organizations
 def getAllOrganizations(db):
@@ -161,6 +200,25 @@ def contactToJSON(contact):
     jsonString += '"{key}":"{val}"'.format(key=models.CONTACT_ISPRIMARY_KEY,val=contact.isprimary if contact.isprimary != None else 'False')
     jsonString += '}'
     return jsonString
+
+
+""" Converts an employee in JSON format to an employee object. """
+def extractEmployeeFromJSON(employee):
+    employee = models.Person()
+    for employeeKey,employeeValue in employee.iteritems():
+        if(employeeKey == models.EMPLOYEE_ENTITYFK_KEY and employeeValue != 'None'):
+            employee.entityFK = int(employeeValue)
+        if(employeeKey == models.EMPLOYEE_USER_NAME_KEY):
+            employee.username = employeeValue
+        if(employeeKey == models.EMPLOYEE_FIRST_NAME_KEY):
+            employee.fname = employeeValue
+        if(employeeKey == models.EMPLOYEE_LAST_NAME_KEY):
+            employee.lname = employeeValue
+        if(employeeKey == models.EMPLOYEE_PASSWORD_KEY):
+            employee.password = employeeValue
+        if(employeeKey == 'Entity'):
+            employee.entity = extractEntityFromJSON(employeeValue)
+    return employee
 
 
 """ Converts an Organization in JSON format to an Organization object. """
