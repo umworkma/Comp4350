@@ -62,6 +62,53 @@ class Entity(db.Model):
     def __repr__(self):
         return "<Entity('%s','%s')>" % (self.pk, self.type)
 
+
+class Privilege(db.Model):
+    __tablename__ = 'privilege'
+    pk = db.Column(db.Integer, primary_key=True)
+    privilege = db.Column(db.String(255))
+    
+    def __init__(self, privilege=None):
+        self.privilege = privilege
+        
+    def __repr__(self):
+        return "<Privilege('%s','%s')>" % (self.pk, self.privilege)
+
+'''
+class EmpPrivilegeAssignment(db.Model):
+    __tablename__='privilege_member_bridge'
+    pk = db.Column(db.Integer, primary_key=True)
+    privilegefk = db.Column(db.Integer)
+    personentityfk = db.Column(db.Integer)
+    organizationentityfk = db.Column(db.Integer)
+    privilege = db.relationship('Privilege', cascade='all, delete')
+    member = db.relationship('Member', cascade='all, delete')
+
+    def __init__(self, privilegefk=None, personentityfk=None, organizationentityfk=None):
+        self.privilegefk = privilegefk
+        self.personentityfk = personentityfk
+        self.organizationentityfk = organizationentityfk
+        
+    def __repr__(self):
+        return "<Privilege('%s','%s','%s','%s')>" % (self.pk, self.privilegefk, self.personentityfk, self.organizationentityfk)
+'''
+'''
+class GlobalPrivilegeAssignment(db.Model):
+    __tablename__='privilege_person_bridge'
+    pk = db.Column(db.Integer, primary_key=True)
+    privilegefk = db.Column(db.Integer)
+    personentityfk = db.Column(db.Integer)
+    privilege = db.relationship('Privilege', cascade='all, delete')
+    person = db.relationship('Person', cascade='all, delete')
+
+    def __init__(self, privilegefk=None, personentityfk=None):
+        self.privilegefk = privilegefk
+        self.personentityfk = personentityfk
+        
+    def __repr__(self):
+        return "<Privilege('%s','%s','%s')>" % (self.pk, self.privilegefk, self.personentityfk)
+'''
+
 class Address(db.Model):
     __tablename__ = 'address'
     pk = db.Column(db.Integer, primary_key=True)
@@ -108,3 +155,18 @@ class Organization(db.Model):
 
     def __repr__(self):
         return "<Organization('%s','%s','%s')>" % (self.entityFK, self.name, self.description)
+
+
+class Member(db.Model):
+    __tablename__ = 'member'
+    personentityfk = db.Column(db.Integer, primary_key=True)
+    organizationentityfk = db.Column(db.Integer, primary_key=True)
+    #person = db.relationship('Person', cascade='all, delete')
+    #organization = db.relationship('Organization', cascade='all, delete')
+
+    def __init__(self, personentityfk=None, organizationentityfk=None):
+        self.personentityfk = personentityfk
+        self.organizationentityfk = organizationentityfk
+        
+    def __repr__(self):
+        return "<Privilege('%s','%s')>" % (self.personentityfk, self.organizationentityfk)

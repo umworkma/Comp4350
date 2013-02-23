@@ -69,4 +69,104 @@ class ContactData(DataSet):
         value = '18004321960'
         isprimary = 1
 
-all_data = (EntityData, AddressData, OrganizationData, ContactData,)
+class PrivilegeData(DataSet):
+    class privilege01:
+        privilege = 'REGISTER_NEW_ORGANIZATION'
+
+    class privilege02:
+        privilege = 'MODIFY_ORGANIZATION'
+
+    class privilege03:
+        privilege = 'DELETE_ORGANIZATION'
+
+    class privilege04:
+        privilege = 'VIEW_ALL_ORGANIZATIONS'
+
+    class privilege05:
+        privilege = 'VIEW_ALL_EMPLOYEES_IN_ORG'
+
+    class privilege06:
+        privilege = 'ASSIGN_EMPS_TO_SHIFTS'
+
+    class privilege07:
+        privilege = 'SOME_OTHER_EMP_PRIVILEGE'
+
+    class privilege08:
+        privilege = 'YET_ANOTHER_EMP_PRIVILEGE'
+
+
+class MemberData(DataSet):
+    class member01:
+        personentityfk = 3
+        organizationentityfk = 1
+
+    class member02:
+        personentityfk = 4
+        organizationentityfk = 1
+
+    class member03:
+        personentityfk = 4
+        organizationentityfk = 2
+
+    class member04:
+        personentityfk = 5
+        organizationentityfk = 2
+        
+
+class EmpPrivilegeAssignmentData(DataSet):
+    class empPrivilegeAssign01:
+        privilegefk = 5
+        personentityfk = 3
+        organizationentityfk = 1
+
+    class empPrivilegeAssign02:
+        privilegefk = 6
+        personentityfk = 3
+        organizationentityfk = 1
+
+    class empPrivilegeAssign03:
+        privilegefk = 7
+        personentityfk = 4
+        organizationentityfk = 1
+
+    class empPrivilegeAssign04:
+        privilegefk = 8
+        personentityfk = 4
+        organizationentityfk = 2
+
+    class empPrivilegeAssign05:
+        privilegefk = 5
+        personentityfk = 5
+        organizationentityfk = 2
+
+    class empPrivilegeAssign06:
+        privilegefk = 6
+        personentityfk = 5
+        organizationentityfk = 2
+
+class GlobalPrivilegeAssignmentData(DataSet):
+    class globalPrivilegeAssign01:
+        privilegefk = 1
+        personentityfk = 3
+
+    class globalPrivilegeAssign02:
+        privilegefk = 4
+        personentityfk = 3
+
+    class globalPrivilegeAssign03:
+        privilegefk = 3
+        personentityfk = 4
+
+    class globalPrivilegeAssign04:
+        privilegefk = 4
+        personentityfk = 4
+
+    class globalPrivilegeAssign05:
+        privilegefk = 2
+        personentityfk = 5
+
+    class globalPrivilegeAssign06:
+        privilegefk = 4
+        personentityfk = 5
+
+all_data = (EntityData, AddressData, OrganizationData, ContactData, PrivilegeData, MemberData)

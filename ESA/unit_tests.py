@@ -40,16 +40,143 @@ class ESATestCase(TestCase):
         self.db = models.init_app(self.app)
     
 
+
+    """ Test that privileges are defined and the model represents them correctly. """
+    def test_privilege_model(self):
+        current = models.Privilege.query.filter_by(pk=1).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilege, 'REGISTER_NEW_ORGANIZATION')
+
+        current = models.Privilege.query.filter_by(pk=2).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilege, 'MODIFY_ORGANIZATION')
+
+        current = models.Privilege.query.filter_by(pk=3).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilege, 'DELETE_ORGANIZATION')
+
+        current = models.Privilege.query.filter_by(pk=4).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilege, 'VIEW_ALL_ORGANIZATIONS')
+
+        current = models.Privilege.query.filter_by(pk=5).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilege, 'VIEW_ALL_EMPLOYEES_IN_ORG')
+
+        current = models.Privilege.query.filter_by(pk=6).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilege, 'ASSIGN_EMPS_TO_SHIFTS')
+
+        current = models.Privilege.query.filter_by(pk=7).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilege, 'SOME_OTHER_EMP_PRIVILEGE')
+
+        current = models.Privilege.query.filter_by(pk=8).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilege, 'YET_ANOTHER_EMP_PRIVILEGE')
+
     
+    def test_member_model(self):
+        current = models.Member.query.filter_by(personentityfk=3, organizationentityfk=1).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.personentityfk, 3)
+        self.assertEqual(current.organizationentityfk, 1)
+
+        current = models.Member.query.filter_by(personentityfk=4, organizationentityfk=1).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.personentityfk, 4)
+        self.assertEqual(current.organizationentityfk, 1)
+
+        current = models.Member.query.filter_by(personentityfk=4, organizationentityfk=2).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.personentityfk, 4)
+        self.assertEqual(current.organizationentityfk, 2)
+
+        current = models.Member.query.filter_by(personentityfk=5, organizationentityfk=2).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.personentityfk, 5)
+        self.assertEqual(current.organizationentityfk, 2)
+    
+    '''
+    def test_empPrivilegeAssignment_model(self):
+        current = models.EmpPrivilegeAssignment.query.filter_by(pk=1).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 5)
+        self.assertEqual(current.personentityfk, 3)
+        self.assertEqual(current.organizationentityfk, 1)
+
+        current = models.EmpPrivilegeAssignment.query.filter_by(pk=2).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 6)
+        self.assertEqual(current.personentityfk, 3)
+        self.assertEqual(current.organizationentityfk, 1)
+
+        current = models.EmpPrivilegeAssignment.query.filter_by(pk=3).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 7)
+        self.assertEqual(current.personentityfk, 4)
+        self.assertEqual(current.organizationentityfk, 1)
+
+        current = models.EmpPrivilegeAssignment.query.filter_by(pk=4).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 8)
+        self.assertEqual(current.personentityfk, 4)
+        self.assertEqual(current.organizationentityfk, 2)
+
+        current = models.EmpPrivilegeAssignment.query.filter_by(pk=5).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 5)
+        self.assertEqual(current.personentityfk, 5)
+        self.assertEqual(current.organizationentityfk, 2)
+
+        current = models.EmpPrivilegeAssignment.query.filter_by(pk=6).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 6)
+        self.assertEqual(current.personentityfk, 5)
+        self.assertEqual(current.organizationentityfk, 2)
+    '''
+    '''
+    def test_globalPrivilegeAssignment_model(self):
+        current = models.GlobalPrivilegeAssignment.query.filter_by(pk=1).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 1)
+        self.assertEqual(current.personentityfk, 3)
+
+        current = models.GlobalPrivilegeAssignment.query.filter_by(pk=2).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 4)
+        self.assertEqual(current.personentityfk, 3)
+
+        current = models.GlobalPrivilegeAssignment.query.filter_by(pk=3).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 3)
+        self.assertEqual(current.personentityfk, 4)
+
+        current = models.GlobalPrivilegeAssignment.query.filter_by(pk=4).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 4)
+        self.assertEqual(current.personentityfk, 4)
+
+        current = models.GlobalPrivilegeAssignment.query.filter_by(pk=5).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 2)
+        self.assertEqual(current.personentityfk, 5)
+
+        current = models.GlobalPrivilegeAssignment.query.filter_by(pk=6).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegefk, 4)
+        self.assertEqual(current.personentityfk, 5)
+    '''
+            
     """ Test that entites are defined and the model represents them correctly. """
     def test_entity_model(self):
         for idx in range(1,3):
             org = models.Entity.query.filter_by(pk=idx).first()
-            self.assertEquals(org.type, models.TYPE_ORGANIZATION)
+            self.assertEqual(org.type, models.TYPE_ORGANIZATION)
 
         for idx in range(3,6):
             emp = models.Entity.query.filter_by(pk=idx).first()
-            self.assertEquals(emp.type, models.TYPE_EMPLOYEE)
+            self.assertEqual(emp.type, models.TYPE_EMPLOYEE)
 
     
     """ Test that addresses are defined and the model represents them correctly. """
