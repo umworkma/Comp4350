@@ -7,7 +7,7 @@ def registerEmployee(jsonString, db):
     failCause = 'Unknown'
     data = json.loads(jsonString)
     employee = extractEmployeeFromJSON(data)
-	isDuplicate = _checkForDuplicateEmployee(employee)
+	#isDuplicate = _checkForDuplicateEmployee(employee)
 	# if(isduplicate is true):
 		# failcause = 'duplicate'
 	# else:
