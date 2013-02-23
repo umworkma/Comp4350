@@ -125,5 +125,5 @@ class Person(db.Model):
     entity = db.relationship('Entity', uselist=False, cascade='all, delete')
 
     def __repr__(self):
-        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.name, self.description)
+        return "<Person('%s', '%s', '%s', '%s', '%s')>" % (self.entityFK, self.username, self.firstname, self.lastname, self.password)
     
