@@ -217,21 +217,21 @@ def contactToJSON(contact):
 
 """ Converts an employee in JSON format to an employee object. """
 def extractEmployeeFromJSON(employee):
-    employee = models.Person()
+    newEmp = models.Person()
     for employeeKey,employeeValue in employee.iteritems():
         if(employeeKey == models.EMPLOYEE_ENTITYFK_KEY and employeeValue != 'None'):
-            employee.entityFK = int(employeeValue)
+            newEmp.entityFK = int(employeeValue)
         # if(employeeKey == models.EMPLOYEE_USER_NAME_KEY):
-            # employee.username = employeeValue
+            # newEmp.username = employeeValue
         if(employeeKey == models.EMPLOYEE_FIRST_NAME_KEY):
-            employee.firstname = employeeValue
+            newEmp.firstname = employeeValue
         if(employeeKey == models.EMPLOYEE_LAST_NAME_KEY):
-            employee.lastname = employeeValue
+            newEmp.lastname = employeeValue
         # if(employeeKey == models.EMPLOYEE_PASSWORD_KEY):
-            # employee.password = employeeValue
+            # newEmp.password = employeeValue
         if(employeeKey == 'Entity'):
-            employee.entity = extractEntityFromJSON(employeeValue)
-    return employee
+            newEmp.entity = extractEntityFromJSON(employeeValue)
+    return newEmp
 
 
 """ Converts an Organization in JSON format to an Organization object. """
