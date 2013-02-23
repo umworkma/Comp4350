@@ -12,8 +12,8 @@ def registerEmployee(jsonString, db):
 	# if(isduplicate is true):
 		# failcause = 'duplicate'
 	# else:
-		db.session.add(employee)
-        db.session.commit()
+		#db.session.add(employee)
+        #db.session.commit()
 		# result = true
 	
 		# if(result is true):
