@@ -43,7 +43,7 @@ def load_employee_reg_form():
     return render_template('employee_reg_form.html')
 
 @app.route('/_check_dup_employee_user_name', methods=['GET', 'POST'])
-def check_dup_org_name():
+def check_dup_employee_user_name():
     result = controllers.checkForDuplicateEmployeeUserNameJSON(request.form.keys()[0])
     return result	
 	
