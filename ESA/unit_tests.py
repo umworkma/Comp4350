@@ -39,42 +39,6 @@ class ESATestCase(TestCase):
         fixtures.install(self.app, *fixtures.all_data)
         self.db = models.init_app(self.app)
     
-
-
-    """ Test that privileges are defined and the model represents them correctly. """
-    def test_privilege_model(self):
-        current = models.Privilege.query.filter_by(pk=1).first()
-        self.assertIsNotNone(current)
-        self.assertEqual(current.privilege, 'REGISTER_NEW_ORGANIZATION')
-
-        current = models.Privilege.query.filter_by(pk=2).first()
-        self.assertIsNotNone(current)
-        self.assertEqual(current.privilege, 'MODIFY_ORGANIZATION')
-
-        current = models.Privilege.query.filter_by(pk=3).first()
-        self.assertIsNotNone(current)
-        self.assertEqual(current.privilege, 'DELETE_ORGANIZATION')
-
-        current = models.Privilege.query.filter_by(pk=4).first()
-        self.assertIsNotNone(current)
-        self.assertEqual(current.privilege, 'VIEW_ALL_ORGANIZATIONS')
-
-        current = models.Privilege.query.filter_by(pk=5).first()
-        self.assertIsNotNone(current)
-        self.assertEqual(current.privilege, 'VIEW_ALL_EMPLOYEES_IN_ORG')
-
-        current = models.Privilege.query.filter_by(pk=6).first()
-        self.assertIsNotNone(current)
-        self.assertEqual(current.privilege, 'ASSIGN_EMPS_TO_SHIFTS')
-
-        current = models.Privilege.query.filter_by(pk=7).first()
-        self.assertIsNotNone(current)
-        self.assertEqual(current.privilege, 'SOME_OTHER_EMP_PRIVILEGE')
-
-        current = models.Privilege.query.filter_by(pk=8).first()
-        self.assertIsNotNone(current)
-        self.assertEqual(current.privilege, 'YET_ANOTHER_EMP_PRIVILEGE')
-
     
     def test_member_model(self):
         current = models.Member.query.filter_by(pk=1).first()
@@ -642,25 +606,6 @@ class ESATestCase(TestCase):
         contact2 = models.Contact.query.filter_by(pk=fetched.entity.contacts[0].pk).first()
         self.assertEqual(contact2.value, '(204) 555-1234')
 
-
-    """ Test adding a Privilege to the database """
-    def test_add_privilege(self):
-        """ Define the data objects to be added """
-        target = models.Privilege(privilege='Test Priv 1')
-        
-        """ Add the data objects """       
-        self.db.session.add(target)
-        self.db.session.commit()
-
-        """ Retrieve the new object and test that data matches """
-        fetchedList = models.Privilege.query.filter_by(privilege='Test Priv 1')
-        self.assertIsNotNone(fetchedList)
-        count = 0
-        for item in fetchedList:
-            self.assertEqual(item.privilege, 'Test Priv 1')
-            count += 1
-        self.assertEqual(count, 1)
-
         
     def test_organization_delete(self):
         """ Test that our organization exists prior to deleting. """
@@ -691,25 +636,6 @@ class ESATestCase(TestCase):
 
         """ Reset the DB for other tests, since we removed data other tests may depend on. """
         self.resetDB()
-
-
-    def test_privilege_delete(self):
-        """ Test that our organization exists prior to deleting. """
-        target = models.Privilege(privilege='Test Priv 2')     
-        self.db.session.add(target)
-        self.db.session.commit()
-
-        """ Test that it exists """
-        target = models.Privilege.query.filter_by(privilege='Test Priv 2').first()
-        self.assertIsNotNone(target)
-
-        """ Delete target """
-        self.db.session.delete(target)
-        self.db.session.commit()
-
-        """ Test that it has been deleted """
-        target = models.Privilege.query.filter_by(privilege='Test Priv 2').first()
-        self.assertIsNone(target)
 
 
     def test_person_delete(self):
