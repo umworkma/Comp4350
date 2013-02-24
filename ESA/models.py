@@ -15,7 +15,7 @@ ORGANIZATION_ENTITYFK_KEY = 'org_entityfk'
 ORGANIZATION_NAME_KEY = 'org_name'
 ORGANIZATION_DESCRIPTION_KEY = 'org_desc'
 
-EMPLOYEE_ENTITY_KEY = 'emp_entityfk'
+EMPLOYEE_ENTITYFK_KEY = 'emp_entityfk'
 EMPLOYEE_USER_NAME_KEY = 'username'
 EMPLOYEE_FIRST_NAME_KEY = 'fname'
 EMPLOYEE_LAST_NAME_KEY = 'lname'
@@ -118,10 +118,12 @@ class Organization(db.Model):
 class Person(db.Model):
     __tablename__ = 'person'
     entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'), primary_key=True)
+    username = db.Column(db.String(45))
+    password = db.Column(db.String(45))
     firstname = db.Column(db.String(45))
     lastname = db.Column(db.String(45))
     entity = db.relationship('Entity', uselist=False, cascade='all, delete')
 
     def __repr__(self):
-        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.fristname, self.lastname)
+        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.username, self.password, self.fristname, self.lastname)
     

@@ -439,7 +439,30 @@ class ESATestCase(TestCase):
         result1 = controllers.checkForDuplicateOrganizationNameJSON(orgNameJSON)
         result1Dict = json.loads(result1)
         self.assertEqual(result1Dict['result'], 'True')
-        
+		
+		
+    def test__checkForDuplicateEmployee(self):
+        # Define an Person Class
+        testEmp = models.Person()
+        testEmp.username = 'umbetcha'
+        testEmp.password = '2345'
+        testEmp.firstname = 'VeryPrivate'
+        testEmp.lastname = 'BetchakuKun'
+        testEmp.entity = models.Entity()
+        testEmp.entity.type = models.TYPE_EMPLOYEE
+        # Check if there is a duplicate and it should return with false
+        isDuplicate = controllers._checkForDuplicateEmployee(testEmp)
+        self.assertFalse(isDuplicate)
+
+        #Test employeeToJSON
+        testEmpJSON = controllers.employeeToJSON(testEmp)
+        result1 = controllers.registerEmployee(testEmpJSON, self.db)
+        result1Dict = json.loads(result1)
+        self.assertEqual(result1Dict['result'], 'True')
+
+        # Check if there is a duplicate username and should be there.
+        isDuplicate = controllers._checkForDuplicateEmployee(testEmp)
+        self.assertTrue(isDuplicate)
 
 if __name__ == "__main__":
     unittest.main()
