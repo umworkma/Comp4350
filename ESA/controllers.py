@@ -2,35 +2,35 @@ from flask import *
 import models
 
 # Employees
+
 def registerEmployee(jsonString, db):
     result = False
     failCause = 'Unknown'
     data = json.loads(jsonString)
     employee = extractEmployeeFromJSON(data)
-	isDuplicate = _checkForDuplicateEmployee(employee)
-	# if(isduplicate is true):
-		# failcause = 'duplicate'
-	# else:
-		#db.session.add(employee)
-        #db.session.commit()
-		# result = true
-	
-		# if(result is true):
-			# resultjson = '{"result": "true"}'
-		# else:
-			# resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
-		# return resultjson
+    isDuplicate = _checkForDuplicateEmployee(employee)
+    if(isDuplicate is True):
+        failcause = 'duplicate'
+    else:
+        db.session.add(employee)
+        db.session.commit()
+        result = True
+        if(result is True):
+            resultjson = '{"result": "True"}'
+        else:
+            resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
+    return resultjson
 
 
 """ Internal method for checking for duplicate employee. Currently only checks
-    the employee.firstname property. """
+    the employee.username property. """
 
 def _checkForDuplicateEmployee(employee):
     result = False
-     if(employee is not None and employee.firstname is not None):
-         existing = models.Person.query.filter_by(firstname = employee.firstname).first()
-         if(existing is not None):
-             result = True
+    if(employee is not None and employee.username is not None):
+        existing = models.Person.query.filter_by(username = employee.username).first()		
+        if(existing is not None):
+            result = True		
     return result
  
 
@@ -51,7 +51,16 @@ def checkForDuplicateEmployeeUserNameJSON(employeeUserNameJSON):
     resultJSON += '}'
     return resultJSON
 
-
+""" Converts an Employee (including the entity object) into JSON format. """
+def employeeToJSON(emp):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.EMPLOYEE_ENTITYFK_KEY,val=emp.entityFK if (emp.entityFK is not None) else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_USER_NAME_KEY,val=emp.username)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_PASSWORD_KEY,val=emp.password)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_FIRST_NAME_KEY,val=emp.firstname)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_LAST_NAME_KEY,val=emp.lastname)
+    jsonString += '"Entity":{val}'.format(val=entityToJSON(emp.entity))
+    jsonString += '}'
+    return jsonString
 
 
 # Organizations
@@ -221,14 +230,14 @@ def extractEmployeeFromJSON(employee):
     for employeeKey,employeeValue in employee.iteritems():
         if(employeeKey == models.EMPLOYEE_ENTITYFK_KEY and employeeValue != 'None'):
             newEmp.entityFK = int(employeeValue)
-        # if(employeeKey == models.EMPLOYEE_USER_NAME_KEY):
-            # newEmp.username = employeeValue
+        if(employeeKey == models.EMPLOYEE_USER_NAME_KEY):
+            newEmp.username = employeeValue
+        if(employeeKey == models.EMPLOYEE_PASSWORD_KEY):
+            newEmp.password = employeeValue    
         if(employeeKey == models.EMPLOYEE_FIRST_NAME_KEY):
             newEmp.firstname = employeeValue
         if(employeeKey == models.EMPLOYEE_LAST_NAME_KEY):
             newEmp.lastname = employeeValue
-        # if(employeeKey == models.EMPLOYEE_PASSWORD_KEY):
-            # newEmp.password = employeeValue
         if(employeeKey == 'Entity'):
             newEmp.entity = extractEntityFromJSON(employeeValue)
     return newEmp
