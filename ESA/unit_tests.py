@@ -77,96 +77,90 @@ class ESATestCase(TestCase):
 
     
     def test_member_model(self):
-        current = models.Member.query.filter_by(personentityfk=3, organizationentityfk=1).first()
+        current = models.Member.query.filter_by(pk=1).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.personentityfk, 3)
-        self.assertEqual(current.organizationentityfk, 1)
+        self.assertEqual(current.personentityFK, 3)
+        self.assertEqual(current.organizationentityFK, 1)
 
-        current = models.Member.query.filter_by(personentityfk=4, organizationentityfk=1).first()
+        current = models.Member.query.filter_by(pk=2).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.personentityfk, 4)
-        self.assertEqual(current.organizationentityfk, 1)
+        self.assertEqual(current.personentityFK, 4)
+        self.assertEqual(current.organizationentityFK, 1)
 
-        current = models.Member.query.filter_by(personentityfk=4, organizationentityfk=2).first()
+        current = models.Member.query.filter_by(pk=3).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.personentityfk, 4)
-        self.assertEqual(current.organizationentityfk, 2)
+        self.assertEqual(current.personentityFK, 4)
+        self.assertEqual(current.organizationentityFK, 2)
 
-        current = models.Member.query.filter_by(personentityfk=5, organizationentityfk=2).first()
+        current = models.Member.query.filter_by(pk=4).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.personentityfk, 5)
-        self.assertEqual(current.organizationentityfk, 2)
+        self.assertEqual(current.personentityFK, 5)
+        self.assertEqual(current.organizationentityFK, 2)
     
-    '''
-    def test_empPrivilegeAssignment_model(self):
-        current = models.EmpPrivilegeAssignment.query.filter_by(pk=1).first()
+    
+    def test_privilegePersonAssignment_model(self):
+        current = models.PrivilegePersonAssignment.query.filter_by(pk=1).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 5)
-        self.assertEqual(current.personentityfk, 3)
-        self.assertEqual(current.organizationentityfk, 1)
+        self.assertEqual(current.privilegeFK, 5)
+        self.assertEqual(current.memberFK, 1)
 
-        current = models.EmpPrivilegeAssignment.query.filter_by(pk=2).first()
+        current = models.PrivilegePersonAssignment.query.filter_by(pk=2).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 6)
-        self.assertEqual(current.personentityfk, 3)
-        self.assertEqual(current.organizationentityfk, 1)
+        self.assertEqual(current.privilegeFK, 6)
+        self.assertEqual(current.memberFK, 1)
 
-        current = models.EmpPrivilegeAssignment.query.filter_by(pk=3).first()
+        current = models.PrivilegePersonAssignment.query.filter_by(pk=3).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 7)
-        self.assertEqual(current.personentityfk, 4)
-        self.assertEqual(current.organizationentityfk, 1)
+        self.assertEqual(current.privilegeFK, 7)
+        self.assertEqual(current.memberFK, 2)
 
-        current = models.EmpPrivilegeAssignment.query.filter_by(pk=4).first()
+        current = models.PrivilegePersonAssignment.query.filter_by(pk=4).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 8)
-        self.assertEqual(current.personentityfk, 4)
-        self.assertEqual(current.organizationentityfk, 2)
+        self.assertEqual(current.privilegeFK, 8)
+        self.assertEqual(current.memberFK, 3)
 
-        current = models.EmpPrivilegeAssignment.query.filter_by(pk=5).first()
+        current = models.PrivilegePersonAssignment.query.filter_by(pk=5).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 5)
-        self.assertEqual(current.personentityfk, 5)
-        self.assertEqual(current.organizationentityfk, 2)
+        self.assertEqual(current.privilegeFK, 5)
+        self.assertEqual(current.memberFK, 4)
 
-        current = models.EmpPrivilegeAssignment.query.filter_by(pk=6).first()
+        current = models.PrivilegePersonAssignment.query.filter_by(pk=6).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 6)
-        self.assertEqual(current.personentityfk, 5)
-        self.assertEqual(current.organizationentityfk, 2)
-    '''
-    '''
+        self.assertEqual(current.privilegeFK, 6)
+        self.assertEqual(current.memberFK, 4)
+    
+    
     def test_globalPrivilegeAssignment_model(self):
         current = models.GlobalPrivilegeAssignment.query.filter_by(pk=1).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 1)
-        self.assertEqual(current.personentityfk, 3)
+        self.assertEqual(current.privilegeFK, 1)
+        self.assertEqual(current.personentityFK, 3)
 
         current = models.GlobalPrivilegeAssignment.query.filter_by(pk=2).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 4)
-        self.assertEqual(current.personentityfk, 3)
+        self.assertEqual(current.privilegeFK, 4)
+        self.assertEqual(current.personentityFK, 3)
 
         current = models.GlobalPrivilegeAssignment.query.filter_by(pk=3).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 3)
-        self.assertEqual(current.personentityfk, 4)
+        self.assertEqual(current.privilegeFK, 3)
+        self.assertEqual(current.personentityFK, 4)
 
         current = models.GlobalPrivilegeAssignment.query.filter_by(pk=4).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 4)
-        self.assertEqual(current.personentityfk, 4)
+        self.assertEqual(current.privilegeFK, 4)
+        self.assertEqual(current.personentityFK, 4)
 
         current = models.GlobalPrivilegeAssignment.query.filter_by(pk=5).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 2)
-        self.assertEqual(current.personentityfk, 5)
+        self.assertEqual(current.privilegeFK, 2)
+        self.assertEqual(current.personentityFK, 5)
 
         current = models.GlobalPrivilegeAssignment.query.filter_by(pk=6).first()
         self.assertIsNotNone(current)
-        self.assertEqual(current.privilegefk, 4)
-        self.assertEqual(current.personentityfk, 5)
-    '''
+        self.assertEqual(current.privilegeFK, 4)
+        self.assertEqual(current.personentityFK, 5)
+    
             
     """ Test that entites are defined and the model represents them correctly. """
     def test_entity_model(self):
@@ -281,7 +275,7 @@ class ESATestCase(TestCase):
         self.assertEqual(uOfMContactPhone1.value, '18004321960')
         self.assertEqual(uOfMContactPhone1.isprimary, 1)
 
-    
+
     """ Test that an address can be retrieved from the entity relationship. """
     def test_entity_address_relationship(self):
         aikonAddressDirect = models.Address.query.filter_by(entityFK=1).first()
@@ -318,6 +312,209 @@ class ESATestCase(TestCase):
         uOfMEntityByOrg = uOfMOrg.entity
         self.assertEqual(uOfMEntityByOrg.type, models.TYPE_ORGANIZATION)
         self.assertEqual(uOfMEntityDirect, uOfMEntityByOrg)
+
+
+    """ Test that we can retrieve an organzation from a member. """
+    def test_member_organization_relationship(self):
+        direct = models.Organization.query.filter_by(entityFK=1).first()
+        self.assertIsNotNone(direct)
+        self.assertEqual(direct.name, 'Ai-Kon')
+        host = models.Member.query.filter_by(pk=1).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.organizationentityFK, 1)
+        target = host.organization
+        self.assertIsNotNone(target)
+        self.assertEqual(target.entityFK, direct.entityFK)
+        self.assertEqual(target.name, direct.name)
+    """ Test that we can retrieve members from an organization. """
+    def test_organization_member_relationship(self):
+        directList = models.Member.query.filter_by(organizationentityFK=1)
+        self.assertIsNotNone(directList)
+
+        host = models.Organization.query.filter_by(entityFK=1).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.entityFK, 1)
+
+        targetList = host.employees
+        self.assertIsNotNone(targetList)
+        resultCount = 0
+        for di,ti in zip(directList, targetList):
+            resultCount += 1
+            self.assertEqual(di.pk, ti.pk)
+            self.assertEqual(di.personentityFK, ti.personentityFK)
+            self.assertEqual(di.organizationentityFK, ti.organizationentityFK)
+        self.assertGreater(resultCount, 0)
+
+
+    """ Test that we can retrieve a person from a member. """
+    def test_member_person_relationship(self):
+        direct = models.Person.query.filter_by(entityFK=4).first()
+        self.assertIsNotNone(direct)
+        self.assertEqual(direct.firstname, 'Ryoji')
+        host = models.Member.query.filter_by(pk=3).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.personentityFK, 4)
+        target = host.person
+        self.assertIsNotNone(target)
+        self.assertEqual(target.entityFK, direct.entityFK)
+        self.assertEqual(target.firstname, direct.firstname)
+        self.assertEqual(target.lastname, direct.lastname)
+    """ Test that we can retrieve members from a person. """
+    def test_person_member_relationship(self):
+        directList = models.Member.query.filter_by(personentityFK=4)
+        self.assertIsNotNone(directList)
+
+        host = models.Person.query.filter_by(entityFK=4).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.entityFK, 4)
+
+        targetList = host.memberships
+        self.assertIsNotNone(targetList)
+        resultCount = 0
+        for di,ti in zip(directList, targetList):
+            resultCount += 1
+            self.assertEqual(di.pk, ti.pk)
+            self.assertEqual(di.personentityFK, ti.personentityFK)
+            self.assertEqual(di.organizationentityFK, ti.organizationentityFK)
+        self.assertGreater(resultCount, 0)
+
+
+    """ Test that we can retieve a permission from the person-assignment. """
+    def test_privilegepersonassignment_privilege_relationship(self):
+        direct = models.Privilege.query.filter_by(pk=5).first()
+        self.assertIsNotNone(direct)
+        self.assertEqual(direct.pk, 5)
+
+        host = models.PrivilegePersonAssignment.query.filter_by(pk=1).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.privilegeFK, direct.pk)
+
+        target = host.privilege
+        self.assertIsNotNone(target)
+        self.assertEqual(target.pk, direct.pk)
+        self.assertEqual(target.privilege, direct.privilege)
+    """ Test that we can retieve a person-assignments from a privilege. """
+    def test_privilege_privilegepersonassignment_relationship(self):
+        directList = models.PrivilegePersonAssignment.query.filter_by(privilegeFK=5)
+        self.assertIsNotNone(directList)
+
+        host = models.Privilege.query.filter_by(pk=5).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.pk, 5)
+
+        targetList = host.privilegedPeople
+        self.assertIsNotNone(targetList)
+        resultCount = 0
+        for di,ti in zip(directList, targetList):
+            resultCount += 1
+            self.assertEqual(di.pk, ti.pk)
+            self.assertEqual(di.memberFK, ti.memberFK)
+            self.assertEqual(di.privilegeFK, ti.privilegeFK)
+        self.assertGreater(resultCount, 0)
+
+
+    """ Test that we can retieve a permission from the global privilege assignment. """
+    def test_privilegepersonassignment_privilege_relationship(self):
+        direct = models.Privilege.query.filter_by(pk=4).first()
+        self.assertIsNotNone(direct)
+        self.assertEqual(direct.pk, 4)
+
+        host = models.GlobalPrivilegeAssignment.query.filter_by(pk=2).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.privilegeFK, direct.pk)
+
+        target = host.privilege
+        self.assertIsNotNone(target)
+        self.assertEqual(target.pk, direct.pk)
+        self.assertEqual(target.privilege, direct.privilege)
+    """ Test that we can retieve global privilege assignments from a privilege. """
+    def test_privilege_privilegepersonassignment_relationship(self):
+        directList = models.GlobalPrivilegeAssignment.query.filter_by(privilegeFK=4)
+        self.assertIsNotNone(directList)
+
+        host = models.Privilege.query.filter_by(pk=4).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.pk, 4)
+
+        targetList = host.privilegedGlobalPeople
+        self.assertIsNotNone(targetList)
+        resultCount = 0
+        for di,ti in zip(directList, targetList):
+            resultCount += 1
+            self.assertEqual(di.pk, ti.pk)
+            self.assertEqual(di.personentityFK, ti.personentityFK)
+            self.assertEqual(di.privilegeFK, ti.privilegeFK)
+        self.assertGreater(resultCount, 0)
+
+
+    """ Test that we can retieve a member from the person-assignment. """
+    def test_privilegepersonassignment_member_relationship(self):
+        direct = models.Member.query.filter_by(pk=1).first()
+        self.assertIsNotNone(direct)
+        self.assertEqual(direct.pk, 1)
+
+        host = models.PrivilegePersonAssignment.query.filter_by(pk=1).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.memberFK, direct.pk)
+
+        target = host.member
+        self.assertIsNotNone(target)
+        self.assertEqual(target.pk, direct.pk)
+        self.assertEqual(target.personentityFK, direct.personentityFK)
+        self.assertEqual(target.organizationentityFK, direct.organizationentityFK)
+    """ Test that we can retieve a person-assignments from a member. """
+    def test_member_privilegepersonassignment_relationship(self):
+        directList = models.PrivilegePersonAssignment.query.filter_by(memberFK=1)
+        self.assertIsNotNone(directList)
+
+        host = models.Member.query.filter_by(pk=1).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.pk, 1)
+
+        targetList = host.memberPrivileges
+        self.assertIsNotNone(targetList)
+        resultCount = 0
+        for di,ti in zip(directList, targetList):
+            resultCount += 1
+            self.assertEqual(di.pk, ti.pk)
+            self.assertEqual(di.memberFK, ti.memberFK)
+            self.assertEqual(di.privilegeFK, ti.privilegeFK)
+        self.assertGreater(resultCount, 0)
+
+
+    """ Test that we can retieve a person from the global privilege assignment. """
+    def test_globalpersonassignment_person_relationship(self):
+        direct = models.Person.query.filter_by(entityFK=5).first()
+        self.assertIsNotNone(direct)
+        self.assertEqual(direct.entityFK, 5)
+
+        host = models.GlobalPrivilegeAssignment.query.filter_by(pk=5).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.personentityFK, direct.entityFK)
+
+        target = host.person
+        self.assertIsNotNone(target)
+        self.assertEqual(target.entityFK, direct.entityFK)
+        self.assertEqual(target.firstname, direct.firstname)
+        self.assertEqual(target.lastname, direct.lastname)
+    """ Test that we can retieve global privilege assignments from a person. """
+    def test_person_globalpersonassignment_relationship(self):
+        directList = models.GlobalPrivilegeAssignment.query.filter_by(personentityFK=5)
+        self.assertIsNotNone(directList)
+
+        host = models.Person.query.filter_by(entityFK=5).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.entityFK, 5)
+
+        targetList = host.personGlobalPrivileges
+        self.assertIsNotNone(targetList)
+        resultCount = 0
+        for di,ti in zip(directList, targetList):
+            resultCount += 1
+            self.assertEqual(di.pk, ti.pk)
+            self.assertEqual(di.personentityFK, ti.personentityFK)
+            self.assertEqual(di.privilegeFK, ti.privilegeFK)
+        self.assertGreater(resultCount, 0)
 
 
     """ Test that we can retrieve an entity from the person relationship. """
@@ -445,6 +642,25 @@ class ESATestCase(TestCase):
         contact2 = models.Contact.query.filter_by(pk=fetched.entity.contacts[0].pk).first()
         self.assertEqual(contact2.value, '(204) 555-1234')
 
+
+    """ Test adding a Privilege to the database """
+    def test_add_privilege(self):
+        """ Define the data objects to be added """
+        target = models.Privilege(privilege='Test Priv 1')
+        
+        """ Add the data objects """       
+        self.db.session.add(target)
+        self.db.session.commit()
+
+        """ Retrieve the new object and test that data matches """
+        fetchedList = models.Privilege.query.filter_by(privilege='Test Priv 1')
+        self.assertIsNotNone(fetchedList)
+        count = 0
+        for item in fetchedList:
+            self.assertEqual(item.privilege, 'Test Priv 1')
+            count += 1
+        self.assertEqual(count, 1)
+
         
     def test_organization_delete(self):
         """ Test that our organization exists prior to deleting. """
@@ -477,8 +693,27 @@ class ESATestCase(TestCase):
         self.resetDB()
 
 
-    def test_person_delete(self):
+    def test_privilege_delete(self):
         """ Test that our organization exists prior to deleting. """
+        target = models.Privilege(privilege='Test Priv 2')     
+        self.db.session.add(target)
+        self.db.session.commit()
+
+        """ Test that it exists """
+        target = models.Privilege.query.filter_by(privilege='Test Priv 2').first()
+        self.assertIsNotNone(target)
+
+        """ Delete target """
+        self.db.session.delete(target)
+        self.db.session.commit()
+
+        """ Test that it has been deleted """
+        target = models.Privilege.query.filter_by(privilege='Test Priv 2').first()
+        self.assertIsNone(target)
+
+
+    def test_person_delete(self):
+        """ Add our privilege prior to deleting. """
         target = models.Person.query.filter_by(entityFK=3).first()
         self.assertIsNotNone(target)
 

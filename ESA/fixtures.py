@@ -179,76 +179,72 @@ class PrivilegeData(DataSet):
 
 class MemberData(DataSet):
     class member01:
-        personentityfk = 3
-        organizationentityfk = 1
+        personentityFK = 3
+        organizationentityFK = 1
 
     class member02:
-        personentityfk = 4
-        organizationentityfk = 1
+        personentityFK = 4
+        organizationentityFK = 1
 
     class member03:
-        personentityfk = 4
-        organizationentityfk = 2
+        personentityFK = 4
+        organizationentityFK = 2
 
     class member04:
-        personentityfk = 5
-        organizationentityfk = 2
+        personentityFK = 5
+        organizationentityFK = 2
         
 
-class EmpPrivilegeAssignmentData(DataSet):
-    class empPrivilegeAssign01:
-        privilegefk = 5
-        personentityfk = 3
-        organizationentityfk = 1
+class PrivilegePersonAssignmentData(DataSet):
+    class personPrivilegeAssign01:
+        privilegeFK = 5
+        memberFK = 1
 
-    class empPrivilegeAssign02:
-        privilegefk = 6
-        personentityfk = 3
-        organizationentityfk = 1
+    class personPrivilegeAssign02:
+        privilegeFK = 6
+        memberFK = 1
 
-    class empPrivilegeAssign03:
-        privilegefk = 7
-        personentityfk = 4
-        organizationentityfk = 1
+    class personPrivilegeAssign03:
+        privilegeFK = 7
+        memberFK = 2
 
-    class empPrivilegeAssign04:
-        privilegefk = 8
-        personentityfk = 4
-        organizationentityfk = 2
+    class personPrivilegeAssign04:
+        privilegeFK = 8
+        memberFK = 3
 
-    class empPrivilegeAssign05:
-        privilegefk = 5
-        personentityfk = 5
-        organizationentityfk = 2
+    class personPrivilegeAssign05:
+        privilegeFK = 5
+        memberFK = 4
 
-    class empPrivilegeAssign06:
-        privilegefk = 6
-        personentityfk = 5
-        organizationentityfk = 2
+    class personPrivilegeAssign06:
+        privilegeFK = 6
+        memberFK = 4
 
 class GlobalPrivilegeAssignmentData(DataSet):
     class globalPrivilegeAssign01:
-        privilegefk = 1
-        personentityfk = 3
+        privilegeFK = 1
+        personentityFK = 3
 
     class globalPrivilegeAssign02:
-        privilegefk = 4
-        personentityfk = 3
+        privilegeFK = 4
+        personentityFK = 3
 
     class globalPrivilegeAssign03:
-        privilegefk = 3
-        personentityfk = 4
+        privilegeFK = 3
+        personentityFK = 4
 
     class globalPrivilegeAssign04:
-        privilegefk = 4
-        personentityfk = 4
+        privilegeFK = 4
+        personentityFK = 4
 
     class globalPrivilegeAssign05:
-        privilegefk = 2
-        personentityfk = 5
+        privilegeFK = 2
+        personentityFK = 5
 
     class globalPrivilegeAssign06:
-        privilegefk = 4
-        personentityfk = 5
+        privilegeFK = 4
+        personentityFK = 5
 
-all_data = (EntityData, PersonData, AddressData, OrganizationData, ContactData, PrivilegeData, MemberData)
+all_data = (EntityData, PersonData, AddressData, OrganizationData, ContactData,
+            PrivilegeData, MemberData, PrivilegePersonAssignmentData,
+            GlobalPrivilegeAssignmentData)
