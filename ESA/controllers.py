@@ -7,19 +7,19 @@ def registerEmployee(jsonString, db):
     failCause = 'Unknown'
     data = json.loads(jsonString)
     employee = extractEmployeeFromJSON(data)
-	isDuplicate = _checkForDuplicateEmployee(employee)
-	# if(isduplicate is true):
-		# failcause = 'duplicate'
-	# else:
-		#db.session.add(employee)
+    isDuplicate = _checkForDuplicateEmployee(employee)
+    # if(isduplicate is true):
+        # failcause = 'duplicate'
+    # else:
+        #db.session.add(employee)
         #db.session.commit()
-		# result = true
-	
-		# if(result is true):
-			# resultjson = '{"result": "true"}'
-		# else:
-			# resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
-		# return resultjson
+        # result = true
+    
+        # if(result is true):
+            # resultjson = '{"result": "true"}'
+        # else:
+            # resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
+        # return resultjson
 
 
 """ Internal method for checking for duplicate employee. Currently only checks
@@ -27,10 +27,10 @@ def registerEmployee(jsonString, db):
 
 def _checkForDuplicateEmployee(employee):
     result = False
-     if(employee is not None and employee.firstname is not None):
-         existing = models.Person.query.filter_by(firstname = employee.firstname).first()
-         if(existing is not None):
-             result = True
+    if(employee is not None and employee.firstname is not None):
+        existing = models.Person.query.filter_by(firstname = employee.firstname).first()
+        if(existing is not None):
+            result = True
     return result
  
 
