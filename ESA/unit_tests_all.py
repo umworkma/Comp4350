@@ -2,6 +2,9 @@
 import unittest
 
 import unit_tests_privilege
+import unit_tests_member
+import unit_tests_privilegepersonassignment
+import unit_tests_globalprivilegeassignment
 
 
 def suite():
@@ -10,6 +13,9 @@ def suite():
 
     # Add the test suite to our grouping.
     allUnitTests.addTest(unit_tests_privilege.suite())
+    allUnitTests.addTest(unit_tests_member.suite())
+    allUnitTests.addTest(unit_tests_privilegepersonassignment.suite())
+    allUnitTests.addTest(unit_tests_globalprivilegeassignment.suite())
 
     return allUnitTests
 

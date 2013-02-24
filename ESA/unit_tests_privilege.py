@@ -101,7 +101,6 @@ class PrivilegeTestCase(TestCase):
         # Define the required test data.
         keyBefore = 'SOME_OTHER_EMP_PRIVILEGE'
         keyAfter  = 'SOME_OTHER_EMP_PRIVILEGE after'
-        target = models.Privilege(privilege=keyBefore)
 
         # Verify the data exists.
         target = models.Privilege.query.filter_by(privilege=keyBefore).first()
