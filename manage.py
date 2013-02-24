@@ -14,6 +14,8 @@ class runlocal(Command):
         models.create_tables(app)
         fixtures.install(app, *fixtures.all_data)
         app.run()
+        app.db.session.remove()
+        app.db.drop_all()
 
 manager = Manager(app)
 manager.add_command("runserver", Server())
