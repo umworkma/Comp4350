@@ -214,8 +214,8 @@ function createJsonObjectForEmployee() {
     data = {
 		username: $('input[name="username"]').val(),
 		password: $('input[name="pwd1"]').val(),
-        firstname: $('input[name="fname"]').val(),
-        lastname: $('input[name="lname"]').val(),
+        firstname: $('input[name="firstname"]').val(),
+        lastname: $('input[name="lastname"]').val(),
         Entity:   {
         	entity_type: 1,
         	addresses: [

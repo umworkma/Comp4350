@@ -17,8 +17,8 @@ ORGANIZATION_DESCRIPTION_KEY = 'org_desc'
 
 EMPLOYEE_ENTITYFK_KEY = 'emp_entityfk'
 EMPLOYEE_USER_NAME_KEY = 'username'
-EMPLOYEE_FIRST_NAME_KEY = 'fname'
-EMPLOYEE_LAST_NAME_KEY = 'lname'
+EMPLOYEE_FIRST_NAME_KEY = 'firstname'
+EMPLOYEE_LAST_NAME_KEY = 'lastname'
 EMPLOYEE_PASSWORD_KEY = 'password'
 
 ADDRESS_ENTITYFK_KEY = 'addr_entityfk'
@@ -125,5 +125,5 @@ class Person(db.Model):
     entity = db.relationship('Entity', uselist=False, cascade='all, delete')
 
     def __repr__(self):
-        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.username, self.password, self.fristname, self.lastname)
+        return "<Person('%s', '%s', '%s', '%s', '%s')>" % (self.entityFK, self.username, self.password, self.firstname, self.lastname)
     
