@@ -9,6 +9,7 @@ def registerEmployee(jsonString, db):
     data = json.loads(jsonString)
     employee = extractEmployeeFromJSON(data)
     isDuplicate = _checkForDuplicateEmployee(employee)
+
     if(isDuplicate is True):
         failcause = 'duplicate'
     else:
@@ -31,9 +32,6 @@ def _checkForDuplicateEmployee(employee):
         existing = models.Person.query.filter_by(username = employee.username).first()		
         if(existing is not None):
             result = True		
-    return result
- 
-
 
 """ Allows the view to check whether a given  username already exists
     in the application. Returns True if duplicated. """
