@@ -142,7 +142,7 @@ class Person(db.Model):
     memberships = db.relationship('Member', cascade='all, delete')
 
     def __repr__(self):
-        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.fristname, self.lastname)
+        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname)
 
 
 class Member(db.Model):

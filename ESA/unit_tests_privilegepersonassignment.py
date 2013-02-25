@@ -69,6 +69,11 @@ class PrivilegePersonAssignmentTestCase(TestCase):
         self.assertEqual(current.privilegeFK, 6)
         self.assertEqual(current.memberFK, 4)
 
+        current = models.PrivilegePersonAssignment.query.filter_by(pk=7).first()
+        self.assertIsNotNone(current)
+        self.assertEqual(current.privilegeFK, 7)
+        self.assertEqual(current.memberFK, 3)
+
 
     """ Test that we can retieve a permission from the person-assignment. """
     def test_ppa_privilege_relationship(self):

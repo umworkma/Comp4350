@@ -219,6 +219,10 @@ class PrivilegePersonAssignmentData(DataSet):
     class personPrivilegeAssign06:
         privilegeFK = 6
         memberFK = 4
+        
+    class personPrivilegeAssign07:
+        privilegeFK = 7
+        memberFK = 3
 
 class GlobalPrivilegeAssignmentData(DataSet):
     class globalPrivilegeAssign01:
