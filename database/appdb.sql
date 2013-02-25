@@ -138,6 +138,8 @@ DROP TABLE IF EXISTS `person`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `person` (
   `entityFK` int(11) NOT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `password` varchar(45) DEFAULT NULL,
   `firstname` varchar(45) DEFAULT NULL,
   `lastname` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`entityFK`),

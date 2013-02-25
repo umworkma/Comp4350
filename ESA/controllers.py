@@ -31,7 +31,8 @@ def _checkForDuplicateEmployee(employee):
     if(employee is not None and employee.username is not None):
         existing = models.Person.query.filter_by(username = employee.username).first()		
         if(existing is not None):
-            result = True		
+            result = True
+    return result
 
 """ Allows the view to check whether a given  username already exists
     in the application. Returns True if duplicated. """
