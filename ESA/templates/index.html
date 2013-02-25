@@ -1,4 +1,5 @@
-{% extends "layout.html" %}
+{# COMMENT: Insert the line below to every html start of render page to let qunit to include the content of the for testing which will exclude the layout.html page #}
+{% if qunit is undefined %}{% extends "layout.html" %}{% endif %}
 {% block content %}
 <!-- Carousel 
 ================================================== -->

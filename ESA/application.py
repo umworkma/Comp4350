@@ -31,7 +31,9 @@ def home():
 # qunit - Javascript unit testing
 @app.route('/_test')
 def qunit_test():
-    return render_template('unit_test.html')
+    # List of html pages that use the Javascript function, as might needed for testing 
+    pages = ['index.html', 'register_organization.html']
+    return render_template('unit_test.html', qunit=True, testPage=pages)
 
 @app.route('/register_organization/')
 def register_organization():

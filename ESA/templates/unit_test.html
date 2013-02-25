@@ -5,5 +5,10 @@
 
         <!-- qunit DOM test block -->
         <div id='qunit-fixture'>
+
+        {# For each testPage that are passing in, include they content on tho this template page #}
+        {% for page in testPage %}
+            {% include page ignore missing with context %}
+        {% endfor %}
         </div>
 {% endblock %}
