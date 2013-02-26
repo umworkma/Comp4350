@@ -252,3 +252,9 @@ class GlobalPrivilegeAssignmentData(DataSet):
 all_data = (EntityData, PersonData, AddressData, OrganizationData, ContactData,
             PrivilegeData, MemberData, PrivilegePersonAssignmentData,
             GlobalPrivilegeAssignmentData)
+entity_test_data = (EntityData, AddressData, ContactData, OrganizationData, PersonData)
+address_test_data = (AddressData, EntityData)
+contact_test_data = (ContactData, EntityData)
+organization_test_data = (OrganizationData, EntityData, MemberData)
+person_test_data = (PersonData, EntityData, MemberData)
+member_test_data = (MemberData,PersonData,OrganizationData)

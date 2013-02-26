@@ -98,7 +98,7 @@ class PrivilegePersonAssignmentTestCase(TestCase):
         self.assertIsNotNone(host)
         self.assertEqual(host.pk, 5)
 
-        targetList = host.privilegedPeople
+        targetList = host.ppaList
         self.assertIsNotNone(targetList)
         resultCount = 0
         for di,ti in zip(directList, targetList):

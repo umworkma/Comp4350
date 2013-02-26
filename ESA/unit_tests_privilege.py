@@ -21,7 +21,7 @@ class PrivilegeTestCase(TestCase):
     @classmethod
     def setUpClass(self):
         models.create_tables(self.app)
-        fixtures.install(self.app, *fixtures.all_data)
+        fixtures.install(self.app, *fixtures.privilege_test_data)
         self.db = models.init_app(self.app)
 
     @classmethod
@@ -33,7 +33,7 @@ class PrivilegeTestCase(TestCase):
         self.db.session.remove()
         self.db.drop_all()
         models.create_tables(self.app)
-        fixtures.install(self.app, *fixtures.all_data)
+        fixtures.install(self.app, *fixtures.privilege_test_data)
         self.db = models.init_app(self.app)
 
 
@@ -72,8 +72,16 @@ class PrivilegeTestCase(TestCase):
         self.assertEqual(current.privilege, 'YET_ANOTHER_EMP_PRIVILEGE')
 
 
+    
+
+
     """ Test adding a Privilege to the database """
     def test_privilege_add(self):
+        # Verify state of related tables before operation.
+        privilegeCount = models.Privilege.query.count()
+        ppaCount = models.PrivilegePersonAssignment.query.count()
+        gpaCount = models.GlobalPrivilegeAssignment.query.count()
+        
         # Define prerequisite data.
         key = 'Test Priv add'
         target = models.Privilege(privilege=key)
@@ -95,9 +103,23 @@ class PrivilegeTestCase(TestCase):
             count += 1
         self.assertEqual(count, 1)
 
+        # Verify state of related tables before operation.
+        privilegeCountAfter = models.Privilege.query.count()
+        self.assertTrue(privilegeCountAfter == privilegeCount + 1)
+        ppaCountAfter = models.PrivilegePersonAssignment.query.count()
+        self.assertTrue(ppaCountAfter == ppaCount)
+        gpaCountAfter = models.GlobalPrivilegeAssignment.query.count()
+        self.assertTrue(gpaCountAfter == gpaCountAfter)
+
+
 
     """ Test updating an existing record. """
     def test_privilege_update(self):
+        # Verify state of related tables before operation.
+        privilegeCount = models.Privilege.query.count()
+        ppaCount = models.PrivilegePersonAssignment.query.count()
+        gpaCount = models.GlobalPrivilegeAssignment.query.count()
+        
         # Define the required test data.
         keyBefore = 'SOME_OTHER_EMP_PRIVILEGE'
         keyAfter  = 'SOME_OTHER_EMP_PRIVILEGE after'
@@ -120,9 +142,22 @@ class PrivilegeTestCase(TestCase):
         target = models.Privilege.query.filter_by(privilege=keyBefore).first()
         self.assertIsNone(target)
 
+        # Verify state of related tables before operation.
+        privilegeCountAfter = models.Privilege.query.count()
+        self.assertTrue(privilegeCountAfter == privilegeCount)
+        ppaCountAfter = models.PrivilegePersonAssignment.query.count()
+        self.assertTrue(ppaCountAfter == ppaCount)
+        gpaCountAfter = models.GlobalPrivilegeAssignment.query.count()
+        self.assertTrue(gpaCountAfter == gpaCountAfter)
+
 
     """ Test deleting a privilege. """
     def test_privilege_delete(self):
+        # Verify state of related tables before operation.
+        privilegeCount = models.Privilege.query.count()
+        ppaCount = models.PrivilegePersonAssignment.query.count()
+        gpaCount = models.GlobalPrivilegeAssignment.query.count()
+        
         # Define required test data.
         key = 'YET_ANOTHER_EMP_PRIVILEGE'
         target = models.Privilege(privilege=key)
@@ -138,6 +173,14 @@ class PrivilegeTestCase(TestCase):
         # Verify that the record has been removed.
         target = models.Privilege.query.filter_by(privilege=key).first()
         self.assertIsNone(target)
+
+        # Verify state of related tables before operation.
+        privilegeCountAfter = models.Privilege.query.count()
+        self.assertTrue(privilegeCountAfter == privilegeCount - 1)
+        ppaCountAfter = models.PrivilegePersonAssignment.query.count()
+        self.assertTrue(ppaCountAfter == ppaCount - 1)
+        gpaCountAfter = models.GlobalPrivilegeAssignment.query.count()
+        self.assertTrue(gpaCountAfter == gpaCountAfter)
 
         #self.resetDB()
 

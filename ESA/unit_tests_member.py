@@ -21,7 +21,7 @@ class MemberTestCase(TestCase):
     @classmethod
     def setUpClass(self):
         models.create_tables(self.app)
-        fixtures.install(self.app, *fixtures.all_data)
+        fixtures.install(self.app, *fixtures.member_test_data)
         self.db = models.init_app(self.app)
 
     @classmethod
@@ -33,7 +33,7 @@ class MemberTestCase(TestCase):
         self.db.session.remove()
         self.db.drop_all()
         models.create_tables(self.app)
-        fixtures.install(self.app, *fixtures.all_data)
+        fixtures.install(self.app, *fixtures.member_test_data)
         self.db = models.init_app(self.app)
 
 
@@ -61,72 +61,53 @@ class MemberTestCase(TestCase):
 
 
     """ Test that we can retrieve an organzation from a member. """
-    def test_member_organization_relationship(self):
-        direct = models.Organization.query.filter_by(entityFK=1).first()
+    def test_member_organization_relationship(self):        
+        # Define prerequisite data.
+        memberKey = 3
+        orgKey = 2
+        name = 'Ai-Kon'
+        # Retrieve the target object directly.
+        direct = models.Organization.query.filter_by(entityFK=orgKey).first()
         self.assertIsNotNone(direct)
-        self.assertEqual(direct.name, 'Ai-Kon')
-        host = models.Member.query.filter_by(pk=1).first()
+        # Retrieve the containing object.
+        host = models.Member.query.filter_by(pk=memberKey).first()
         self.assertIsNotNone(host)
-        self.assertEqual(host.organizationentityFK, 1)
+        self.assertEqual(host.pk, memberKey)
+        self.assertEqual(host.organizationentityFK, orgKey)
+        # Retrieve the target object through the containing object.
         target = host.organization
         self.assertIsNotNone(target)
-        self.assertEqual(target.entityFK, direct.entityFK)
-        self.assertEqual(target.name, direct.name)
-    """ Test that we can retrieve members from an organization. """
-    def test_organization_member_relationship(self):
-        directList = models.Member.query.filter_by(organizationentityFK=1)
-        self.assertIsNotNone(directList)
-
-        host = models.Organization.query.filter_by(entityFK=1).first()
-        self.assertIsNotNone(host)
-        self.assertEqual(host.entityFK, 1)
-
-        targetList = host.employees
-        self.assertIsNotNone(targetList)
-        resultCount = 0
-        for di,ti in zip(directList, targetList):
-            resultCount += 1
-            self.assertEqual(di.pk, ti.pk)
-            self.assertEqual(di.personentityFK, ti.personentityFK)
-            self.assertEqual(di.organizationentityFK, ti.organizationentityFK)
-        self.assertGreater(resultCount, 0)
+        self.assertEqual(direct.__repr__(), target.__repr__())
 
 
     """ Test that we can retrieve a person from a member. """
     def test_member_person_relationship(self):
-        direct = models.Person.query.filter_by(entityFK=4).first()
+        # Define prerequisite data.
+        memberKey = 4
+        personKey = 5
+        fname = 'Dan'
+        lname = 'Nelson'
+        # Retrieve the target object directly.
+        direct = models.Person.query.filter_by(entityFK=personKey).first()
         self.assertIsNotNone(direct)
-        self.assertEqual(direct.firstname, 'Ryoji')
-        host = models.Member.query.filter_by(pk=3).first()
+        # Retrieve the containing object.
+        host = models.Member.query.filter_by(pk=memberKey).first()
         self.assertIsNotNone(host)
-        self.assertEqual(host.personentityFK, 4)
+        self.assertEqual(host.pk, memberKey)
+        self.assertEqual(host.personentityFK, personKey)
+        # Retrieve the target object through the containing object.
         target = host.person
         self.assertIsNotNone(target)
-        self.assertEqual(target.entityFK, direct.entityFK)
-        self.assertEqual(target.firstname, direct.firstname)
-        self.assertEqual(target.lastname, direct.lastname)
-    """ Test that we can retrieve members from a person. """
-    def test_person_member_relationship(self):
-        directList = models.Member.query.filter_by(personentityFK=4)
-        self.assertIsNotNone(directList)
-
-        host = models.Person.query.filter_by(entityFK=4).first()
-        self.assertIsNotNone(host)
-        self.assertEqual(host.entityFK, 4)
-
-        targetList = host.memberships
-        self.assertIsNotNone(targetList)
-        resultCount = 0
-        for di,ti in zip(directList, targetList):
-            resultCount += 1
-            self.assertEqual(di.pk, ti.pk)
-            self.assertEqual(di.personentityFK, ti.personentityFK)
-            self.assertEqual(di.organizationentityFK, ti.organizationentityFK)
-        self.assertGreater(resultCount, 0)
+        self.assertEqual(direct.__repr__(), target.__repr__())
 
 
     """ Test adding a Member (linking a person to an organization). """
     def test_member_add(self):
+        # Verify state of related tables before operation.
+        personCount = models.Person.query.count()
+        orgCount = models.Organization.query.count()
+        memberCount = models.Member.query.count()
+        
         # Define prerequisite data.
         personKey = 5
         orgKey = 1
@@ -149,10 +130,18 @@ class MemberTestCase(TestCase):
             self.assertEqual(item.organizationentityFK, orgKey)
             count += 1
         self.assertEqual(count, 1)
+        
+        # Verify state of related tables after operation.
+        personCountAfter = models.Person.query.count()
+        orgCountAfter = models.Organization.query.count()
+        memberCountAfter = models.Member.query.count()
+        self.assertEqual(personCount, personCountAfter)
+        self.assertEqual(orgCount, orgCountAfter)
+        self.assertTrue(memberCountAfter == memberCount + 1)
 
 
     """ Test deleting a member. """
-    def test_member_delete(self):
+    '''def test_member_delete(self):
         # Define required test data.
         personKey = 4
         orgKey = 1
@@ -170,7 +159,7 @@ class MemberTestCase(TestCase):
         target = models.Member.query.filter_by(personentityFK=personKey, organizationentityFK=orgKey).first()
         self.assertIsNone(target)
 
-        #self.resetDB()
+        #self.resetDB()'''
 
 
 def suite():
@@ -180,9 +169,7 @@ def suite():
     # Add tests to suite.
     suite.addTest(MemberTestCase('test_member_model'))
     suite.addTest(MemberTestCase('test_member_organization_relationship'))
-    suite.addTest(MemberTestCase('test_organization_member_relationship'))
     suite.addTest(MemberTestCase('test_member_person_relationship'))
-    suite.addTest(MemberTestCase('test_person_member_relationship'))
     suite.addTest(MemberTestCase('test_member_add'))
 
     # Tests that must be run last b/c they delete from the DB.
@@ -190,7 +177,7 @@ def suite():
     # If we chose to call resetDB() after any of these tests, they
     # could be moved up to the previous section, but they would
     # take a little bit longer to run.
-    suite.addTest(MemberTestCase('test_member_delete'))
+    #suite.addTest(MemberTestCase('test_member_delete'))
     
     return suite
     

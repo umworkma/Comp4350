@@ -59,9 +59,10 @@ class Entity(db.Model):
     __tablename__ = 'entity'
     pk = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.Integer)
-    addresses = db.relationship('Address', cascade='all, delete')
-    contacts = db.relationship('Contact', cascade='all, delete')
-    #membership = db.relationship('Member', cascade='all, delete')
+    addresses = db.relationship('Address', cascade='all, delete-orphan', backref='entity')
+    contacts = db.relationship('Contact', cascade='all, delete-orphan', backref='entity')
+    organization = db.relationship('Organization', uselist=False, cascade='all,delete-orphan')
+    person = db.relationship('Person', uselist=False, cascade='all, delete-orphan')
     
     def __init__(self, type=None):
         self.type = type
@@ -69,18 +70,20 @@ class Entity(db.Model):
     def __repr__(self):
         return "<Entity('%s','%s')>" % (self.pk, self.type)
 
-
+'''
 class Privilege(db.Model):
     __tablename__ = 'privilege'
     pk = db.Column(db.Integer, primary_key=True)
     privilege = db.Column(db.String(255))
+    ppaList = db.relationship('PrivilegPersonAssignment', cascade='all,delete-orphan', backref='privilege')
+    gpaList = db.relationship('GlobalPrivilegeAssignment', cascade='all, delete-orphan', backref='privilege')
     
     def __init__(self, privilege=None):
         self.privilege = privilege
         
     def __repr__(self):
         return "<Privilege('%s','%s')>" % (self.pk, self.privilege)
-
+'''
 
 class Address(db.Model):
     __tablename__ = 'address'
@@ -117,6 +120,12 @@ class Contact(db.Model):
     value = db.Column(db.String(45))
     isprimary = db.Column(db.Boolean)
 
+    def __init__(self, type=None, value=None, entityFK=None, isprimary=None):
+        self.type = type
+        self.value = value
+        self.entityFK = entityFK
+        self.isprimary = isprimary
+
     def __repr__(self):
         return "<Contact('%s','%s','%s','%s','%s')>" % (self.pk, self.entityFK, self.type, self.value, self.isprimary)
 
@@ -126,8 +135,14 @@ class Organization(db.Model):
     entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'), primary_key=True)
     name = db.Column(db.String(45))
     description = db.Column(db.Text)
-    entity = db.relationship('Entity',uselist=False, cascade='all, delete')
-    employees = db.relationship('Member', cascade='all, delete')
+    entity = db.relationship('Entity', uselist=False, cascade='all,delete')
+    employees = db.relationship('Member', cascade='all, delete-orphan', backref='organization')
+
+    def __init__(self, name=None, description=None):
+        self.name = name
+        self.description = description
+        #self.entity = models.Entity()  # This doesn't work for some unknowable pythonic reason. Grrr.
+        #self.entity.type = models.TYPE_ORGANIZATION
 
     def __repr__(self):
         return "<Organization('%s','%s','%s')>" % (self.entityFK, self.name, self.description)
@@ -139,7 +154,12 @@ class Person(db.Model):
     firstname = db.Column(db.String(45))
     lastname = db.Column(db.String(45))
     entity = db.relationship('Entity', uselist=False, cascade='all, delete')
-    memberships = db.relationship('Member', cascade='all, delete')
+    memberships = db.relationship('Member', cascade='all, delete-orphan', backref='person')
+    
+    def __init__(self, fname=None, lname=None):
+        self.firstname = fname
+        self.lastname = lname
+        #self.entity = Entity(TYPE_EMPLOYEE)    # Stoopid python...
 
     def __repr__(self):
         return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname)
@@ -150,8 +170,6 @@ class Member(db.Model):
     pk = db.Column(db.Integer, primary_key=True)
     personentityFK = db.Column(db.Integer, db.ForeignKey(Person.entityFK, ondelete='cascade'))
     organizationentityFK = db.Column(db.Integer, db.ForeignKey(Organization.entityFK, ondelete='cascade'))
-    person = db.relationship('Person', uselist=False, cascade='all, delete')
-    organization = db.relationship('Organization', uselist=False, cascade='all, delete')
 
     def __init__(self, personentityFK=None, organizationentityFK=None):
         self.personentityFK = personentityFK
@@ -160,14 +178,14 @@ class Member(db.Model):
     def __repr__(self):
         return "<Member('%s','%s','%s')>" % (self.pk, self.personentityFK, self.organizationentityFK)
 
-
+'''
 class PrivilegePersonAssignment(db.Model):
     __tablename__='privilege_member_bridge'
     pk = db.Column(db.Integer, primary_key=True)
     memberFK = db.Column(db.Integer, db.ForeignKey(Member.pk, ondelete='cascade')) 
     privilegeFK = db.Column(db.Integer, db.ForeignKey(Privilege.pk, ondelete='cascade'))
-    privilege = db.relationship('Privilege', cascade='all, delete', backref='privilegedPeople')
-    member = db.relationship('Member', cascade='all, delete', backref='memberPrivileges')
+    #privilege = db.relationship('Privilege', cascade='all, delete', backref='privilegedPeople')
+    #member = db.relationship('Member', cascade='all, delete', backref='memberPrivileges')
 
     def __init__(self, privilegeFK=None, memberFK=None):
         self.privilegeFK = privilegeFK
@@ -182,8 +200,8 @@ class GlobalPrivilegeAssignment(db.Model):
     pk = db.Column(db.Integer, primary_key=True)
     privilegeFK = db.Column(db.Integer, db.ForeignKey(Privilege.pk, ondelete='cascade'))
     personentityFK = db.Column(db.Integer, db.ForeignKey(Person.entityFK, ondelete='cascade'))
-    privilege = db.relationship('Privilege', cascade='all, delete', backref='privilegedGlobalPeople')
-    person = db.relationship('Person', cascade='all, delete', backref='personGlobalPrivileges')
+    #privilege = db.relationship('Privilege', cascade='all, delete', backref='privilegedGlobalPeople')
+    #person = db.relationship('Person', cascade='all, delete', backref='personGlobalPrivileges')
 
     def __init__(self, privilegeFK=None, personentityFK=None):
         self.privilegeFK = privilegeFK
@@ -191,4 +209,4 @@ class GlobalPrivilegeAssignment(db.Model):
         
     def __repr__(self):
         return "<Privilege('%s','%s','%s')>" % (self.pk, self.privilegeFK, self.personentityFK)
-
+'''

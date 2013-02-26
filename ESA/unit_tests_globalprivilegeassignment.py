@@ -107,7 +107,7 @@ class GlobalPrivilegeAssignmentTestCase(TestCase):
         self.assertEqual(host.pk, privKey)
 
         # Retrieve all associated objects through the containing object.
-        targetList = host.privilegedGlobalPeople
+        targetList = host.gpaList
         self.assertIsNotNone(targetList)
         resultCount = 0
         for di,ti in zip(directList, targetList):
