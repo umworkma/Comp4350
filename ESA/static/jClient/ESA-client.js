@@ -158,3 +158,9 @@ function createJsonObject() {
     return false;
 
 }
+
+// active carousel when DOM is fully loaded
+$(document).ready(function() {
+    $('.carousel').carousel({  interval: 3000
+    });
+});
