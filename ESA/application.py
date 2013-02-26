@@ -51,6 +51,14 @@ def submit_org_form():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
+@app.route('/_get_org_list', methods=['GET', 'POST'])
+def get_org_list():
+    result = controllers.getAllOrganizationsJSON(db)
+    return result
+
+@app.route('/browse_orgs/')
+def browse_orgs():
+    return render_template('list_organizations.html')
 
 @app.teardown_request
 def shutdown_session(exception=None):
