@@ -4,6 +4,7 @@
     <head>
         <title>ESA Service</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {# <link rel="shortcut icon" href="{{ url_for_static('favicon.ico') }}"> #}
         <!-- CSS and Java-Script files are auto generated from Flask-Assets management(assets.py) -->
         {% assets "common_css" %}
@@ -12,37 +13,60 @@
         {% assets "common_js" %}
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
-
-		<script type="text/javascript">$SCRIPT_ROOT = {{request.script_root|tojson|safe}};</script>
+        <script type="text/javascript">$SCRIPT_ROOT = {{request.script_root|tojson|safe}};</script>
     </head>
     <body>
-        <!-- drop down boxes for sign-up and log-in -->
-        <div class="btn-group pull-right" style="padding-right: 24px;">
-            {% if not session.logged_in %}
-                <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">Log In <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <!-- dropdown menu links -->
-                    <li class="disabled" role="presentation"><a role="menuitem" tabindex="-1" href="#">Organization</a></li>
-                    <li class="disabled" role="presentation"><a role="menuitem" tabindex="-1" href="#">Employee</a></li>
-                </ul>
-            {% else %}
-                <button class="btn btn-info" dropdown-toggle" data-toggle="dropdown"">Log Out</button>
-            {% endif %}
-        </div>
-        <div class="btn-group pull-right" style="padding-right: 24px;">
-            {% if not session.logged_in %}
-                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Sign Up <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <!-- dropdown menu links -->
-                    <li class="" role="presentation"><a role="menuitem" tabindex="-1" href="/register_organization">Organization</a></li>
-                    <li class="" role="presentation"><a role="menuitem" tabindex="-1" href="/employee_reg_form.html">Employee</a></li>
-                </ul>
-            {% endif %}
-        </div>
-        <h1>Employment Scheduling Application</h1>
+        <!-- navbar -->
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <!-- Display website name also act as home buttom -->
+                    <a class="brand hidden-phone" href="/">Employment Scheduling Application</a>
+                    <a class="brand visible-phone" href="/">ESA</a>
+
+                    <!-- navbar-responsive-collapse -->
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right">
+                            <!-- Sign up links-->
+                            <li class="disabled"><a href="#">Sign Up</a></li>
+
+                            <!-- Login/Logout links -->{# check current session if not login display login links else display logout #}
+                            {% if not session.logged_in %}
+                            <li class="disabled"><a href="#">Log in</a></li>
+                            {% else %}
+                            <li class="disabled"><a href="#">Log Out</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div><!-- end of navbar-bar -->
+        </div><!-- end of navbar -->
+        {% if session.logged_in %}
         <!-- display msg div box area -->
         <div class="msg_area">
         </div>
-        {% block content %}{% endblock %}
+        <div class="container-fluid">
+          <div class="row-fluid">
+            <div class="span2">
+            {% include "controls.html" ignore missing with context %}
+            <!--Sidebar content-->
+            </div>
+            <div class="span10">
+        {% endif %}
+            {% block content %}{% endblock %}
+        {% if session.logged_in %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+
     </body>
 </html>

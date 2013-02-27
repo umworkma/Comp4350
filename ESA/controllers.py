@@ -3,11 +3,11 @@ import models
 
 # Employees
 
-def registerEmployee(jsonString, db):
+def registerEmployee(employeeDict, db):
     result = False
     failCause = 'Unknown'
-    data = json.loads(jsonString)
-    employee = extractEmployeeFromJSON(data)
+    # data = json.loads(jsonString)
+    employee = extractEmployeeFromDict(employeeDict)
     isDuplicate = _checkForDuplicateEmployee(employee)
 
     if(isDuplicate is True):
@@ -81,20 +81,12 @@ def getAllOrganizationsJSON(db):
     return jsonString
 
 
-def registerOrganization(jsonString, db):
+def registerOrganization(orgDict, db):
     result = False
     failCause = 'Unknown'
 
-    # Added this check here to just by pass if the input is a dict object
-    # else turn josn into dict. Dan has email Mr. Zapp regrading to clarify
-    # should all controller code accept json string or dict object. At incoming 
-    # request, Flask will parse JSON string into dict object.
-    # if isinstance(request.form, dict): 
-    #     org = extractOrganizationFromJSON(jsonString)
-    # else:
     ''' Parse the given JSON data and create our basic organization. '''
-    data = json.loads(jsonString)
-    org = extractOrganizationFromJSON(data)
+    org = extractOrganizationFromDict(orgDict)
 
 
     ''' Check for duplicate organization. '''
@@ -129,9 +121,9 @@ def _checkForDuplicateOrganization(org):
 
 """ Allows the view to check whether a given organization name already exists
     in the application. Returns True if duplicated. """
-def checkForDuplicateOrganizationNameJSON(orgNameJSON):
+def checkForDuplicateOrganizationName(orgNameDict):
     result = False
-    orgNameDict = json.loads(orgNameJSON)
+
     if(orgNameDict is not None and orgNameDict[models.ORGANIZATION_NAME_KEY] is not None):
         orgName = orgNameDict[models.ORGANIZATION_NAME_KEY]
         org = models.Organization()
@@ -224,7 +216,7 @@ def contactToJSON(contact):
 
 
 """ Converts an employee in JSON format to an employee object. """
-def extractEmployeeFromJSON(employee):
+def extractEmployeeFromDict(employee):
     newEmp = models.Person()
     for employeeKey,employeeValue in employee.iteritems():
         if(employeeKey == models.EMPLOYEE_ENTITYFK_KEY and employeeValue != 'None'):
@@ -238,12 +230,12 @@ def extractEmployeeFromJSON(employee):
         if(employeeKey == models.EMPLOYEE_LAST_NAME_KEY):
             newEmp.lastname = employeeValue
         if(employeeKey == 'Entity'):
-            newEmp.entity = extractEntityFromJSON(employeeValue)
+            newEmp.entity = extractEntityFromDict(employeeValue)
     return newEmp
 
 
-""" Converts an Organization in JSON format to an Organization object. """
-def extractOrganizationFromJSON(organization):
+""" Converts an Organization in Dict format to an Organization object. """
+def extractOrganizationFromDict(organization):
     newOrg = models.Organization()
     for orgKey,orgValue in organization.iteritems():
         if(orgKey == models.ORGANIZATION_ENTITYFK_KEY and orgValue != 'None'):
@@ -253,12 +245,12 @@ def extractOrganizationFromJSON(organization):
         if(orgKey == models.ORGANIZATION_DESCRIPTION_KEY):
             newOrg.description = orgValue
         if(orgKey == 'Entity'):
-            newOrg.entity = extractEntityFromJSON(orgValue)
+            newOrg.entity = extractEntityFromDict(orgValue)
     return newOrg
 
 
-""" Converts an Entity in JSON format to an Entity object. """
-def extractEntityFromJSON(entity):
+""" Converts an Entity in Dict format to an Entity object. """
+def extractEntityFromDict(entity):
     newEntity = models.Entity()
     for entityKey,entityValue in entity.iteritems():
         if(entityKey == models.ENTITY_PK_KEY and entityValue != 'None'):
@@ -267,18 +259,18 @@ def extractEntityFromJSON(entity):
             newEntity.type = int(entityValue)
         if(entityKey == 'addresses'):
             for address in entityValue:
-                newAddress = extractAddressFromJSON(address)
+                newAddress = extractAddressFromDict(address)
                 newEntity.addresses.append(newAddress)
         
         if(entityKey == 'contacts'):
             for contact in entityValue:
-                newContact = extractContactFromJSON(contact)
+                newContact = extractContactFromDict(contact)
                 newEntity.contacts.append(newContact)
     return newEntity
     
 
-""" Converts an Address in JSON format to an Address object. """
-def extractAddressFromJSON(address):
+""" Converts an Address in Dict format to an Address object. """
+def extractAddressFromDict(address):
     newAddress = models.Address()
     for addrKey,addrValue in address.iteritems():
         if(addrKey == models.ADDRESS_ENTITYFK_KEY and addrValue != 'None'):
@@ -302,8 +294,8 @@ def extractAddressFromJSON(address):
     return newAddress
 
 
-""" Extracts a Contact in JSON format to a Contact object. """
-def extractContactFromJSON(contact):
+""" Extracts a Contact in Dict format to a Contact object. """
+def extractContactFromDict(contact):
     newContact = models.Contact()
     for contactKey,contactValue in contact.iteritems():
         if(contactKey == models.CONTACT_ENTITYFK_KEY and contactValue != 'None'):

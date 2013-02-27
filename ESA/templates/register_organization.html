@@ -1,61 +1,65 @@
-{% extends "layout.html" %}
+{# COMMENT: Insert the line below to every html start of render page to let qunit to include the content of the for testing which will exclude the layout.html page #}
+{% if qunit is undefined %}{% extends "layout.html" %}{% endif %}
+
 {% block content %}
-        <h2>Register Organization</h2>
-        <div class="well form-horizontal">
-            <form id="organization-reg" onsubmit="return createJsonObjectForOrganization()" method="post">
-                <fieldset>
-                    <legend>Basic Info</legend>
-                    <label class="control-label" for="org_name">Name</label>
-                    <div class="controls">
-                        <input type="text" required name="org_name" placeholder="The Awesome Company" oninput="checkForDuplicateOrgName()">
-                        <!-- display msg div box area -->
-						<div class="alert_isValidOrgName"></div>
+        <div class="container">
+            <h2>Register Organization</h2>
+            <div class="well form-horizontal">
+                <form id="organization-reg" onsubmit="return createJsonObjectForOrganization()" method="post">
+                    <fieldset>
+                        <legend>Basic Info</legend>
+                        <label class="control-label" for="org_name">Name</label>
+                        <div class="controls">
+                            <input type="text" required name="org_name" placeholder="The Awesome Company" oninput="checkForDuplicateOrgName()">
+                            <!-- display msg div box area -->
+                            <div class="alert_isValidOrgName"></div>
+                        </div>
+                        <label class="control-label" for="org_desc">Description</label>
+                        <div class="controls">
+                            <textarea id="org_desc" rows="3">We make cool things.</textarea>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Contact Info</legend>
+                        <label class="control-label" for="address1">Address</label>
+                        <div class="controls">
+                            <input type="text" required name="address1" placeholder="123 Neat Street">
+                        </div>
+                        <div class="controls">
+                            <input type="text" name="address2" placeholder="">
+                        </div>
+                        <div class="controls">
+                            <input type="text" name="address3" placeholder="">
+                        </div>
+                        <label class="control-label" for="city">City</label>
+                        <div class="controls">
+                            <input type="text" required name="city" placeholder="Coolsville">
+                        </div>
+                        <label class="control-label" for="province">Province</label>
+                        <div class="controls">
+                            <input type="text" required name="province" placeholder="Manitoba">
+                        </div>
+                        <label class="control-label" for="country">Country</label>
+                        <div class="controls">
+                            <input type="text" required name="country" placeholder="Canada">
+                        </div>
+                        <label class="control-label" for="postalcode">Postal Code</label>
+                        <div class="controls">
+                            <input type="text" required name="postalcode" placeholder="Q1W 2E3">
+                        </div>
+                        <label class="control-label" for="phone">Phone</label>
+                        <div class="controls">
+                            <input type="text" required name="phone" placeholder="000-123-456-7890">
+                        </div>
+                        <label class="control-label" for="email">Email</label>
+                        <div class="controls">
+                            <input type="email" required data-validation-matches-match="email" name="email" placeholder="awesomeco@awesomeco.ca">
+                        </div>
+                    </fieldset>
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-primary" />
                     </div>
-                    <label class="control-label" for="org_desc">Description</label>
-                    <div class="controls">
-                        <textarea id="org_desc" rows="3">We make cool things.</textarea>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>Contact Info</legend>
-                    <label class="control-label" for="address1">Address</label>
-                    <div class="controls">
-                        <input type="text" required name="address1" placeholder="123 Neat Street">
-                    </div>
-                    <div class="controls">
-                        <input type="text" name="address2" placeholder="">
-                    </div>
-                    <div class="controls">
-                        <input type="text" name="address3" placeholder="">
-                    </div>
-                    <label class="control-label" for="city">City</label>
-                    <div class="controls">
-                        <input type="text" required name="city" placeholder="Coolsville">
-                    </div>
-                    <label class="control-label" for="province">Province</label>
-                    <div class="controls">
-                        <input type="text" required name="province" placeholder="Manitoba">
-                    </div>
-                    <label class="control-label" for="country">Country</label>
-					<div class="controls">
-						<input type="text" required name="country" placeholder="Canada">
-                    </div>
-                    <label class="control-label" for="postalcode">Postal Code</label>
-                    <div class="controls">
-                        <input type="text" required name="postalcode" placeholder="Q1W 2E3">
-                    </div>
-                    <label class="control-label" for="phone">Phone</label>
-					<div class="controls">
-						<input type="text" required name="phone" placeholder="000-123-456-7890">
-                    </div>
-                    <label class="control-label" for="email">Email</label>
-                    <div class="controls">
-                        <input type="email" required data-validation-matches-match="email" name="email" placeholder="awesomeco@awesomeco.ca">
-                    </div>
-                </fieldset>
-                <div class="form-actions">
-                    <input type="submit" class="btn btn-primary" />
-                </div>
-            </form><!--/form-horizontal-->
-        </div><!--/.row-fluid-->
+                </form><!--/form-horizontal-->
+            </div><!--/.row-fluid-->
+        </div>
 {% endblock %}
