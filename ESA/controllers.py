@@ -4,7 +4,7 @@ import models
 
 # Organizations (Sorted by Name)
 def getAllOrganizations(db):
-    results = models.Organization.query.order_by(models.Organization.name)
+    results = models.Organization.query.all()
     return results
 
 def getAllOrganizationsJSON(db):
