@@ -96,7 +96,7 @@ class ESATestCase(TestCase):
 
             orgList = list()
             for org in orgs:
-                newOrg = controllers.extractOrganizationFromJSON(org)
+                newOrg = controllers.extractOrganizationFromDict(org)
                 orgList.append(newOrg)
 
             allOrgs = controllers.getAllOrganizations(self.db)
@@ -173,7 +173,8 @@ class ESATestCase(TestCase):
 
         ''' Register the organization. '''
         corpJSON = controllers.organizationToJSON(testOrg)
-        result = controllers.registerOrganization(corpJSON,self.db)
+        resultDict = json.loads(corpJSON)
+        result = controllers.registerOrganization(resultDict,self.db)
 
         ''' Validate the result response. '''
         resultDict = json.loads(result)
@@ -185,7 +186,8 @@ class ESATestCase(TestCase):
         self.assertEqual(foundResult, True)
 
         ''' Register the organization a second time. '''
-        result = controllers.registerOrganization(corpJSON,self.db)
+        resultDict = json.loads(corpJSON)
+        result = controllers.registerOrganization(resultDict,self.db)
 
         ''' Validate the result response. '''
         resultDict = json.loads(result)
@@ -249,7 +251,8 @@ class ESATestCase(TestCase):
 
         ''' Register the organization. '''
         corpJSON = controllers.organizationToJSON(testOrg)
-        result = controllers.registerOrganization(corpJSON,self.db)
+        resultDict = json.loads(corpJSON)
+        result = controllers.registerOrganization(resultDict,self.db)
 
         ''' Validate the result response. '''
         resultDict = json.loads(result)
@@ -308,11 +311,11 @@ class ESATestCase(TestCase):
         stringJSON = '{"contact_entityfk":1,"type":"2","value":"info@ai-kon.org","isprimary":"True"}'
         self.assertEqual(targetJSON, stringJSON)
 
-    def test_extractOrganizationFromJSON(self):
+    def test_extractOrganizationFromDict(self):
         control = models.Organization.query.first()
         stringJSON = '{"org_entityfk":1,"org_name":"Ai-Kon","org_desc":"Ai-Kon Anime Convention","Entity":{"entity_pk":1,"entity_type":"1","addresses":[{"addr_entityfk":1,"address1":"123 Vroom Street","address2":"None","address3":"None","city":"Winnipeg","province":"Manitoba","country":"Canada","postalcode":"A1A1A1","isprimary":"True"}], "contacts":[{"contact_entityfk":1,"type":"2","value":"info@ai-kon.org","isprimary":"True"}]}}'
         data = json.loads(stringJSON)
-        target = controllers.extractOrganizationFromJSON(data)
+        target = controllers.extractOrganizationFromDict(data)
 
         self.assertEqual(control.entityFK, target.entityFK);
         self.assertEqual(control.name, target.name)
@@ -335,11 +338,11 @@ class ESATestCase(TestCase):
             self.assertEqual(c1.value, c2.value)
             self.assertEqual(c1.isprimary, c2.isprimary)
 
-    def test_extractEntityFromJSON(self):
+    def test_extractEntityFromDict(self):
         control = models.Entity.query.first()
         stringJSON = '{"entity_pk":1,"entity_type":"1","addresses":[{"addr_entityfk":1,"address1":"123 Vroom Street","address2":"None","address3":"None","city":"Winnipeg","province":"Manitoba","country":"Canada","postalcode":"A1A1A1","isprimary":"True"}], "contacts":[{"contact_entityfk":1,"type":"2","value":"info@ai-kon.org","isprimary":"True"}]}'
         data = json.loads(stringJSON)
-        target = controllers.extractEntityFromJSON(data)
+        target = controllers.extractEntityFromDict(data)
 
         self.assertEqual(control.pk, target.pk)
         self.assertEqual(control.type, target.type)
@@ -359,11 +362,11 @@ class ESATestCase(TestCase):
             self.assertEqual(c1.value, c2.value)
             self.assertEqual(c1.isprimary, c2.isprimary)
 
-    def test_extractAddressFronJSON(self):
+    def test_extractAddressFromDict(self):
         control = models.Address.query.first()
         stringJSON = '{"addr_entityfk":1,"address1":"123 Vroom Street","address2":"None","address3":"None","city":"Winnipeg","province":"Manitoba","country":"Canada","postalcode":"A1A1A1","isprimary":"True"}'
         data = json.loads(stringJSON)
-        target = controllers.extractAddressFromJSON(data)
+        target = controllers.extractAddressFromDict(data)
 
         self.assertEqual(control.entityFK, target.entityFK)
         self.assertEqual(control.address1, target.address1)
@@ -375,11 +378,11 @@ class ESATestCase(TestCase):
         self.assertEqual(control.postalcode, target.postalcode)
         self.assertEqual(control.isprimary, target.isprimary)
 
-    def test_extractContactFromJSON(self):
+    def test_extractContactFromDict(self):
         control = models.Contact.query.first()
         stringJSON = '{"contact_entityfk":1,"type":"2","value":"info@ai-kon.org","isprimary":"True"}'
         data = json.loads(stringJSON)
-        target = controllers.extractContactFromJSON(data)
+        target = controllers.extractContactFromDict(data)
         
         self.assertEqual(control.entityFK, target.entityFK)
         self.assertEqual(control.type, target.type)
@@ -400,7 +403,8 @@ class ESATestCase(TestCase):
 
         # Insert the organization (should succeed).
         testOrgJSON = controllers.organizationToJSON(testOrg)
-        result1 = controllers.registerOrganization(testOrgJSON, self.db)
+        resultDict = json.loads(testOrgJSON)
+        result1 = controllers.registerOrganization(resultDict, self.db)
         result1Dict = json.loads(result1)
         self.assertEqual(result1Dict['result'], 'True')
 
@@ -408,7 +412,7 @@ class ESATestCase(TestCase):
         isDuplicate = controllers._checkForDuplicateOrganization(testOrg)
         self.assertTrue(isDuplicate)
 
-    def test_checkForDuplicateOrganizationNameJSON(self):
+    def test_checkForDuplicateOrganizationName(self):
         orgName = 'test_checkForDuplicateOrganization'
         orgDesc = 'test org description'
         
@@ -426,17 +430,20 @@ class ESATestCase(TestCase):
         testOrgJSON = controllers.organizationToJSON(testOrg)
 
         # Check for duplicates (should be no duplicates).
-        result1 = controllers.checkForDuplicateOrganizationNameJSON(orgNameJSON)
+        resultDict = json.loads(orgNameJSON)
+        result1 = controllers.checkForDuplicateOrganizationName(resultDict)
         result1Dict = json.loads(result1)
         self.assertEqual(result1Dict['result'], 'False')
 
         # Insert the organization (should succeed).
-        result1 = controllers.registerOrganization(testOrgJSON, self.db)
+        resultDict = json.loads(testOrgJSON)
+        result1 = controllers.registerOrganization(resultDict, self.db)
         result1Dict = json.loads(result1)
         self.assertEqual(result1Dict['result'], 'True')
 
         # Check for duplicates (should be duplicate).
-        result1 = controllers.checkForDuplicateOrganizationNameJSON(orgNameJSON)
+        resultDict = json.loads(orgNameJSON)
+        result1 = controllers.checkForDuplicateOrganizationName(resultDict)
         result1Dict = json.loads(result1)
         self.assertEqual(result1Dict['result'], 'True')
 

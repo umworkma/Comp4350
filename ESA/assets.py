@@ -28,6 +28,7 @@ unit_test_js = Bundle(
 common_css = Bundle(
     'bootstrap/css/bootstrap.css',
     'css/ESA-css.css',
+    'bootstrap/css/bootstrap-responsive.css',
 
     # Assets manager output all css files into one css file
     # Bundle(
