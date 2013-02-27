@@ -33,8 +33,6 @@
                     <!-- navbar-responsive-collapse -->
                     <div class="nav-collapse collapse">
                         <ul class="nav pull-right">
-                            <li class="disabled"><a href="#">Get Start</a></li>
-
                             <!-- Sign up links-->
                             <li class="disabled"><a href="#">Sign Up</a></li>
 
@@ -49,9 +47,25 @@
                 </div>
             </div><!-- end of navbar-bar -->
         </div><!-- end of navbar -->
+        {% if session.logged_in %}
         <!-- display msg div box area -->
         <div class="msg_area">
         </div>
-        {% block content %}{% endblock %}
+        <div class="container-fluid">
+          <div class="row-fluid">
+            <div class="span2">
+            {% include "controls.html" ignore missing with context %}
+            <!--Sidebar content-->
+            </div>
+            <div class="span10">
+        {% endif %}
+            {% block content %}{% endblock %}
+        {% if session.logged_in %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+
     </body>
 </html>
