@@ -59,8 +59,10 @@ class Entity(db.Model):
     __tablename__ = 'entity'
     pk = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.Integer)
-    addresses = db.relationship('Address', cascade='all, delete')
-    contacts = db.relationship('Contact', cascade='all, delete')
+    addresses = db.relationship('Address', cascade='all, delete-orphan', backref='entity')
+    contacts = db.relationship('Contact', cascade='all, delete-orphan', backref='entity')
+    organization = db.relationship('Organization', uselist=False, cascade='all,delete-orphan')
+    person = db.relationship('Person', uselist=False, cascade='all, delete-orphan')
     
     def __init__(self, type=None):
         self.type = type
@@ -68,9 +70,25 @@ class Entity(db.Model):
     def __repr__(self):
         return "<Entity('%s','%s')>" % (self.pk, self.type)
 
+
+class Privilege(db.Model):
+    __tablename__ = 'privilege'
+    pk = db.Column(db.Integer, primary_key=True)
+    privilege = db.Column(db.String(255))
+    ppaList = db.relationship('PrivilegePersonAssignment', cascade='all,delete-orphan', backref='privilege')
+    gpaList = db.relationship('GlobalPrivilegeAssignment', cascade='all, delete-orphan', backref='privilege')
+    
+    def __init__(self, privilege=None):
+        self.privilege = privilege
+        
+    def __repr__(self):
+        return "<Privilege('%s','%s')>" % (self.pk, self.privilege)
+
+
 class Address(db.Model):
     __tablename__ = 'address'
     pk = db.Column(db.Integer, primary_key=True)
+    entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'))
     address1 = db.Column(db.String(45))
     address2 = db.Column(db.String(45))
     address3 = db.Column(db.String(45))
@@ -78,7 +96,6 @@ class Address(db.Model):
     province = db.Column(db.String(45))
     country = db.Column(db.String(45))
     postalcode = db.Column(db.String(45))
-    entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'))
     isprimary = db.Column(db.Boolean)
 
     def __init__(self, address1=None, address2=None, address3=None, city=None, province=None, country=None, postalcode=None, entityFK=None, isprimary=None):
@@ -87,6 +104,7 @@ class Address(db.Model):
         self.address3 = address3
         self.city = city
         self.province = province
+        self.country = country
         self.postalcode = postalcode
         self.entityFK = entityFK
         self.isprimary = isprimary
@@ -102,18 +120,33 @@ class Contact(db.Model):
     value = db.Column(db.String(45))
     isprimary = db.Column(db.Boolean)
 
+    def __init__(self, type=None, value=None, entityFK=None, isprimary=None):
+        self.type = type
+        self.value = value
+        self.entityFK = entityFK
+        self.isprimary = isprimary
+
     def __repr__(self):
         return "<Contact('%s','%s','%s','%s','%s')>" % (self.pk, self.entityFK, self.type, self.value, self.isprimary)
+
 
 class Organization(db.Model):
     __tablename__ = 'organization'
     entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'), primary_key=True)
     name = db.Column(db.String(45))
     description = db.Column(db.Text)
-    entity = db.relationship('Entity',uselist=False, cascade='all, delete')
+    entity = db.relationship('Entity', uselist=False, cascade='all,delete')
+    employees = db.relationship('Member', cascade='all, delete-orphan', backref='organization')
+
+    def __init__(self, name=None, description=None):
+        self.name = name
+        self.description = description
+        #self.entity = models.Entity()  # This doesn't work for some unknowable pythonic reason. Grrr.
+        #self.entity.type = models.TYPE_ORGANIZATION
 
     def __repr__(self):
         return "<Organization('%s','%s','%s')>" % (self.entityFK, self.name, self.description)
+
 
 class Person(db.Model):
     __tablename__ = 'person'
@@ -123,7 +156,57 @@ class Person(db.Model):
     firstname = db.Column(db.String(45))
     lastname = db.Column(db.String(45))
     entity = db.relationship('Entity', uselist=False, cascade='all, delete')
+    memberships = db.relationship('Member', cascade='all, delete-orphan', backref='person')
+    gpaList = db.relationship('GlobalPrivilegeAssignment', cascade='all, delete-orphan', backref='person')
+    
+    def __init__(self, fname=None, lname=None):
+        self.firstname = fname
+        self.lastname = lname
+        #self.entity = Entity(TYPE_EMPLOYEE)    # Stoopid python...
 
     def __repr__(self):
-        return "<Person('%s', '%s', '%s', '%s', '%s')>" % (self.entityFK, self.username, self.password, self.firstname, self.lastname)
-    
+        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname)
+
+
+class Member(db.Model):
+    __tablename__ = 'member'
+    pk = db.Column(db.Integer, primary_key=True)
+    personentityFK = db.Column(db.Integer, db.ForeignKey(Person.entityFK, ondelete='cascade'))
+    organizationentityFK = db.Column(db.Integer, db.ForeignKey(Organization.entityFK, ondelete='cascade'))
+    ppaList = db.relationship('PrivilegePersonAssignment', cascade='all,delete-orphan', backref='member')
+
+    def __init__(self, personentityFK=None, organizationentityFK=None):
+        self.personentityFK = personentityFK
+        self.organizationentityFK = organizationentityFK
+        
+    def __repr__(self):
+        return "<Member('%s','%s','%s')>" % (self.pk, self.personentityFK, self.organizationentityFK)
+
+
+class PrivilegePersonAssignment(db.Model):
+    __tablename__='privilege_member_bridge'
+    pk = db.Column(db.Integer, primary_key=True)
+    memberFK = db.Column(db.Integer, db.ForeignKey(Member.pk, ondelete='cascade')) 
+    privilegeFK = db.Column(db.Integer, db.ForeignKey(Privilege.pk, ondelete='cascade'))
+
+    def __init__(self, privilegeFK=None, memberFK=None):
+        self.privilegeFK = privilegeFK
+        self.memberFK = memberFK
+        
+    def __repr__(self):
+        return "<Privilege('%s','%s','%s')>" % (self.pk, self.privilegeFK, self.memberFK)
+
+
+class GlobalPrivilegeAssignment(db.Model):
+    __tablename__='privilege_person_bridge'
+    pk = db.Column(db.Integer, primary_key=True)
+    privilegeFK = db.Column(db.Integer, db.ForeignKey(Privilege.pk, ondelete='cascade'))
+    personentityFK = db.Column(db.Integer, db.ForeignKey(Person.entityFK, ondelete='cascade'))
+
+    def __init__(self, privilegeFK=None, personentityFK=None):
+        self.privilegeFK = privilegeFK
+        self.personentityFK = personentityFK
+        
+    def __repr__(self):
+        return "<Privilege('%s','%s','%s')>" % (self.pk, self.privilegeFK, self.personentityFK)
+

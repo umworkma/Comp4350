@@ -1,5 +1,3 @@
 *.pyc
-test_controller.db
-test.db
-Thumbs.db
+*.db
 venv/

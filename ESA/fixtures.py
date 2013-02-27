@@ -151,4 +151,114 @@ class ContactData(DataSet):
         value = '2046634588'
         isprimary = 1
 
-all_data = (EntityData, AddressData, OrganizationData, ContactData, PersonData,)
+
+class PrivilegeData(DataSet):
+    class privilege01:
+        privilege = 'REGISTER_NEW_ORGANIZATION'
+
+    class privilege02:
+        privilege = 'MODIFY_ORGANIZATION'
+
+    class privilege03:
+        privilege = 'DELETE_ORGANIZATION'
+
+    class privilege04:
+        privilege = 'VIEW_ALL_ORGANIZATIONS'
+
+    class privilege05:
+        privilege = 'VIEW_ALL_EMPLOYEES_IN_ORG'
+
+    class privilege06:
+        privilege = 'ASSIGN_EMPS_TO_SHIFTS'
+
+    class privilege07:
+        privilege = 'SOME_OTHER_EMP_PRIVILEGE'
+
+    class privilege08:
+        privilege = 'YET_ANOTHER_EMP_PRIVILEGE'
+
+
+class MemberData(DataSet):
+    class member01:
+        personentityFK = 3
+        organizationentityFK = 1
+
+    class member02:
+        personentityFK = 4
+        organizationentityFK = 1
+
+    class member03:
+        personentityFK = 4
+        organizationentityFK = 2
+
+    class member04:
+        personentityFK = 5
+        organizationentityFK = 2
+        
+
+class PrivilegePersonAssignmentData(DataSet):
+    class personPrivilegeAssign01:
+        privilegeFK = 5
+        memberFK = 1
+
+    class personPrivilegeAssign02:
+        privilegeFK = 6
+        memberFK = 1
+
+    class personPrivilegeAssign03:
+        privilegeFK = 7
+        memberFK = 2
+
+    class personPrivilegeAssign04:
+        privilegeFK = 8
+        memberFK = 3
+
+    class personPrivilegeAssign05:
+        privilegeFK = 5
+        memberFK = 4
+
+    class personPrivilegeAssign06:
+        privilegeFK = 6
+        memberFK = 4
+        
+    class personPrivilegeAssign07:
+        privilegeFK = 7
+        memberFK = 3
+
+class GlobalPrivilegeAssignmentData(DataSet):
+    class globalPrivilegeAssign01:
+        privilegeFK = 1
+        personentityFK = 3
+
+    class globalPrivilegeAssign02:
+        privilegeFK = 4
+        personentityFK = 3
+
+    class globalPrivilegeAssign03:
+        privilegeFK = 3
+        personentityFK = 4
+
+    class globalPrivilegeAssign04:
+        privilegeFK = 4
+        personentityFK = 4
+
+    class globalPrivilegeAssign05:
+        privilegeFK = 2
+        personentityFK = 5
+
+    class globalPrivilegeAssign06:
+        privilegeFK = 4
+        personentityFK = 5
+
+all_data = (EntityData, PersonData, AddressData, OrganizationData, ContactData,
+            PrivilegeData, MemberData, PrivilegePersonAssignmentData,
+            GlobalPrivilegeAssignmentData)
+entity_test_data = (EntityData, AddressData, ContactData, OrganizationData, PersonData)
+address_test_data = (AddressData, EntityData)
+contact_test_data = (ContactData, EntityData)
+organization_test_data = (OrganizationData, EntityData, MemberData)
+person_test_data = (PersonData, EntityData, MemberData, GlobalPrivilegeAssignmentData)
+member_test_data = (MemberData, PersonData, OrganizationData, PrivilegePersonAssignmentData)
+privilege_test_data = (PrivilegeData, PrivilegePersonAssignmentData, GlobalPrivilegeAssignmentData, MemberData)
+ppa_test_data = (PrivilegeData, PrivilegePersonAssignmentData, MemberData)
+gpa_test_data = (PrivilegeData, GlobalPrivilegeAssignmentData, MemberData, PersonData)
