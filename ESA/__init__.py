@@ -3,6 +3,7 @@ import os
 from flask_assets import Environment
 from webassets.loaders import PythonLoader as PythonAssetsLoader
 import assets
+# from flask.ext.login import LoginManager
 
 
 env = os.environ.get('ESA')
@@ -21,6 +22,9 @@ assets_env = Environment(app)
 assets_loader = PythonAssetsLoader(assets)
 for name, bundle in assets_loader.load_bundles().iteritems():
     assets_env.register(name, bundle)
+
+# login_manager = LoginManager()
+# login_manager.setup_app(app)
 
 
 import ESA.application

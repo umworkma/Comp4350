@@ -11,3 +11,4 @@ fixture==1.4
 twill==0.9
 webassets==0.8
 MySQL-python==1.2.4
+Flask-Login==0.1.3
