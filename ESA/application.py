@@ -2,19 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, abort, ses
 from ESA import app
 from flask.ext.testing import TestCase
 
-@app.route('/_submit_form')
-def submit_form():
-    #get all user information
-    username = request.args.get('username')
-    fname = request.args.get('fname')
-    lname = request.args.get('lname')
-    email = request.args.get('email')
-    pwd1 = request.args.get('pwd1')
-    phonenum = request.args.get('phonenum')
-    address = request.args.get('address')
-    #create a jason object and send it back to client 
-    return jsonify(username=username, fname=fname, lname=lname, email=email, pwd1=pwd1, phonenum=phonenum, address=address)
-
 import config
 import models
 import controllers
