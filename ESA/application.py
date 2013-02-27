@@ -24,6 +24,15 @@ app.config.from_object(config)
 db = models.init_app(app)
 app.db = db
 
+# helper method to check if request header contain json
+# source http://flask.pocoo.org/snippets/45/
+def is_request_json():
+    if hasattr(request, 'accept_mimetypes'):
+        best = request.accept_mimetypes.best_match(['application/json', 'text/html'])
+        return best == 'application/json' and request.accept_mimetypes[best] > request.accept_mimetypes['text/html']
+    else:
+        return False
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -41,13 +50,17 @@ def register_organization():
 
 @app.route('/_check_dup_org_name', methods=['GET', 'POST'])
 def check_dup_org_name():
-    result = controllers.checkForDuplicateOrganizationNameJSON(request.form.keys()[0])
-    return result
+    if request.method == 'POST' and is_request_json():
+        result = controllers.checkForDuplicateOrganizationName(request.json)
+        return result
+
+    else :
+        return jsonify(msg='Assess define')
 
 @app.route('/_submit_org_form', methods=['GET', 'POST'])
 def submit_org_form():
-    if request.method == 'POST':
-        result = controllers.registerOrganization(request.form.keys()[0],db)
+    if request.method == 'POST' and is_request_json():
+        result = controllers.registerOrganization(request.json,db)
         return result
 
     else:
