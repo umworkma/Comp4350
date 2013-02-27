@@ -131,6 +131,27 @@ class PersonTestCase(TestCase):
             count += 1
             self.assertEqual(di.__repr__(), ti.__repr__())
         self.assertEqual(count, 2)
+        
+        
+    """ Test that we can retieve global privilege assignments from a person. """
+    def test_person_gpa_relationship(self):
+        # Define prerequisite data.
+        key = 5
+        # Retrieve the target object directly.
+        directList = models.GlobalPrivilegeAssignment.query.filter_by(personentityFK=key)
+        self.assertIsNotNone(directList)
+        # Retrieve the containing object.
+        host = models.Person.query.filter_by(entityFK=key).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.entityFK, key)
+        # Retrieve the target object through the containing object.
+        targetList = host.gpaList
+        self.assertIsNotNone(targetList)
+        count = 0
+        for di,ti in zip(directList,targetList):
+            count += 1
+            self.assertEqual(di.__repr__(), ti.__repr__())
+        self.assertEqual(count, 2)
     
 
     """ Test adding a Person. """
@@ -260,6 +281,7 @@ def suite():
     suite.addTest(PersonTestCase('test_person_entity_relationship_3'))
     
     suite.addTest(PersonTestCase('test_person_members_relationship_1'))
+    suite.addTest(PersonTestCase('test_person_gpa_relationship'))
     
     suite.addTest(PersonTestCase('test_person_add'))
     suite.addTest(PersonTestCase('test_person_update'))

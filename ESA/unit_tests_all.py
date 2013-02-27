@@ -6,10 +6,10 @@ import unit_tests_organization
 import unit_tests_person
 import unit_tests_address
 import unit_tests_contact
-#import unit_tests_privilege
-#import unit_tests_member
-#import unit_tests_privilegepersonassignment
-#import unit_tests_globalprivilegeassignment
+import unit_tests_privilege
+import unit_tests_member
+import unit_tests_privilegepersonassignment
+import unit_tests_globalprivilegeassignment
 
 
 def suite():
@@ -22,10 +22,10 @@ def suite():
     allUnitTests.addTest(unit_tests_contact.suite())
     allUnitTests.addTest(unit_tests_organization.suite())
     allUnitTests.addTest(unit_tests_person.suite())
-    #allUnitTests.addTest(unit_tests_privilege.suite())
-    #allUnitTests.addTest(unit_tests_member.suite())
-    #allUnitTests.addTest(unit_tests_privilegepersonassignment.suite())
-    #allUnitTests.addTest(unit_tests_globalprivilegeassignment.suite())
+    allUnitTests.addTest(unit_tests_privilege.suite())
+    allUnitTests.addTest(unit_tests_member.suite())
+    allUnitTests.addTest(unit_tests_privilegepersonassignment.suite())
+    allUnitTests.addTest(unit_tests_globalprivilegeassignment.suite())
 
     return allUnitTests
 

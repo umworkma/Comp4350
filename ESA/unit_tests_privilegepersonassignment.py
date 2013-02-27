@@ -21,7 +21,7 @@ class PrivilegePersonAssignmentTestCase(TestCase):
     @classmethod
     def setUpClass(self):
         models.create_tables(self.app)
-        fixtures.install(self.app, *fixtures.all_data)
+        fixtures.install(self.app, *fixtures.ppa_test_data)
         self.db = models.init_app(self.app)
 
     @classmethod
@@ -33,7 +33,7 @@ class PrivilegePersonAssignmentTestCase(TestCase):
         self.db.session.remove()
         self.db.drop_all()
         models.create_tables(self.app)
-        fixtures.install(self.app, *fixtures.all_data)
+        fixtures.install(self.app, *fixtures.ppa_test_data)
         self.db = models.init_app(self.app)
 
 
@@ -77,75 +77,50 @@ class PrivilegePersonAssignmentTestCase(TestCase):
 
     """ Test that we can retieve a permission from the person-assignment. """
     def test_ppa_privilege_relationship(self):
-        direct = models.Privilege.query.filter_by(pk=5).first()
+        # Define prerequisite data.
+        key = 5
+        ppaKey = 1
+        # Retrieve the target object directly.
+        direct = models.Privilege.query.filter_by(pk=key).first()
         self.assertIsNotNone(direct)
-        self.assertEqual(direct.pk, 5)
-
-        host = models.PrivilegePersonAssignment.query.filter_by(pk=1).first()
+        self.assertEqual(direct.pk, key)
+        # Retrieve the containing object.
+        host = models.PrivilegePersonAssignment.query.filter_by(pk=ppaKey).first()
         self.assertIsNotNone(host)
         self.assertEqual(host.privilegeFK, direct.pk)
-
+        # Retrieve the target object through the containing object.
         target = host.privilege
         self.assertIsNotNone(target)
-        self.assertEqual(target.pk, direct.pk)
-        self.assertEqual(target.privilege, direct.privilege)
-    """ Test that we can retieve a person-assignments from a privilege. """
-    def test_privilege_ppa_relationship(self):
-        directList = models.PrivilegePersonAssignment.query.filter_by(privilegeFK=5)
-        self.assertIsNotNone(directList)
-
-        host = models.Privilege.query.filter_by(pk=5).first()
-        self.assertIsNotNone(host)
-        self.assertEqual(host.pk, 5)
-
-        targetList = host.ppaList
-        self.assertIsNotNone(targetList)
-        resultCount = 0
-        for di,ti in zip(directList, targetList):
-            resultCount += 1
-            self.assertEqual(di.pk, ti.pk)
-            self.assertEqual(di.memberFK, ti.memberFK)
-            self.assertEqual(di.privilegeFK, ti.privilegeFK)
-        self.assertGreater(resultCount, 0)
+        self.assertEqual(direct.__repr__(), target.__repr__())
+    
 
 
     """ Test that we can retieve a member from the person-assignment. """
     def test_ppa_member_relationship(self):
-        direct = models.Member.query.filter_by(pk=1).first()
+        # Define prerequisite data.
+        key = 1
+        # Retrieve the target object directly.
+        direct = models.Member.query.filter_by(pk=key).first()
         self.assertIsNotNone(direct)
-        self.assertEqual(direct.pk, 1)
-
-        host = models.PrivilegePersonAssignment.query.filter_by(pk=1).first()
+        self.assertEqual(direct.pk, key)
+        # Retrieve the containing object.
+        host = models.PrivilegePersonAssignment.query.filter_by(pk=key).first()
         self.assertIsNotNone(host)
         self.assertEqual(host.memberFK, direct.pk)
-
+        # Retrieve the target object through the containing object.
         target = host.member
         self.assertIsNotNone(target)
-        self.assertEqual(target.pk, direct.pk)
-        self.assertEqual(target.personentityFK, direct.personentityFK)
-        self.assertEqual(target.organizationentityFK, direct.organizationentityFK)
-    """ Test that we can retieve a person-assignments from a member. """
-    def test_member_ppa_relationship(self):
-        directList = models.PrivilegePersonAssignment.query.filter_by(memberFK=1)
-        self.assertIsNotNone(directList)
-
-        host = models.Member.query.filter_by(pk=1).first()
-        self.assertIsNotNone(host)
-        self.assertEqual(host.pk, 1)
-
-        targetList = host.memberPrivileges
-        self.assertIsNotNone(targetList)
-        resultCount = 0
-        for di,ti in zip(directList, targetList):
-            resultCount += 1
-            self.assertEqual(di.pk, ti.pk)
-            self.assertEqual(di.memberFK, ti.memberFK)
-            self.assertEqual(di.privilegeFK, ti.privilegeFK)
-        self.assertGreater(resultCount, 0)
+        self.assertEqual(direct.__repr__(), target.__repr__())
 
 
     """ Test adding a Privilege to the database """
     def test_ppa_add(self):
+        # Verify state of related tables before operation.
+        privilegeCount = models.Privilege.query.count()
+        ppaCount = models.PrivilegePersonAssignment.query.count()
+        #gpaCount = models.GlobalPrivilegeAssignment.query.count()
+        memberCount = models.Member.query.count()
+        
         # Define prerequisite data.
         memberKey = 4
         privKey = 7
@@ -168,10 +143,26 @@ class PrivilegePersonAssignmentTestCase(TestCase):
             self.assertEqual(item.privilegeFK, privKey)
             count += 1
         self.assertEqual(count, 1)
+        
+        # Verify state of related tables before operation.
+        privilegeCountAfter = models.Privilege.query.count()
+        ppaCountAfter = models.PrivilegePersonAssignment.query.count()
+        #gpaCountAfter = models.GlobalPrivilegeAssignment.query.count()
+        memberCountAfter = models.Member.query.count()
+        self.assertTrue(privilegeCountAfter == privilegeCount)        
+        self.assertTrue(ppaCountAfter == ppaCount + 1)        
+        #self.assertTrue(gpaCountAfter == gpaCountAfter)
+        self.assertEqual(memberCount, memberCountAfter)
 
 
     """ Test deleting a privilege. """
     def test_ppa_delete(self):
+        # Verify state of related tables before operation.
+        privilegeCount = models.Privilege.query.count()
+        ppaCount = models.PrivilegePersonAssignment.query.count()
+        #gpaCount = models.GlobalPrivilegeAssignment.query.count()
+        memberCount = models.Member.query.count()
+        
         # Define required test data.
         memberKey = 4
         privKey = 5
@@ -187,6 +178,16 @@ class PrivilegePersonAssignmentTestCase(TestCase):
         # Verify that the record has been removed.
         target = models.PrivilegePersonAssignment.query.filter_by(privilegeFK=privKey, memberFK=memberKey).first()
         self.assertIsNone(target)
+        
+        # Verify state of related tables before operation.
+        privilegeCountAfter = models.Privilege.query.count()
+        ppaCountAfter = models.PrivilegePersonAssignment.query.count()
+        #gpaCountAfter = models.GlobalPrivilegeAssignment.query.count()
+        memberCountAfter = models.Member.query.count()
+        self.assertTrue(privilegeCountAfter == privilegeCount)        
+        self.assertTrue(ppaCountAfter == ppaCount - 1)        
+        #self.assertTrue(gpaCountAfter == gpaCountAfter)
+        self.assertEqual(memberCount, memberCountAfter)
 
         #self.resetDB()
 
@@ -198,16 +199,8 @@ def suite():
     # Add tests to suite.
     suite.addTest(PrivilegePersonAssignmentTestCase('test_privilegePersonAssignment_model'))
     suite.addTest(PrivilegePersonAssignmentTestCase('test_ppa_privilege_relationship'))
-    suite.addTest(PrivilegePersonAssignmentTestCase('test_privilege_ppa_relationship'))
     suite.addTest(PrivilegePersonAssignmentTestCase('test_ppa_member_relationship'))
-    suite.addTest(PrivilegePersonAssignmentTestCase('test_member_ppa_relationship'))
     suite.addTest(PrivilegePersonAssignmentTestCase('test_ppa_add'))
-
-    # Tests that must be run last b/c they delete from the DB.
-    # Since we aren't resetting, they might remove info other tests need.
-    # If we chose to call resetDB() after any of these tests, they
-    # could be moved up to the previous section, but they would
-    # take a little bit longer to run.
     suite.addTest(PrivilegePersonAssignmentTestCase('test_ppa_delete'))
     
     return suite

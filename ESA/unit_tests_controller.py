@@ -645,18 +645,18 @@ class ESATestCase(TestCase):
         # Validate the result.
         self.assertTrue(result)
 
-        '''# Sub-Test 4: Duplicate permission.
+        # Sub-Test 4: Duplicate permission.
         # Define prerequisite data.
         privilegeKey = 4
         personKey = 4
         # Get the result of the tested method.
         result = controllers._revokePrivilegeForPerson(self.db, privilegeKey, personKey, None)
         # Validate the result.
-        self.assertTrue(result)'''
+        self.assertTrue(result)
 
         self.resetDB()
 
-    '''def test__revokePrivilegeForPerson_Person(self):
+    def test__revokePrivilegeForPerson_Person(self):
         # Sub-Test 1: Invalid person key.
         # Define prerequisite data.
         privilegeKey = 7
@@ -707,17 +707,7 @@ class ESATestCase(TestCase):
         # Validate the result.
         self.assertTrue(result)
 
-        # Sub-Test 6: Duplicate permission, but different organization.
-        # Define prerequisite data.
-        privilegeKey = 7
-        personKey = 4
-        organizationKey = 1
-        # Get the result of the tested method.
-        result = controllers._revokePrivilegeForPerson(self.db, privilegeKey, personKey, organizationKey)
-        # Validate the result.
-        self.assertFalse(result)
-
-        self.resetDB()'''
+        self.resetDB()
         
 
 if __name__ == "__main__":

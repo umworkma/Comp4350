@@ -99,6 +99,27 @@ class MemberTestCase(TestCase):
         target = host.person
         self.assertIsNotNone(target)
         self.assertEqual(direct.__repr__(), target.__repr__())
+        
+        
+    """ Test that we can retieve a person-assignments from a member. """
+    def test_member_ppa_relationship(self):
+        # Define prerequisite data.
+        key = 4
+        # Retrieve the target object directly.
+        directList = models.PrivilegePersonAssignment.query.filter_by(memberFK=key)
+        self.assertIsNotNone(directList)
+        # Retrieve the containing object.
+        host = models.Member.query.filter_by(pk=key).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.pk, key)
+        # Retrieve the target object through the containing object.
+        targetList = host.ppaList
+        self.assertIsNotNone(targetList)
+        count = 0
+        for di,ti in zip(directList, targetList):
+            count += 1
+            self.assertEqual(di.__repr__(), ti.__repr__())
+        self.assertEqual(count, 2)
 
 
     """ Test adding a Member (linking a person to an organization). """
@@ -141,7 +162,12 @@ class MemberTestCase(TestCase):
 
 
     """ Test deleting a member. """
-    '''def test_member_delete(self):
+    def test_member_delete(self):
+        # Verify state of related tables before operation.
+        personCount = models.Person.query.count()
+        orgCount = models.Organization.query.count()
+        memberCount = models.Member.query.count()
+        
         # Define required test data.
         personKey = 4
         orgKey = 1
@@ -158,8 +184,16 @@ class MemberTestCase(TestCase):
         # Verify that the record has been removed.
         target = models.Member.query.filter_by(personentityFK=personKey, organizationentityFK=orgKey).first()
         self.assertIsNone(target)
+        
+        # Verify state of related tables after operation.
+        personCountAfter = models.Person.query.count()
+        orgCountAfter = models.Organization.query.count()
+        memberCountAfter = models.Member.query.count()
+        self.assertEqual(personCount, personCountAfter)
+        self.assertEqual(orgCount, orgCountAfter)
+        self.assertTrue(memberCountAfter == memberCount - 1)
 
-        #self.resetDB()'''
+        #self.resetDB()
 
 
 def suite():
@@ -170,14 +204,9 @@ def suite():
     suite.addTest(MemberTestCase('test_member_model'))
     suite.addTest(MemberTestCase('test_member_organization_relationship'))
     suite.addTest(MemberTestCase('test_member_person_relationship'))
+    suite.addTest(MemberTestCase('test_member_ppa_relationship'))
     suite.addTest(MemberTestCase('test_member_add'))
-
-    # Tests that must be run last b/c they delete from the DB.
-    # Since we aren't resetting, they might remove info other tests need.
-    # If we chose to call resetDB() after any of these tests, they
-    # could be moved up to the previous section, but they would
-    # take a little bit longer to run.
-    #suite.addTest(MemberTestCase('test_member_delete'))
+    suite.addTest(MemberTestCase('test_member_delete'))
     
     return suite
     

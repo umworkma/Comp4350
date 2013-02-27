@@ -70,11 +70,52 @@ class PrivilegeTestCase(TestCase):
         current = models.Privilege.query.filter_by(pk=8).first()
         self.assertIsNotNone(current)
         self.assertEqual(current.privilege, 'YET_ANOTHER_EMP_PRIVILEGE')
-
+        
+        
+    """ Test that we can retieve a person-assignments from a privilege. """
+    def test_privilege_ppa_relationship(self):
+        # Define prerequisite data.
+        key = 5
+        # Retrieve the target object directly.
+        directList = models.PrivilegePersonAssignment.query.filter_by(privilegeFK=key)
+        self.assertIsNotNone(directList)
+        # Retrieve the containing object.
+        host = models.Privilege.query.filter_by(pk=key).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.pk, key)
+        # Retrieve the target object through the containing object.
+        targetList = host.ppaList
+        count = 0
+        for di,ti in zip(directList, targetList):
+            count += 1
+            self.assertEqual(di.__repr__(), ti.__repr__())
+        self.assertEqual(count, 2)
+        
+        
+    """ Test that we can retieve a global privilege assignment from a privilege relationship. """
+    def test_privilege_gpa_relationship(self):
+        # Define prerequisite data.
+        gpaKey = 3
+        privKey = 4
+        # Retrieve all objects associated with the containing object directly.
+        directList = models.GlobalPrivilegeAssignment.query.filter_by(privilegeFK=privKey)
+        self.assertIsNotNone(directList)
+        # Retrieve the containing object.
+        host = models.Privilege.query.filter_by(pk=privKey).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.pk, privKey)
+        # Retrieve all associated objects through the containing object.
+        targetList = host.gpaList
+        self.assertIsNotNone(targetList)
+        resultCount = 0
+        for di,ti in zip(directList, targetList):
+            resultCount += 1
+            self.assertEqual(di.pk, ti.pk)
+            self.assertEqual(di.personentityFK, ti.personentityFK)
+            self.assertEqual(di.privilegeFK, ti.privilegeFK)
+        self.assertGreater(resultCount, 0)
 
     
-
-
     """ Test adding a Privilege to the database """
     def test_privilege_add(self):
         # Verify state of related tables before operation.
@@ -110,9 +151,9 @@ class PrivilegeTestCase(TestCase):
         self.assertTrue(ppaCountAfter == ppaCount)
         gpaCountAfter = models.GlobalPrivilegeAssignment.query.count()
         self.assertTrue(gpaCountAfter == gpaCountAfter)
+    
 
-
-
+    
     """ Test updating an existing record. """
     def test_privilege_update(self):
         # Verify state of related tables before operation.
@@ -149,8 +190,8 @@ class PrivilegeTestCase(TestCase):
         self.assertTrue(ppaCountAfter == ppaCount)
         gpaCountAfter = models.GlobalPrivilegeAssignment.query.count()
         self.assertTrue(gpaCountAfter == gpaCountAfter)
-
-
+    
+    
     """ Test deleting a privilege. """
     def test_privilege_delete(self):
         # Verify state of related tables before operation.
@@ -183,7 +224,7 @@ class PrivilegeTestCase(TestCase):
         self.assertTrue(gpaCountAfter == gpaCountAfter)
 
         #self.resetDB()
-
+    
 
 def suite():
     # Define the container for this module's tests.
@@ -191,14 +232,12 @@ def suite():
 
     # Add tests to suite.
     suite.addTest(PrivilegeTestCase('test_privilege_model'))
+    
+    suite.addTest(PrivilegeTestCase('test_privilege_ppa_relationship'))
+    suite.addTest(PrivilegeTestCase('test_privilege_gpa_relationship'))
+    
     suite.addTest(PrivilegeTestCase('test_privilege_add'))
     suite.addTest(PrivilegeTestCase('test_privilege_update'))
-
-    # Tests that must be run last b/c they delete from the DB.
-    # Since we aren't resetting, they might remove info other tests need.
-    # If we chose to call resetDB() after any of these tests, they
-    # could be moved up to the previous section, but they would
-    # take a little bit longer to run.
     suite.addTest(PrivilegeTestCase('test_privilege_delete'))
     
     return suite

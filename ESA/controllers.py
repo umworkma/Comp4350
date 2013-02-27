@@ -424,14 +424,11 @@ def _revokePrivilegeForPerson(db, privilegeKey,personKey,organizationKey=None):
                     returnValue = True
     elif privilege is not None and person is not None:
         gpa = models.GlobalPrivilegeAssignment.query.filter_by(privilegeFK=privilegeKey, personentityFK=personKey).first()
-        print gpa
         if gpa is not None:
-            print 'deleting gpa'
             db.session.delete(gpa)
             db.session.commit()
             returnValue = True
         else:
-            print 'duplicate gpa'
             returnValue = True
 
     return returnValue
