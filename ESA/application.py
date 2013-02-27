@@ -53,6 +53,10 @@ def submit_org_form():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
+@app.route('/home')
+def home():
+    session.logged_in = True
+    return render_template('home.html')
 
 @app.teardown_request
 def shutdown_session(exception=None):
