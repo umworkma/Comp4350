@@ -158,3 +158,14 @@ function createJsonObject() {
     return false;
 
 }
+
+// create list of organizations
+function createOrgListJSON() {
+    // Process and output list of organizations in
+    // an html table
+    success = function(data) {
+       
+    }
+
+    $.get($SCRIPT_ROOT + '/_get_org_list', success, "json");
+}   

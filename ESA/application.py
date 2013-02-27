@@ -58,7 +58,8 @@ def get_org_list():
 
 @app.route('/browse_orgs/')
 def browse_orgs():
-    return render_template('list_organizations.html')
+    data = get_org_list()
+    return render_template('list_organizations.html', orgs=data)
 
 @app.teardown_request
 def shutdown_session(exception=None):

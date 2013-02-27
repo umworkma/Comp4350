@@ -2,9 +2,9 @@ from flask import *
 import models
 
 
-# Organizations
+# Organizations (Sorted by Name)
 def getAllOrganizations(db):
-    results = models.Organization.query.all()
+    results = models.Organization.query.order_by(models.Organization.name)
     return results
 
 def getAllOrganizationsJSON(db):

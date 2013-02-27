@@ -1,5 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
         <h2>Browse Organizations</h2>
-        
+	{{orgs}}
+        <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th>Organization Name</th>
+	  </tr>
+	</thead>
+	<tbody>
+	{% for org in orgs %}
+	  <tr><td>{{ org|safe }}</td></tr>
+	{% endfor %}
+	</tbody>
+	</table>
 {% endblock %}
