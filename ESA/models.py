@@ -208,3 +208,47 @@ class GlobalPrivilegeAssignment(db.Model):
     def __repr__(self):
         return "<Privilege('%s','%s','%s')>" % (self.pk, self.privilegeFK, self.personentityFK)
 
+class Event(db.Model):
+    __tablename__ = 'event'
+    pk = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    description = db.Column(db.Text)
+    startdate = db.Column(db.DateTime)
+    enddate = db.Column(db.DateTime)
+    organizationFK = db.Column(db.Integer, db.ForeignKey(Organization.entityFK, ondelete='cascade'))
+    eventcol = db.Column(db.String(45))
+    eventcol1 = db.Column(db.String(45))
+
+    def __init__(self, name=None, description=None, startdate=None, enddate=None, organizationFK=None, eventcol=None, eventcol1=None):
+        self.name = name
+        self.description = description
+        self.startdate = startdate
+        self.enddate = enddate
+        self.organizationFK = organizationFK
+        
+    def __repr__(self):
+        return "<Event('%s','%s', '%s', '%s', '%s', '%s')>" % (self.pk, self.name, self.description, self.startdate, self.enddate, self.organizationFK)
+
+
+class Shift(db.Model):
+    __tablename__ = 'shift'
+    pk = db.Column(db.Integer, primary_key=True)
+    eventFK = db.Column(db.Integer, db.ForeignKey(event.pk, ondelete='cascade'))
+    startdatetime = db.Column(db.DateTime)
+    enddatetime = db.Column(db.DateTime)
+    location = db.Column(db.String(100))
+    minWorkers = db.Column(db.Integer)
+    maxWorkers = db.Column(db.Integer)
+
+    def __init__(self, eventFK=None, startdatetime=None, enddatetime=None, location=None, minWorkers=None, maxWorkers=None):
+        self.eventFK = eventFK
+        self.startdatetime = startdatetime
+        self.enddatetime = enddatetime
+        self.location = location
+        self.minWorkers = minWorkers
+        self.maxWorkers = maxWorkers
+
+    def __repr__(self):
+        return "<Shift('%s', '%s', '%s', '%s', '%s', '%s', '%s')>" % (self.pk, self.eventFK, self.startdatetime, self.enddatetime, self.location, self.minWorkers, self.maxWorkers)
+
+
