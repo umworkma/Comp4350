@@ -8,14 +8,7 @@
 	</thead>
 	<tbody>
 	<script type = "text/javascript">
-		var orgs = eval({{data|safe}});
-		for (var i = 0; i <  orgs.OrgNames.length; i++) {
-			var name = orgs.OrgNames[i].org_name;
-			var entityFK = orgs.OrgNames[i].org_entityfk;
-			$("tbody").append("<tr><td>");
-			$("tbody").append(name);
-			$("tbody").append("</td></tr>\n");
-		}
+		$(document).ready(createOrgListTableContents({{data|safe}}));
 	</script>
 	</tbody>
 	</table>
