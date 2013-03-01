@@ -37,7 +37,7 @@
                             {# check current session if not login display login links else display logout #}
                             {% if not current_user.is_authenticated() %}
                             <!-- Sign up and Login links-->
-                            <li class="disabled"><a href="#">Sign Up</a></li>
+                            <li class="disabled"><a href="employee_reg_form.html">Sign Up</a></li>
                             <li><a href="/login">Login</a></li>
                             {% else %}
                             <!-- Current user first name -->
