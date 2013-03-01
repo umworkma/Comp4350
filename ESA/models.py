@@ -166,6 +166,22 @@ class Person(db.Model):
         self.password = passwd
         #self.entity = Entity(TYPE_EMPLOYEE)    # Stoopid python...
 
+    # require by login manager
+    def is_authenticated(self):
+        return True
+
+    # require by login manager
+    def is_active(self):
+        return True
+
+    # require by login manager
+    def is_anonymous(self):
+        return False
+
+    # require by login manager
+    def get_id(self):
+        return unicode(self.entityFK)
+
     def __repr__(self):
         return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname)
 

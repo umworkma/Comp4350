@@ -846,5 +846,82 @@ class ESATestCase(TestCase):
             self.assertEqual(c1.isprimary, c2.isprimary)
         self.resetDB()
 
+    # Test functionality of the get person by id 
+    def test_getPersonById(self):
+        person = controllers.getPersonById(0, self.db)
+        self.assertIsNone(person)
+
+        person = controllers.getPersonById(1, self.db)
+        self.assertIsNone(person)
+
+        person = controllers.getPersonById(2, self.db)
+        self.assertIsNone(person)
+
+        person = controllers.getPersonById(3, self.db)
+        self.assertIsNotNone(person)
+        self.assertEqual(person.firstname, 'Chris')
+        self.assertEqual(person.lastname, 'Workman')
+        self.assertEqual(person.username, 'user0')
+        self.assertEqual(person.password, 'password0')
+
+        person = controllers.getPersonById(4, self.db)
+        self.assertIsNotNone(person)
+        self.assertEqual(person.firstname, 'Ryoji')
+        self.assertEqual(person.lastname, 'Betchaku')
+        self.assertEqual(person.username, 'user1')
+        self.assertEqual(person.password, 'password1')
+
+        person = controllers.getPersonById(5, self.db)
+        self.assertIsNotNone(person)
+        self.assertEqual(person.firstname, 'Dan')
+        self.assertEqual(person.lastname, 'Nelson')
+        self.assertEqual(person.username, 'meat_lol')
+        self.assertEqual(person.password, 'password2')
+
+        person = controllers.getPersonById(6, self.db)
+        self.assertIsNone(person)
+
+        self.resetDB
+
+    # Test functionality of the get person by username
+    def test_getPersonByUsername(self):
+        person = controllers.getPersonByUsername('', self.db)
+        self.assertIsNone(person)
+
+        person = controllers.getPersonById(0, self.db)
+        self.assertIsNone(person)
+
+        person = controllers.getPersonById(3, self.db)
+        self.assertIsNotNone(person)
+
+        result = controllers.getPersonByUsername(person.username, self.db)
+        self.assertIsNotNone(result)
+        self.assertEqual(result.firstname, person.firstname)
+        self.assertEqual(result.lastname, person.lastname)
+        self.assertEqual(result.username, person.username)
+        self.assertEqual(result.password, person.password)
+
+        person = controllers.getPersonById(4, self.db)
+        self.assertIsNotNone(person)
+
+        result = controllers.getPersonByUsername(person.username, self.db)
+        self.assertIsNotNone(result)
+        self.assertEqual(result.firstname, person.firstname)
+        self.assertEqual(result.lastname, person.lastname)
+        self.assertEqual(result.username, person.username)
+        self.assertEqual(result.password, person.password)
+
+        person = controllers.getPersonById(5, self.db)
+        self.assertIsNotNone(person)
+
+        result = controllers.getPersonByUsername(person.username, self.db)
+        self.assertIsNotNone(result)
+        self.assertEqual(result.firstname, person.firstname)
+        self.assertEqual(result.lastname, person.lastname)
+        self.assertEqual(result.username, person.username)
+        self.assertEqual(result.password, person.password)
+
+        self.resetDB
+
 if __name__ == "__main__":
     unittest.main()

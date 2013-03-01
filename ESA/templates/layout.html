@@ -39,9 +39,9 @@
 
                             <!-- Login/Logout links -->{# check current session if not login display login links else display logout #}
                             {% if not session.logged_in %}
-                            <li class="disabled"><a href="#">Log in</a></li>
+                            <li class="disabled"><a href="/login">Login</a></li>
                             {% else %}
-                            <li class="disabled"><a href="#">Log Out</a></li>
+                            <li class="disabled"><a href="/logout">LogOut</a></li>
                             {% endif %}
                         </ul>
                     </div>

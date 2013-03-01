@@ -1,0 +1,38 @@
+{# COMMENT: Insert the line below to every html start of render page to let qunit to include the content of the for testing which will exclude the layout.html page #}
+{% if qunit is undefined %}{% extends "layout.html" %}{% endif %}
+{% block content %}
+        <div class="container">
+            <h2>Login</h2>
+            {% for message in get_flashed_messages() %}
+            <div class=flash>{{ message }}</div>
+            {% endfor %}
+            <div class="well">
+            <form class="form-horizontal" action="/login" method="post">
+                <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="username">User Name</label>
+                    <div class="controls">
+                         <input type="text" name="username" placeholder="Username">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="password">Password</label>
+                    <div class="controls">
+                        <input type="password" name="password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <!-- At server side: hard coded to remember user, due to speeding too much time on flask-login doesn't remember login user at the next request, but it works at once remember set to true. -->
+                        <!-- <label class="checkbox">
+                        <input type="checkbox" name="rememberMe" value="True"> Remember me
+                        </label> -->
+                        <button type="submit" class="btn">Login</button>
+                    </div>
+                </div>
+            </fieldset>
+            </form>
+            </div>
+        </div>
+
+{% endblock %}

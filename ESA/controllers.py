@@ -1,6 +1,19 @@
 from flask import *
 import models
 
+# Login
+def getPersonById(empId, db):
+    return models.Person.query.get(empId)
+
+def getPersonByUsername(username, db):
+    if username:
+        person = models.Person.query.filter_by(username=username).first()
+
+        if person is not None:
+            return person
+    
+    return None
+
 # Employees
 
 def registerEmployee(employeeDict, db):
