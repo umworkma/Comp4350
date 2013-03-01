@@ -63,12 +63,13 @@ def submit_org_form():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
-@app.route('/organizations')
+@app.route('/organization')
 def browse_orgs():
     data = controllers.getAllOrgNamesJSON(db)
-    if is_request_json():
+    if request.method == 'GET' and is_request_json():
         return data;
     else:
+        session.logged_in = True
         return render_template('browse_orgs.html', data=data)
 
 @app.route('/_submit_employee_form', methods=['GET', 'POST'])
