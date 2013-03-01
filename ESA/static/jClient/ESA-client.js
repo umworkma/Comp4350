@@ -230,15 +230,6 @@ function createJsonObjectForOrganization() {
 
 }
 
-function createOrgListTableContents(data) {
-  var orgs = eval(data);
-  for (var i = 0; i <  orgs.OrgNames.length; i++) {
-    var name = orgs.OrgNames[i].org_name;
-    var entityFK = orgs.OrgNames[i].org_entityfk;
-    $("tbody").append("<tr><td>" + name + "</td></tr>");
-  }
-}
-
 // create json object and send it to server
 function createJsonObjectForEmployee() {
     data = {

@@ -7,9 +7,9 @@
 	<tr><th>Organization Listing</th></tr>
 	</thead>
 	<tbody>
-	<script type = "text/javascript">
-		$(document).ready(createOrgListTableContents({{data|safe}}));
-	</script>
+        	{% for org in data.OrgNames %}
+		<tr><td>{{org.org_name}}</td></tr>
+  		{% endfor %}
 	</tbody>
 	</table>
 </div>

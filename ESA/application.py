@@ -70,7 +70,7 @@ def browse_orgs():
         return data;
     else:
         session.logged_in = True
-        return render_template('browse_orgs.html', data=data)
+        return render_template('browse_orgs.html', data=json.loads(data))
 
 @app.route('/_submit_employee_form', methods=['GET', 'POST'])
 def submit_employee_form():
