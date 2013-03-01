@@ -6,7 +6,6 @@ import models
 def registerEmployee(employeeDict, db):
     result = False
     failCause = 'Unknown'
-    # data = json.loads(jsonString)
     employee = extractEmployeeFromDict(employeeDict)
     isDuplicate = _checkForDuplicateEmployee(employee)
 
@@ -16,10 +15,10 @@ def registerEmployee(employeeDict, db):
         db.session.add(employee)
         db.session.commit()
         result = True
-        if(result is True):
-            resultjson = '{"result": "True"}'
-        else:
-            resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
+    if(result is True):
+        resultjson = '{"result": "True"}'
+    else:
+        resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
     return resultjson
 
 
@@ -36,9 +35,9 @@ def _checkForDuplicateEmployee(employee):
 
 """ Allows the view to check whether a given  username already exists
     in the application. Returns True if duplicated. """
-def checkForDuplicateEmployeeUserNameJSON(employeeUserNameJSON):
+def checkForDuplicateEmployeeUserName(employeeUserNameDict):
     result = False
-    employeeUserNameDict = json.loads(employeeUserNameJSON)
+   
     if(employeeUserNameDict is not None and employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY] is not None):
         employeeUserName = employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY]
         employee = models.Employee()

@@ -42,15 +42,18 @@ def load_employee_reg_form():
 
 @app.route('/_check_dup_employee_user_name', methods=['GET', 'POST'])
 def check_dup_employee_user_name():
-    result = controllers.checkForDuplicateEmployeeUserNameJSON(request.form.keys()[0])
-    return result	
+    if request.method == 'POST' and is_request_json():
+        result = controllers.checkForDuplicateEmployeeUserName(request.json)
+        return result
+    else :
+        return jsonify(msg='Asses define')
+    	
 	
 @app.route('/_check_dup_org_name', methods=['GET', 'POST'])
 def check_dup_org_name():
     if request.method == 'POST' and is_request_json():
         result = controllers.checkForDuplicateOrganizationName(request.json)
         return result
-
     else :
         return jsonify(msg='Assess define')
 
@@ -59,14 +62,13 @@ def submit_org_form():
     if request.method == 'POST' and is_request_json():
         result = controllers.registerOrganization(request.json,db)
         return result
-
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
 @app.route('/_submit_employee_form', methods=['GET', 'POST'])
 def submit_employee_form():
-    if request.method == 'POST':
-        result = controllers.registerEmployee(request.form.keys()[0],db)
+    if request.method == 'POST' and is_request_json():
+        result = controllers.registerEmployee(request.json,db)
         return result
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
