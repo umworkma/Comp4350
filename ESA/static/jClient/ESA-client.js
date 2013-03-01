@@ -161,11 +161,12 @@ function createJsonObject() {
 
 // create list of organizations
 function createOrgListJSON() {
-    // Process and output list of organizations in
-    // an html table
-    success = function(data) {
-       
-    }
+    // Get list of orgs passed to template as a javascript variable
+    var orgs = eval(data);
 
-    $.get($SCRIPT_ROOT + '/_get_org_list', success, "json");
+    document.write("This is a TEST!");
+
+    for (var org in orgs) {
+    document.write("<tr><td>" + org["org_name"] + "</td></tr>");
+    }
 }   

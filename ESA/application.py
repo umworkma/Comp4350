@@ -58,8 +58,8 @@ def get_org_list():
 
 @app.route('/browse_orgs/')
 def browse_orgs():
-    data = json.loads(controllers.getAllOrganizationsJSON(db))
-    return render_template('list_organizations.html', orgs=data)
+    data = controllers.getAllOrgNamesJSON(db)
+    return render_template('browse_orgs.html', data=data)
 
 @app.teardown_request
 def shutdown_session(exception=None):
