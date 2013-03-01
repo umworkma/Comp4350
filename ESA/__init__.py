@@ -18,9 +18,9 @@ app = Flask(__name__)
 app.config.from_object('ESA.settings.%sConfig' % env.capitalize())
 
 login_manager = LoginManager()
-login_manager.setup_app(app)
 login_manager.login_view = "login"
-# login_message is not being pass into login_manager to flash out to login ciew page
+login_manager.setup_app(app)
+# login_message is not being pass into login_manager to flash out to login page
 # login_manager.login_message = u"Please log in to access this page."
 
 # webassets management

@@ -25,11 +25,15 @@ def is_request_json():
 def load_user(id):
     return controllers.getPersonById(int(id), db)
 
+
 @app.route('/')
 def home():
-    print current_user
+    # If its a user logged in display landing page
+    if current_user.is_authenticated():
+        return render_template('landing.html')
 
     return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -51,7 +55,7 @@ def login():
                     # login_user(user, remember=remember)
                     login_user(user, remember=True) 
 
-                    return redirect(url_for('landing'))
+                    return redirect(url_for('home'))
                   
             flash("Please check user name and password.")
 
@@ -80,15 +84,19 @@ def register_organization():
     return render_template('register_organization.html')
 
 
+# No login required URL
 @app.route('/employee_reg_form.html')
 def load_employee_reg_form():
     return render_template('employee_reg_form.html')
 
+
+# No login required URL
 @app.route('/_check_dup_employee_user_name', methods=['GET', 'POST'])
 def check_dup_employee_user_name():
     result = controllers.checkForDuplicateEmployeeUserNameJSON(request.form.keys()[0])
     return result	
 	
+
 @app.route('/_check_dup_org_name', methods=['GET', 'POST'])
 @login_required
 def check_dup_org_name():
@@ -98,6 +106,7 @@ def check_dup_org_name():
 
     else :
         return jsonify(msg='Assess define')
+
 
 @app.route('/_submit_org_form', methods=['GET', 'POST'])
 @login_required
@@ -109,6 +118,8 @@ def submit_org_form():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
+
+# No login required URL
 @app.route('/_submit_employee_form', methods=['GET', 'POST'])
 def submit_employee_form():
     if request.method == 'POST':
@@ -117,11 +128,6 @@ def submit_employee_form():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
-@app.route('/landing')
-@login_required
-def landing():
-    session.logged_in = True
-    return render_template('landing.html')
 
 @app.teardown_request
 def shutdown_session(exception=None):
