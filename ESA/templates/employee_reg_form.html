@@ -1,0 +1,106 @@
+<!--reference that I used to create this page => https://github.com/mitsuhiko/flask/tree/master/examples/jqueryexample-->
+{% extends "layout.html" %}
+{% block content %}
+
+        <div class="well form-horizontal">
+            <h2>Employee Registration Form</h2>
+            <form id="employee-reg" method="post" onsubmit="return createJsonObjectForEmployee()">
+                <fieldset>
+
+                    <legend>Basic Information</legend>
+                    <div>
+                        <label>User Name</label>
+                    </div>
+                    <div>
+                        <input name="username" required type="text" class="input-xlarge">
+                    </div>
+                    <div>
+                        <label>First Name</label>
+                    </div>
+                    <div>
+                        <input name="firstname" required type="text" class="input-xlarge">
+                    </div>
+                    <div>
+                        <label>Last Name</label>
+                    </div>
+                    <div>
+                        <input name="lastname" required type="text" class="input-xlarge">
+                    </div>
+                   
+                </fieldset>
+                <fieldset>
+                    <legend>Pick a password</legend>
+                    <div>
+                        <label>Password</label>
+                    </div>
+                    <div>
+                        <input name="pwd1" type="password" class="input-xlarge">
+                    </div>
+                    <div>
+                        <label>Re-Enter Password</label>
+                    </div>
+                    <div>
+                        <input name="pwd2" type="password" class="input-xlarge">
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Additional Information</legend>
+					<div>
+                        <label>Address</label>
+                    </div>
+                    <div>
+                        <input name="address1" type="text" class="input-xlarge">
+                    </div>
+					 <div>
+                        <input name="address2" type="text" class="input-xlarge">
+                    </div>
+					 <div>
+                        <input name="address3" type="text" class="input-xlarge">
+                    </div>
+					<div>
+                        <label>City</label>
+                    </div>
+                    <div>
+                        <input name="city" type="text" class="input-xlarge">
+                    </div>
+					<div>
+                        <label>Province</label>
+                    </div>
+                    <div>
+                        <input name="province" type="text" class="input-xlarge">
+                    </div>
+					<div>
+                        <label>Country</label>
+                    </div>
+                    <div>
+                        <input name="country" type="text" class="input-xlarge">
+                    </div>
+					<div>
+                        <label>Postal Code</label>
+                    </div>
+                    <div>
+                        <input name="postalcode" type="text" class="input-xlarge">
+                    </div>
+                    <div>
+                        <label>Phone Number</label>
+                    </div>
+                    <div>
+                        <input name="phonenum" type="text" class="input-xlarge">
+                    </div>
+					 <div>
+                        <label>Email</label>
+                    </div>
+                    <div>
+                        <input name="email" required data-validation-matches-match="email" data-validation-matches-messag="hey" type="email" class="input-xlarge">
+                    </div>
+                </fieldset>
+
+                <br />
+
+                <div>
+                    <input class="btn btn-primary" type="submit" />
+                </div>
+            </form>
+        </div>
+
+{% endblock %}

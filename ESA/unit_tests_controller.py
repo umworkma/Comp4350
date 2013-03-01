@@ -96,7 +96,7 @@ class ESATestCase(TestCase):
 
             orgList = list()
             for org in orgs:
-                newOrg = controllers.extractOrganizationFromJSON(org)
+                newOrg = controllers.extractOrganizationFromDict(org)
                 orgList.append(newOrg)
 
             allOrgs = controllers.getAllOrganizations(self.db)
@@ -173,7 +173,8 @@ class ESATestCase(TestCase):
 
         ''' Register the organization. '''
         corpJSON = controllers.organizationToJSON(testOrg)
-        result = controllers.registerOrganization(corpJSON,self.db)
+        resultDict = json.loads(corpJSON)
+        result = controllers.registerOrganization(resultDict,self.db)
 
         ''' Validate the result response. '''
         resultDict = json.loads(result)
@@ -185,7 +186,8 @@ class ESATestCase(TestCase):
         self.assertEqual(foundResult, True)
 
         ''' Register the organization a second time. '''
-        result = controllers.registerOrganization(corpJSON,self.db)
+        resultDict = json.loads(corpJSON)
+        result = controllers.registerOrganization(resultDict,self.db)
 
         ''' Validate the result response. '''
         resultDict = json.loads(result)
@@ -249,7 +251,8 @@ class ESATestCase(TestCase):
 
         ''' Register the organization. '''
         corpJSON = controllers.organizationToJSON(testOrg)
-        result = controllers.registerOrganization(corpJSON,self.db)
+        resultDict = json.loads(corpJSON)
+        result = controllers.registerOrganization(resultDict,self.db)
 
         ''' Validate the result response. '''
         resultDict = json.loads(result)
@@ -308,11 +311,11 @@ class ESATestCase(TestCase):
         stringJSON = '{"contact_entityfk":1,"type":"2","value":"info@ai-kon.org","isprimary":"True"}'
         self.assertEqual(targetJSON, stringJSON)
 
-    def test_extractOrganizationFromJSON(self):
+    def test_extractOrganizationFromDict(self):
         control = models.Organization.query.first()
         stringJSON = '{"org_entityfk":1,"org_name":"Ai-Kon","org_desc":"Ai-Kon Anime Convention","Entity":{"entity_pk":1,"entity_type":"1","addresses":[{"addr_entityfk":1,"address1":"123 Vroom Street","address2":"None","address3":"None","city":"Winnipeg","province":"Manitoba","country":"Canada","postalcode":"A1A1A1","isprimary":"True"}], "contacts":[{"contact_entityfk":1,"type":"2","value":"info@ai-kon.org","isprimary":"True"}]}}'
         data = json.loads(stringJSON)
-        target = controllers.extractOrganizationFromJSON(data)
+        target = controllers.extractOrganizationFromDict(data)
 
         self.assertEqual(control.entityFK, target.entityFK);
         self.assertEqual(control.name, target.name)
@@ -335,11 +338,11 @@ class ESATestCase(TestCase):
             self.assertEqual(c1.value, c2.value)
             self.assertEqual(c1.isprimary, c2.isprimary)
 
-    def test_extractEntityFromJSON(self):
+    def test_extractEntityFromDict(self):
         control = models.Entity.query.first()
         stringJSON = '{"entity_pk":1,"entity_type":"1","addresses":[{"addr_entityfk":1,"address1":"123 Vroom Street","address2":"None","address3":"None","city":"Winnipeg","province":"Manitoba","country":"Canada","postalcode":"A1A1A1","isprimary":"True"}], "contacts":[{"contact_entityfk":1,"type":"2","value":"info@ai-kon.org","isprimary":"True"}]}'
         data = json.loads(stringJSON)
-        target = controllers.extractEntityFromJSON(data)
+        target = controllers.extractEntityFromDict(data)
 
         self.assertEqual(control.pk, target.pk)
         self.assertEqual(control.type, target.type)
@@ -359,11 +362,11 @@ class ESATestCase(TestCase):
             self.assertEqual(c1.value, c2.value)
             self.assertEqual(c1.isprimary, c2.isprimary)
 
-    def test_extractAddressFronJSON(self):
+    def test_extractAddressFromDict(self):
         control = models.Address.query.first()
         stringJSON = '{"addr_entityfk":1,"address1":"123 Vroom Street","address2":"None","address3":"None","city":"Winnipeg","province":"Manitoba","country":"Canada","postalcode":"A1A1A1","isprimary":"True"}'
         data = json.loads(stringJSON)
-        target = controllers.extractAddressFromJSON(data)
+        target = controllers.extractAddressFromDict(data)
 
         self.assertEqual(control.entityFK, target.entityFK)
         self.assertEqual(control.address1, target.address1)
@@ -375,11 +378,11 @@ class ESATestCase(TestCase):
         self.assertEqual(control.postalcode, target.postalcode)
         self.assertEqual(control.isprimary, target.isprimary)
 
-    def test_extractContactFromJSON(self):
+    def test_extractContactFromDict(self):
         control = models.Contact.query.first()
         stringJSON = '{"contact_entityfk":1,"type":"2","value":"info@ai-kon.org","isprimary":"True"}'
         data = json.loads(stringJSON)
-        target = controllers.extractContactFromJSON(data)
+        target = controllers.extractContactFromDict(data)
         
         self.assertEqual(control.entityFK, target.entityFK)
         self.assertEqual(control.type, target.type)
@@ -400,15 +403,16 @@ class ESATestCase(TestCase):
 
         # Insert the organization (should succeed).
         testOrgJSON = controllers.organizationToJSON(testOrg)
-        result1 = controllers.registerOrganization(testOrgJSON, self.db)
-        result1Dict = json.loads(result1)
-        self.assertEqual(result1Dict['result'], 'True')
+        resultDict = json.loads(testOrgJSON)
+        result1 = controllers.registerOrganization(resultDict, self.db)
+        resultDict = json.loads(result1)
+        self.assertEqual(resultDict['result'], 'True')
 
         # Check for duplicates (should be duplicate).
         isDuplicate = controllers._checkForDuplicateOrganization(testOrg)
         self.assertTrue(isDuplicate)
 
-    def test_checkForDuplicateOrganizationNameJSON(self):
+    def test_checkForDuplicateOrganizationName(self):
         orgName = 'test_checkForDuplicateOrganization'
         orgDesc = 'test org description'
         
@@ -426,20 +430,22 @@ class ESATestCase(TestCase):
         testOrgJSON = controllers.organizationToJSON(testOrg)
 
         # Check for duplicates (should be no duplicates).
-        result1 = controllers.checkForDuplicateOrganizationNameJSON(orgNameJSON)
-        result1Dict = json.loads(result1)
-        self.assertEqual(result1Dict['result'], 'False')
+        resultDict = json.loads(orgNameJSON)
+        result1 = controllers.checkForDuplicateOrganizationName(resultDict)
+        resultDict = json.loads(result1)
+        self.assertEqual(resultDict['result'], 'False')
 
         # Insert the organization (should succeed).
-        result1 = controllers.registerOrganization(testOrgJSON, self.db)
-        result1Dict = json.loads(result1)
-        self.assertEqual(result1Dict['result'], 'True')
+        resultDict = json.loads(testOrgJSON)
+        result1 = controllers.registerOrganization(resultDict, self.db)
+        resultDict = json.loads(result1)
+        self.assertEqual(resultDict['result'], 'True')
 
         # Check for duplicates (should be duplicate).
-        result1 = controllers.checkForDuplicateOrganizationNameJSON(orgNameJSON)
-        result1Dict = json.loads(result1)
-        self.assertEqual(result1Dict['result'], 'True')
-
+        resultDict = json.loads(orgNameJSON)
+        result1 = controllers.checkForDuplicateOrganizationName(resultDict)
+        resultDict = json.loads(result1)
+        self.assertEqual(resultDict['result'], 'True')
 
 
     """ Tests for Permissions feature """
@@ -645,18 +651,18 @@ class ESATestCase(TestCase):
         # Validate the result.
         self.assertTrue(result)
 
-        '''# Sub-Test 4: Duplicate permission.
+        # Sub-Test 4: Duplicate permission.
         # Define prerequisite data.
         privilegeKey = 4
         personKey = 4
         # Get the result of the tested method.
         result = controllers._revokePrivilegeForPerson(self.db, privilegeKey, personKey, None)
         # Validate the result.
-        self.assertTrue(result)'''
+        self.assertTrue(result)
 
         self.resetDB()
 
-    '''def test__revokePrivilegeForPerson_Person(self):
+    def test__revokePrivilegeForPerson_Person(self):
         # Sub-Test 1: Invalid person key.
         # Define prerequisite data.
         privilegeKey = 7
@@ -707,18 +713,138 @@ class ESATestCase(TestCase):
         # Validate the result.
         self.assertTrue(result)
 
-        # Sub-Test 6: Duplicate permission, but different organization.
-        # Define prerequisite data.
-        privilegeKey = 7
-        personKey = 4
-        organizationKey = 1
-        # Get the result of the tested method.
-        result = controllers._revokePrivilegeForPerson(self.db, privilegeKey, personKey, organizationKey)
-        # Validate the result.
-        self.assertFalse(result)
-
-        self.resetDB()'''
+        self.resetDB()
         
+    ########################################		
+    # Tests For Employee_Registration_Form #
+    ########################################
+
+    # Test functionality of the check for duplicate employee function 
+    def test__checkForDuplicateEmployee(self):
+        # Define an Person Class
+        testEmp = models.Person()
+        testEmp.username = 'betcha'
+        testEmp.password = '2345'
+        testEmp.firstname = 'VedryPrivate'
+        testEmp.lastname = 'BetchdakuKun'
+        testEmp.entity = models.Entity()
+        testEmp.entity.type = models.TYPE_EMPLOYEE
+        # Check if there is a duplicate and it should return with false
+        isDuplicate = controllers._checkForDuplicateEmployee(testEmp)
+        self.assertFalse(isDuplicate)
+
+        #Test employeeToJSON
+        testEmpJSON = controllers.employeeToJSON(testEmp)
+        resultDict = json.loads(testEmpJSON)
+        result = controllers.registerEmployee(resultDict, self.db)
+        resultDict = json.loads(result)
+        self.assertEqual(resultDict['result'], 'True')
+
+        # Check if there is a duplicate username and should be there.
+        isDuplicate = controllers._checkForDuplicateEmployee(testEmp)
+        self.assertTrue(isDuplicate)
+        
+    # Test functionality of the regiser employee function 
+    def test_registerEmployee(self):
+        # Make emp empty to test if it gets successfully assiged as Person object
+        emp = None
+        # emp should be empty 
+        self.assertIsNone(emp);
+        emp = models.Person()
+        # Check if emp is not empty
+        self.assertIsNotNone(emp)
+        # Assign values to this person object
+        emp.username = 'umbet'
+        emp.password = '123456'
+        emp.firstname = 'Elyse'
+        emp.lastname = 'Goodall'
+        emp.entity = models.Entity()
+        emp.entity.type = models.TYPE_EMPLOYEE
+        # addr should be empty to begin with
+        addr = None
+        self.assertIsNone(addr);
+        #Create address instance
+        addr = models.Address()
+        # Check if addr is not empty
+        self.assertIsNotNone(addr)
+        # Assign values to addr object
+        addr.address1 = '242 Lipton'
+        addr.address2 = ''
+        addr.address3 = ''
+        addr.city = 'WPG'
+        addr.province = 'MB'
+        addr.country = 'Canada'
+        addr.postalcode = 'R3M2X6'
+        addr.isprimary = True
+        # Attach the address instance to the employee
+        emp.entity.addresses.append(addr)
+        # Create a contact instance for phone
+        contactP = None
+        self.assertIsNone(contactP)
+        contactP = models.Contact()
+        self.assertIsNotNone(contactP)
+        contactP.type = models.TYPE_PHONE
+        contactP.value = '18001234567'
+        contactP.isprimary = False
+        emp.entity.contacts.append(contactP)
+        # Create a contact instanace for Email
+        contactE = None
+        self.assertIsNone(contactE)
+        contactE = models.Contact()
+        self.assertIsNotNone(contactE)
+        contactE.type = models.TYPE_EMAIL
+        contactE.value = 'elyse@dmt.ca'
+        contactE.isprimary = False
+        emp.entity.contacts.append(contactE)
+
+        # emp should not be None
+        self.assertIsNotNone(emp)
+        
+        # Register the employee
+        empJSON = controllers.employeeToJSON(emp)
+        self.assertIsNotNone(empJSON)
+        resultDict = json.loads(empJSON)
+        result = controllers.registerEmployee(resultDict, self.db)
+        # Check if everything successfully gets registered
+        check = json.loads(result)
+        found = False
+        for key,value in check.iteritems():
+            if(key == 'result'):
+                found = True
+                self.assertEqual('True', value)
+        
+        emp2 = models.Person.query.filter_by(username = emp.username).first()
+        # Get the FK
+        emp.entityFK = emp2.entityFK
+        # Make sure that emp2 should not be null
+        self.assertNotEqual(emp2, None)
+        # emp and emp2 SHOULD NOT BE THE SAME OBJECT
+        self.assertIsNot(emp, emp2)
+        
+        # emp2 should be Person class since we created from emp
+        self.assertIsInstance(emp, type(emp2), msg="emp and emp2 are not the same Person class")
+        self.assertNotIsInstance(emp2, type('Person'), msg="emp2 is not Person class")
+        
+        # These values should be equal if everything correctly saved
+        self.assertEqual(emp2.firstname, 'Elyse')
+        self.assertEqual(emp2.lastname, 'Goodall')
+        self.assertEqual(emp2.password, '123456')
+        # Check the address (emp and emp2 addresses should be equal)
+        for a1,a2 in zip(emp2.entity.addresses, emp.entity.addresses):
+            self.assertEqual(a1.address1, a2.address1)
+            self.assertEqual(a1.address2, a2.address2)
+            self.assertEqual(a1.address3, a2.address3)
+            self.assertEqual(a1.city, a2.city)
+            self.assertEqual(a1.province, a2.province)
+            self.assertEqual(a1.country, a2.country)
+            self.assertEqual(a1.postalcode, a2.postalcode)
+            self.assertEqual(a1.isprimary, a2.isprimary)
+        # Check the contacts (emp2 and emp contacts should be equal)
+        for c1,c2 in zip(emp2.entity.contacts, emp.entity.contacts):
+            self.assertEqual(c1.type, c2.type)
+            self.assertEqual(c1.value, c2.value)
+            self.assertEqual(c1.isprimary, c2.isprimary)
+        self.resetDB()
 
 if __name__ == "__main__":
     unittest.main()

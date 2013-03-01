@@ -1,6 +1,66 @@
 from flask import *
 import models
 
+# Employees
+
+def registerEmployee(employeeDict, db):
+    result = False
+    failCause = 'Unknown'
+    # data = json.loads(jsonString)
+    employee = extractEmployeeFromDict(employeeDict)
+    isDuplicate = _checkForDuplicateEmployee(employee)
+
+    if(isDuplicate is True):
+        failcause = 'duplicate'
+    else:
+        db.session.add(employee)
+        db.session.commit()
+        result = True
+        if(result is True):
+            resultjson = '{"result": "True"}'
+        else:
+            resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
+    return resultjson
+
+
+""" Internal method for checking for duplicate employee. Currently only checks
+    the employee.username property. """
+
+def _checkForDuplicateEmployee(employee):
+    result = False
+    if(employee is not None and employee.username is not None):
+        existing = models.Person.query.filter_by(username = employee.username).first()		
+        if(existing is not None):
+            result = True
+    return result
+
+""" Allows the view to check whether a given  username already exists
+    in the application. Returns True if duplicated. """
+def checkForDuplicateEmployeeUserNameJSON(employeeUserNameJSON):
+    result = False
+    employeeUserNameDict = json.loads(employeeUserNameJSON)
+    if(employeeUserNameDict is not None and employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY] is not None):
+        employeeUserName = employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY]
+        employee = models.Employee()
+        employee.username = employeeUserName
+        result = _checkForDuplicateEmployee(employee)
+
+    resultJSON = '{'
+    resultJSON += '"result":"{val}"'.format(val=result)
+    resultJSON += '}'
+    return resultJSON
+
+""" Converts an Employee (including the entity object) into JSON format. """
+def employeeToJSON(emp):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.EMPLOYEE_ENTITYFK_KEY,val=emp.entityFK if (emp.entityFK is not None) else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_USER_NAME_KEY,val=emp.username)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_PASSWORD_KEY,val=emp.password)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_FIRST_NAME_KEY,val=emp.firstname)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_LAST_NAME_KEY,val=emp.lastname)
+    jsonString += '"Entity":{val}'.format(val=entityToJSON(emp.entity))
+    jsonString += '}'
+    return jsonString
+
 
 # Organizations
 def getAllOrganizations(db):
@@ -35,20 +95,12 @@ def getAllOrgNamesJSON(db):
     jsonString += ']}'
     return jsonString
 
-def registerOrganization(jsonString, db):
+def registerOrganization(orgDict, db):
     result = False
     failCause = 'Unknown'
 
-    # Added this check here to just by pass if the input is a dict object
-    # else turn josn into dict. Dan has email Mr. Zapp regrading to clarify
-    # should all controller code accept json string or dict object. At incoming 
-    # request, Flask will parse JSON string into dict object.
-    # if isinstance(request.form, dict): 
-    #     org = extractOrganizationFromJSON(jsonString)
-    # else:
     ''' Parse the given JSON data and create our basic organization. '''
-    data = json.loads(jsonString)
-    org = extractOrganizationFromJSON(data)
+    org = extractOrganizationFromDict(orgDict)
 
 
     ''' Check for duplicate organization. '''
@@ -83,9 +135,9 @@ def _checkForDuplicateOrganization(org):
 
 """ Allows the view to check whether a given organization name already exists
     in the application. Returns True if duplicated. """
-def checkForDuplicateOrganizationNameJSON(orgNameJSON):
+def checkForDuplicateOrganizationName(orgNameDict):
     result = False
-    orgNameDict = json.loads(orgNameJSON)
+
     if(orgNameDict is not None and orgNameDict[models.ORGANIZATION_NAME_KEY] is not None):
         orgName = orgNameDict[models.ORGANIZATION_NAME_KEY]
         org = models.Organization()
@@ -177,8 +229,27 @@ def contactToJSON(contact):
     return jsonString
 
 
-""" Converts an Organization in JSON format to an Organization object. """
-def extractOrganizationFromJSON(organization):
+""" Converts an employee in JSON format to an employee object. """
+def extractEmployeeFromDict(employee):
+    newEmp = models.Person()
+    for employeeKey,employeeValue in employee.iteritems():
+        if(employeeKey == models.EMPLOYEE_ENTITYFK_KEY and employeeValue != 'None'):
+            newEmp.entityFK = int(employeeValue)
+        if(employeeKey == models.EMPLOYEE_USER_NAME_KEY):
+            newEmp.username = employeeValue
+        if(employeeKey == models.EMPLOYEE_PASSWORD_KEY):
+            newEmp.password = employeeValue    
+        if(employeeKey == models.EMPLOYEE_FIRST_NAME_KEY):
+            newEmp.firstname = employeeValue
+        if(employeeKey == models.EMPLOYEE_LAST_NAME_KEY):
+            newEmp.lastname = employeeValue
+        if(employeeKey == 'Entity'):
+            newEmp.entity = extractEntityFromDict(employeeValue)
+    return newEmp
+
+
+""" Converts an Organization in Dict format to an Organization object. """
+def extractOrganizationFromDict(organization):
     newOrg = models.Organization()
     for orgKey,orgValue in organization.iteritems():
         if(orgKey == models.ORGANIZATION_ENTITYFK_KEY and orgValue != 'None'):
@@ -188,12 +259,12 @@ def extractOrganizationFromJSON(organization):
         if(orgKey == models.ORGANIZATION_DESCRIPTION_KEY):
             newOrg.description = orgValue
         if(orgKey == 'Entity'):
-            newOrg.entity = extractEntityFromJSON(orgValue)
+            newOrg.entity = extractEntityFromDict(orgValue)
     return newOrg
 
 
-""" Converts an Entity in JSON format to an Entity object. """
-def extractEntityFromJSON(entity):
+""" Converts an Entity in Dict format to an Entity object. """
+def extractEntityFromDict(entity):
     newEntity = models.Entity()
     for entityKey,entityValue in entity.iteritems():
         if(entityKey == models.ENTITY_PK_KEY and entityValue != 'None'):
@@ -202,18 +273,18 @@ def extractEntityFromJSON(entity):
             newEntity.type = int(entityValue)
         if(entityKey == 'addresses'):
             for address in entityValue:
-                newAddress = extractAddressFromJSON(address)
+                newAddress = extractAddressFromDict(address)
                 newEntity.addresses.append(newAddress)
         
         if(entityKey == 'contacts'):
             for contact in entityValue:
-                newContact = extractContactFromJSON(contact)
+                newContact = extractContactFromDict(contact)
                 newEntity.contacts.append(newContact)
     return newEntity
     
 
-""" Converts an Address in JSON format to an Address object. """
-def extractAddressFromJSON(address):
+""" Converts an Address in Dict format to an Address object. """
+def extractAddressFromDict(address):
     newAddress = models.Address()
     for addrKey,addrValue in address.iteritems():
         if(addrKey == models.ADDRESS_ENTITYFK_KEY and addrValue != 'None'):
@@ -237,8 +308,8 @@ def extractAddressFromJSON(address):
     return newAddress
 
 
-""" Extracts a Contact in JSON format to a Contact object. """
-def extractContactFromJSON(contact):
+""" Extracts a Contact in Dict format to a Contact object. """
+def extractContactFromDict(contact):
     newContact = models.Contact()
     for contactKey,contactValue in contact.iteritems():
         if(contactKey == models.CONTACT_ENTITYFK_KEY and contactValue != 'None'):
@@ -438,14 +509,11 @@ def _revokePrivilegeForPerson(db, privilegeKey,personKey,organizationKey=None):
                     returnValue = True
     elif privilege is not None and person is not None:
         gpa = models.GlobalPrivilegeAssignment.query.filter_by(privilegeFK=privilegeKey, personentityFK=personKey).first()
-        print gpa
         if gpa is not None:
-            print 'deleting gpa'
             db.session.delete(gpa)
             db.session.commit()
             returnValue = True
         else:
-            print 'duplicate gpa'
             returnValue = True
 
     return returnValue

@@ -151,6 +151,7 @@ class ContactData(DataSet):
         value = '2046634588'
         isprimary = 1
 
+
 class PrivilegeData(DataSet):
     class privilege01:
         privilege = 'REGISTER_NEW_ORGANIZATION'
@@ -252,3 +253,12 @@ class GlobalPrivilegeAssignmentData(DataSet):
 all_data = (EntityData, PersonData, AddressData, OrganizationData, ContactData,
             PrivilegeData, MemberData, PrivilegePersonAssignmentData,
             GlobalPrivilegeAssignmentData)
+entity_test_data = (EntityData, AddressData, ContactData, OrganizationData, PersonData)
+address_test_data = (AddressData, EntityData)
+contact_test_data = (ContactData, EntityData)
+organization_test_data = (OrganizationData, EntityData, MemberData)
+person_test_data = (PersonData, EntityData, MemberData, GlobalPrivilegeAssignmentData)
+member_test_data = (MemberData, PersonData, OrganizationData, PrivilegePersonAssignmentData)
+privilege_test_data = (PrivilegeData, PrivilegePersonAssignmentData, GlobalPrivilegeAssignmentData, MemberData)
+ppa_test_data = (PrivilegeData, PrivilegePersonAssignmentData, MemberData)
+gpa_test_data = (PrivilegeData, GlobalPrivilegeAssignmentData, MemberData, PersonData)
