@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+        <h2>Browse Organizations</h2>
+	<table class="table table-striped table-hover table-bordered">
+	<thead>
+	<tr><th>Organization Listing</th></tr>
+	</thead>
+	<tbody>
+	<script type = "text/javascript">
+		var orgs = eval({{data|safe}});
+		for (var i = 0; i <  orgs.OrgNames.length; i++) {
+			var name = orgs.OrgNames[i].org_name;
+			var entityFK = orgs.OrgNames[i].org_entityfk;
+			$("tbody").append("<tr><td>");
+			$("tbody").append(name);
+			$("tbody").append("</td></tr>\n");
+		}
+	</script>
+	</tbody>
+	</table>
+{% endblock %}
