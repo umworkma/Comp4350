@@ -55,6 +55,9 @@ def login():
                     # login_user(user, remember=remember)
                     login_user(user, remember=True) 
 
+                    if request.values.has_key('next'):
+                        return redirect(request.values['next'], code=302)
+
                     return redirect(url_for('home'))
                   
             flash("Please check user name and password.")
