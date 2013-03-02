@@ -85,7 +85,7 @@ def register_organization():
 
 
 # No login required URL
-@app.route('/employee_reg_form.html')
+@app.route('/signup')
 def load_employee_reg_form():
     return render_template('employee_reg_form.html')
 
