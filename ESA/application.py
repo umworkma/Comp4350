@@ -67,10 +67,19 @@ def submit_org_form():
 def browse_orgs():
     data = controllers.getAllOrgNamesJSON(db)
     if request.method == 'GET' and is_request_json():
-        return data;
+        return data
     else:
         session.logged_in = True
         return render_template('browse_orgs.html', data=json.loads(data))
+
+@app.route('/organization/<entityid>')
+def org_info(entityid):
+    data = controllers.getOrganizationByID(entityid)
+    if request.method == 'GET' and is_request_json():
+        return data
+    else:
+        session.logged_in = True
+        return render_template('org_info.html', org=json.loads(data))
 
 @app.route('/_submit_employee_form', methods=['GET', 'POST'])
 def submit_employee_form():
