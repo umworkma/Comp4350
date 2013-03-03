@@ -1,12 +1,24 @@
 from flask import *
 import models
 
+# Login
+def getPersonById(empId, db):
+    return models.Person.query.get(empId)
+
+def getPersonByUsername(username, db):
+    if username:
+        person = models.Person.query.filter_by(username=username).first()
+
+        if person is not None:
+            return person
+    
+    return None
+
 # Employees
 
 def registerEmployee(employeeDict, db):
     result = False
     failCause = 'Unknown'
-    # data = json.loads(jsonString)
     employee = extractEmployeeFromDict(employeeDict)
     isDuplicate = _checkForDuplicateEmployee(employee)
 
@@ -16,10 +28,10 @@ def registerEmployee(employeeDict, db):
         db.session.add(employee)
         db.session.commit()
         result = True
-        if(result is True):
-            resultjson = '{"result": "True"}'
-        else:
-            resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
+    if(result is True):
+        resultjson = '{"result": "True"}'
+    else:
+        resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
     return resultjson
 
 
@@ -36,9 +48,9 @@ def _checkForDuplicateEmployee(employee):
 
 """ Allows the view to check whether a given  username already exists
     in the application. Returns True if duplicated. """
-def checkForDuplicateEmployeeUserNameJSON(employeeUserNameJSON):
+def checkForDuplicateEmployeeUserName(employeeUserNameDict):
     result = False
-    employeeUserNameDict = json.loads(employeeUserNameJSON)
+   
     if(employeeUserNameDict is not None and employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY] is not None):
         employeeUserName = employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY]
         employee = models.Employee()
@@ -162,8 +174,8 @@ def updateOrganization(entityid, name, description):
 
 def getOrganizationByID(entityid):
     controller = models.Organization()
-    results = controller.getByID(entityid)
-    jsonified = [org.serialize for org in results]
+    results = controller.query.filter_by(entityFK=entityid).first()
+    jsonified = organizationToJSON(results)
     return jsonified
 
 def removeOrganization():

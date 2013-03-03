@@ -8,7 +8,7 @@
 	</thead>
 	<tbody>
         	{% for org in data.OrgNames %}
-		<tr><td>{{org.org_name}}</td></tr>
+		<tr><td><a href="/organization/{{org.org_entityfk}}">{{org.org_name}}</a></td></tr>
   		{% endfor %}
 	</tbody>
 	</table>

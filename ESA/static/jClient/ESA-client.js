@@ -73,6 +73,7 @@ ESA = new ESA();
 
 // Check for valid organization name as the user types.
 function checkForDuplicateEmployeeUserName() {
+	url = '/check_dup_employee_user_name'
 	userName = $('input[name="username"]').val(),
 	data = { 'username': userName },
 	success = function(data) {
@@ -84,8 +85,7 @@ function checkForDuplicateEmployeeUserName() {
 			}
 		}
     },
-    $.post($SCRIPT_ROOT + '/_check_dup_employee_user_name', JSON.stringify(data), success, "json");
-
+	ESA.ajaxJSON(url, data, success);
     return false;
 }
 
@@ -232,6 +232,8 @@ function createJsonObjectForOrganization() {
 
 // create json object and send it to server
 function createJsonObjectForEmployee() {
+
+	url = '/_submit_employee_form',
     data = {
 		username: $('input[name="username"]').val(),
 		password: $('input[name="pwd1"]').val(),
@@ -270,18 +272,17 @@ function createJsonObjectForEmployee() {
         if(typeof data.result != 'undefined' ) {
             // display the 2 type of alert box base of the result
             if(data.result == 'True') {
-                display_alert('success', data.result);
+               ESA.display_alert('success', data.result);
 
             } else {
-                display_alert('block', data.result);
+                ESA.display_alert('block', data.result);
 
             }
         }
     },
 
     // ajax post request
-    $.post($SCRIPT_ROOT + '/_submit_employee_form', JSON.stringify(data), success, "json");
-
+	ESA.ajaxJSON(url, data, success);
     return false;
 
 }
