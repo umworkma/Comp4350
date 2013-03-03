@@ -175,6 +175,10 @@ def updateOrganization(entityid, name, description):
 def getOrganizationByID(entityid):
     controller = models.Organization()
     results = controller.query.filter_by(entityFK=entityid).first()
+
+    if results == None:
+        return None
+    
     jsonified = organizationToJSON(results)
     return jsonified
 
