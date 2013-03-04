@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:5000/" />
+<title>test_index_page</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">test_index_page</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ESA Service</td>
+	<td></td>
+</tr>
+<!--Nav bar-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Employment Scheduling Application</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=ESA</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Sign Up</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Login</td>
+	<td></td>
+</tr>
+<!--Carousel-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=myCarousel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[2]</td>
+	<td>myCarousel</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[2]/div/div[1]/div/div/h1</td>
+	<td>Scheduling made easy!</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[2]/div/div[1]/div/div/p</td>
+	<td>Scheduling can be fun and easy</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[2]/div/div[2]/div/div/h1</td>
+	<td>Save the forest!</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[2]/div/div[2]/div/div/p</td>
+	<td>No more stacks of papers, flipping through pages and pages of information</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[2]/div/div[3]/div/div/h1</td>
+	<td>Time saving!</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[2]/div/div[3]/div/div/p</td>
+	<td>More time to do other important things</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
