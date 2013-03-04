@@ -135,7 +135,7 @@ def browse_orgs():
 #No Login Required
 @app.route('/organization/<entityid>')
 def org_info(entityid):
-    data = controllers.getOrganizationByID(entityid)
+    data = controllers.getOrganizationByIDJSON(entityid)
     if data == None:
         data = entityid
         return render_template('org_404.html', data=data)

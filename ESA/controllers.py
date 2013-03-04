@@ -172,7 +172,7 @@ def updateOrganization(entityid, name, description):
     result = controller.update(entityid, name, description);
     print result
 
-def getOrganizationByID(entityid):
+def getOrganizationByIDJSON(entityid):
     controller = models.Organization()
     results = controller.query.filter_by(entityFK=entityid).first()
 
