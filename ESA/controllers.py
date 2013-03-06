@@ -429,16 +429,20 @@ def _getPeopleInOrganization(organizationKey):
     return returnValue
 
 """ Associate given person with given organization. """
-# Returns True if successful, else False
-def _putPersonInOrganization(personKey, organizationKey):
-    returnValue = False
+def _putPersonInOrganization(db, personKey, organizationKey):
+    result = False
+    failCause = 'Unknown'
     person = models.Person.query.filter_by(entityFK=personKey).first()
     organization = models.Organization.query.filter_by(entityFK=organizationKey).first()
 
     if person is not None and organization is not None:
-        pass
+        member = models.Member()
 
-    return returnValue
+    if(result is True):
+        resultJson = '{"result": "True"}'
+    else:
+        resultJson = '{' + '"result": "{val}"'.format(val=failCause) + '}'
+    return resultJson
 
 """ Public method to retrieve privileges for a person. """
 # Can optionally include an organization key to get privileges specific
