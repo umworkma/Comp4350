@@ -301,11 +301,25 @@ class ControllerPrivilegesTestCase(TestCase):
         #self.resetDB()
         
         
+    def test__getAllPrivileges(self):
+        privileges = controller_privileges._getAllPrivileges()
+        self.assertIsNotNone(privileges)
+        self.assertEqual(privileges[0].privilege, 'ASSIGN_EMPS_TO_SHIFTS');
+        self.assertEqual(privileges[1].privilege, 'DELETE_ORGANIZATION');
+        self.assertEqual(privileges[2].privilege, 'MODIFY_ORGANIZATION');
+        self.assertEqual(privileges[3].privilege, 'REGISTER_NEW_ORGANIZATION');
+        self.assertEqual(privileges[4].privilege, 'SOME_OTHER_EMP_PRIVILEGE');
+        self.assertEqual(privileges[5].privilege, 'VIEW_ALL_EMPLOYEES_IN_ORG');
+        self.assertEqual(privileges[6].privilege, 'VIEW_ALL_ORGANIZATIONS');
+        self.assertEqual(privileges[7].privilege, 'YET_ANOTHER_EMP_PRIVILEGE');
+        
+        
 def suite():
     # Define the container for this module's tests.
     suite = unittest.TestSuite()
 
     # Add tests to suite.
+    suite.addTest(ControllerPrivilegesTestCase('test__getAllPrivileges'))
     suite.addTest(ControllerPrivilegesTestCase('test__getPrivilegesForPerson'))
     suite.addTest(ControllerPrivilegesTestCase('test__getOrgsWithPrivilegesForPerson'))
     suite.addTest(ControllerPrivilegesTestCase('test__getGlobalPrivilegesForPerson'))

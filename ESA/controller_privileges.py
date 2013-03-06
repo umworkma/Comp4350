@@ -1,6 +1,13 @@
 from flask import *
 import models
 
+
+""" Retrieve all privileges. """
+def _getAllPrivileges():
+    return models.Privilege.query.order_by(models.Privilege.privilege).all()
+    
+
+
 """ Retrieve all privileges for a person in an organization. """
 # Returns a list of Privilege objects on success, or None on failure.
 def _getPrivilegesForPerson(personKey, organizationKey):
