@@ -10,6 +10,7 @@ import unit_tests_privilege
 import unit_tests_member
 import unit_tests_privilegepersonassignment
 import unit_tests_globalprivilegeassignment
+import unit_tests_controller
 
 
 def suite():
@@ -26,6 +27,7 @@ def suite():
     allUnitTests.addTest(unit_tests_member.suite())
     allUnitTests.addTest(unit_tests_privilegepersonassignment.suite())
     allUnitTests.addTest(unit_tests_globalprivilegeassignment.suite())
+    allUnitTests.addTest(unit_tests_controller.suite())
 
     return allUnitTests
 

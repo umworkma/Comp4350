@@ -1,8 +1,8 @@
 #!../venv/bin/python
 import unittest
+import json
 
 from flask import Flask
-from flask import *
 from flask.ext.testing import TestCase
 
 import fixtures
@@ -10,7 +10,7 @@ import models
 import controllers
 
 
-class ESATestCase(TestCase):
+class ControllerTestCase(TestCase):
 
     database_uri = "sqlite:///test_controller.db"
     app = Flask(__name__)
@@ -124,15 +124,15 @@ class ESATestCase(TestCase):
 
     def test_getAllOrgNamesJSON(self):
         ''' Test that we are getting JSON object containing org names and IDs '''
-        allOrgs = controllers.getAllOrgNamesJSON(self.db)
+        allOrgs = json.loads(controllers.getAllOrgNamesJSON(self.db))
 
         ''' First Org should be Ai-Kon with ID 1 '''
-        self.assertEqual(allOrgs.OrgNames[0].org_name, 'Ai-Kon')
-        self.assertEqual(allOrgs.OrgNames[0].org_entityfk, 1)
+        self.assertEqual(allOrgs['OrgNames'][0]['org_name'], 'Ai-Kon')
+        self.assertEqual(allOrgs['OrgNames'][0]['org_entityfk'], 1)
 
         ''' Second Org should be University of Manitoba with ID 2 '''
-        self.assertEqual(allOrgs.OrgNames[1].org_name, 'University of Manitoba')
-        self.assertEqual(allOrgs.OrgNames[1].org_entityfk, 2)
+        self.assertEqual(allOrgs['OrgNames'][1]['org_name'], 'University of Manitoba')
+        self.assertEqual(allOrgs['OrgNames'][1]['org_entityfk'], 2)
 
     def test_registerDuplicateOrganization(self):
         ''' Construct our new organization. '''
@@ -935,12 +935,13 @@ class ESATestCase(TestCase):
 
         self.resetDB
 
-    def test_getOrganizationByID(self):
+    def test_getOrganizationByIDJSON(self):
         ''' Test getOrganizationByID method '''
         ''' Validate first organization entries '''
-        org = json.loads(controllers.getOrganizationByIDJSON(1))
+        jsonify = json.loads(controllers.getOrganizationByIDJSON(1))
+        org = controllers.extractOrganizationFromDict(jsonify)
         self.assertIsNotNone(org)
-        self.assertEqual(org.org_entityfk, 1)
+        self.assertEqual(org.entityFK, 1)
         self.assertEquals(org.name, 'Ai-Kon')
         self.assertEquals(org.description, 'Ai-Kon Anime Convention')
         self.assertEquals(org.entity.type, models.TYPE_ORGANIZATION)
@@ -957,9 +958,10 @@ class ESATestCase(TestCase):
         self.assertEquals(org.entity.contacts[0].isprimary, True)
 
         ''' Validate second organization entries '''
-        org = json.loads(controllers.getOrganizationByIDJSON(2))
+        jsonify = json.loads(controllers.getOrganizationByIDJSON(2))
+        org = controllers.extractOrganizationFromDict(jsonify)
         self.assertIsNotNone(org)
-        self.assertEquals(org.org_entityfk, 2) 
+        self.assertEquals(org.entityFK, 2) 
         self.assertEquals(org.name, 'University of Manitoba')
         self.assertEquals(org.description, 'The University of Manitoba, is a public university in the province of Manitoba, Canada. Located in Winnipeg, it is Manitoba\'s largest, most comprehensive, and only research-intensive post-secondary educational institution.')
         self.assertEquals(org.entity.type, models.TYPE_ORGANIZATION)
@@ -976,8 +978,45 @@ class ESATestCase(TestCase):
         self.assertEquals(org.entity.contacts[0].isprimary, True)
 
         ''' Attempt an invalid organization '''
-        org = json.loads(controllers.getOrganizationByIDJSON(3))
-        self.assertNone(org)
+        org = controllers.getOrganizationByIDJSON(3)
+        self.assertIsNone(org)
+
+def suite():
+    # Define the container for this module's tests.
+    suite = unittest.TestSuite()
+
+    # Add tests to suite.
+    suite.addTest(ControllerTestCase('test_getAllOrganizations'))
+    suite.addTest(ControllerTestCase('test_getAllOrganizationsJSON'))
+    suite.addTest(ControllerTestCase('test_getAllOrgNamesJSON'))
+    suite.addTest(ControllerTestCase('test_registerDuplicateOrganization'))
+    suite.addTest(ControllerTestCase('test_registerOrganization'))
+    suite.addTest(ControllerTestCase('test_organizationToJSON'))
+    suite.addTest(ControllerTestCase('test_entityToJSON'))
+    suite.addTest(ControllerTestCase('test_addressToJSON'))
+    suite.addTest(ControllerTestCase('test_contactToJSON'))
+    suite.addTest(ControllerTestCase('test_extractOrganizationFromDict'))
+    suite.addTest(ControllerTestCase('test_extractEntityFromDict'))
+    suite.addTest(ControllerTestCase('test_extractAddressFromDict'))
+    suite.addTest(ControllerTestCase('test_extractContactFromDict'))
+    suite.addTest(ControllerTestCase('test__checkForDuplicateOrganization'))
+    suite.addTest(ControllerTestCase('test_checkForDuplicateOrganizationName'))
+    suite.addTest(ControllerTestCase('test__getPrivilegesForPerson'))
+    suite.addTest(ControllerTestCase('test__getOrgsWithPrivilegesForPerson'))
+    suite.addTest(ControllerTestCase('test__getGlobalPrivilegesForPerson'))
+    suite.addTest(ControllerTestCase('test__getOrgsWithPersonPrivilege'))
+    suite.addTest(ControllerTestCase('test__getPeopleInOrganization'))
+    suite.addTest(ControllerTestCase('test__grantPrivilegeToPerson_Global'))
+    suite.addTest(ControllerTestCase('test__grantPrivilegeToPerson_Person'))
+    suite.addTest(ControllerTestCase('test__revokePrivilegeForPerson_Global'))
+    suite.addTest(ControllerTestCase('test__revokePrivilegeForPerson_Person'))
+    suite.addTest(ControllerTestCase('test__checkForDuplicateEmployee'))
+    suite.addTest(ControllerTestCase('test_registerEmployee'))
+    suite.addTest(ControllerTestCase('test_getPersonById'))
+    suite.addTest(ControllerTestCase('test_getPersonByUsername'))
+    suite.addTest(ControllerTestCase('test_getOrganizationByIDJSON'))
+
+    return suite
 
 if __name__ == "__main__":
     unittest.main()
