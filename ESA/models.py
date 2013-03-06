@@ -38,6 +38,9 @@ CONTACT_TYPE_KEY = 'type'
 CONTACT_VALUE_KEY = 'value'
 CONTACT_ISPRIMARY_KEY = 'isprimary'
 
+PRIVILEGE_PK_KEY = 'privilege_pk'
+PRIVILEGE_VALUE = 'privilege'
+
 
 # DB Initialization
 db = SQLAlchemy()

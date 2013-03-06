@@ -5,6 +5,13 @@ import models
 """ Retrieve all privileges. """
 def _getAllPrivileges():
     return models.Privilege.query.order_by(models.Privilege.privilege).all()
+
+""" Retrieve all privileges and wrap them in JSON. """
+# Format: {"Privileges":[{
+def getAllPrivilegesJSON():
+    
+    privileges = _getAllPrivileges()
+    
     
 
 
@@ -181,6 +188,26 @@ def _revokePrivilegeForPerson(db, privilegeKey,personKey,organizationKey=None):
             returnValue = True
 
     return returnValue
+    
+    
+""" Converts a Privilege into JSON format. """
+def privilegeToJSON(privilege):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.PRIVILEGE_PK_KEY,val=privilege.pk if privilege.pk != None else '"None"')
+    jsonString += '"{key}":"{val}"'.format(key=models.PRIVILEGE_VALUE,val=privilege.privilege if privilege.privilege != None else '"None"')
+    jsonString += '}'
+    return jsonString
+    
+    
+
+""" Extracts a Privilege in Dict format to a Privilege object. """
+def extractPrivilegeFromDict(privilege):
+    newPrivilege = models.Privilege()
+    for key,value in privilege.iteritems():
+        if(key == models.PRIVILEGE_PK_KEY and value != 'None'):
+            newPrivilege.pk = int(value)
+        if(key == models.PRIVILEGE_VALUE):
+            newPrivilege.privilege = value
+    return newPrivilege
     
     
     

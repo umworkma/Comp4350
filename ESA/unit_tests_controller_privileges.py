@@ -314,12 +314,32 @@ class ControllerPrivilegesTestCase(TestCase):
         self.assertEqual(privileges[7].privilege, 'YET_ANOTHER_EMP_PRIVILEGE');
         
         
+        
+    def test_privilegeToJSON(self):
+        privilege = models.Privilege.query.filter_by(pk=4).first()
+        targetString = '{"privilege_pk":4,"privilege":"VIEW_ALL_ORGANIZATIONS"}'
+        jsonString = controller_privileges.privilegeToJSON(privilege)
+        self.assertEqual(jsonString, targetString)
+        
+    def test_extractPrivilegeFromDict(self):
+        control = models.Privilege.query.filter_by(pk=4).first()
+        stringJSON = '{"privilege_pk":4,"privilege":"VIEW_ALL_ORGANIZATIONS"}'
+        data = json.loads(stringJSON)
+        target = controller_privileges.extractPrivilegeFromDict(data)
+        
+        self.assertEqual(control.pk, target.pk)
+        self.assertEqual(control.privilege, target.privilege)
+        self.assertEqual(control.__repr__(), target.__repr__())
+        
+        
 def suite():
     # Define the container for this module's tests.
     suite = unittest.TestSuite()
 
     # Add tests to suite.
     suite.addTest(ControllerPrivilegesTestCase('test__getAllPrivileges'))
+    suite.addTest(ControllerPrivilegesTestCase('test_privilegeToJSON'))
+    suite.addTest(ControllerPrivilegesTestCase('test_extractPrivilegeFromDict'))
     suite.addTest(ControllerPrivilegesTestCase('test__getPrivilegesForPerson'))
     suite.addTest(ControllerPrivilegesTestCase('test__getOrgsWithPrivilegesForPerson'))
     suite.addTest(ControllerPrivilegesTestCase('test__getGlobalPrivilegesForPerson'))
