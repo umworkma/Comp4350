@@ -7,8 +7,12 @@ from flask.ext.testing import TestCase
 
 import fixtures
 import models
+<<<<<<< HEAD
 import events
 import datetime
+=======
+from datetime import datetime
+>>>>>>> Fixed some failed tests
 
 class EventTestCase(TestCase):
     database_uri = "sqlite:///event_unittest.db"
@@ -81,7 +85,7 @@ class EventTestCase(TestCase):
         name = 'new event'
         desc = 'new description'
         orgFK = 1
-        target = models.Event(name, desc, datetime.datetime.now(), datetime.datetime.now(), orgFK)
+        target = models.Event(name, desc, datetime.now(), datetime.now(), orgFK)
 
         # Verify that the data does not already exist.
         fetched = models.Event.query.filter_by(name=name, description=desc).first()
