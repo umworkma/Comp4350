@@ -1,5 +1,6 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+from datetime import datetime
 
 # Globals
 TYPE_ORGANIZATION   = 1
@@ -213,11 +214,9 @@ class Event(db.Model):
     pk = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     description = db.Column(db.Text)
-    startdate = db.Column(db.DateTime)
-    enddate = db.Column(db.DateTime)
+    startdate = db.Column(db.DateTime, default=datetime.now)
+    enddate = db.Column(db.DateTime, default=datetime.now)
     organizationFK = db.Column(db.Integer, db.ForeignKey(Organization.entityFK, ondelete='cascade'))
-    eventcol = db.Column(db.String(45))
-    eventcol1 = db.Column(db.String(45))
 
     def __init__(self, name=None, description=None, startdate=None, enddate=None, organizationFK=None, eventcol=None, eventcol1=None):
         self.name = name
@@ -233,7 +232,7 @@ class Event(db.Model):
 class Shift(db.Model):
     __tablename__ = 'shift'
     pk = db.Column(db.Integer, primary_key=True)
-    eventFK = db.Column(db.Integer, db.ForeignKey(event.pk, ondelete='cascade'))
+    eventFK = db.Column(db.Integer, db.ForeignKey(Event.pk, ondelete='cascade'))
     startdatetime = db.Column(db.DateTime)
     enddatetime = db.Column(db.DateTime)
     location = db.Column(db.String(100))

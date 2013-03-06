@@ -249,9 +249,20 @@ class GlobalPrivilegeAssignmentData(DataSet):
         privilegeFK = 4
         personentityFK = 5
 
+class EventData(DataSet):
+    class event1:
+        name='My Event'
+        description='This is my event'
+        organizationFK=1
+
+    class event2:
+        name='Your Event'
+        description='This is your event'
+        organizationFK=2
+
 all_data = (EntityData, PersonData, AddressData, OrganizationData, ContactData,
             PrivilegeData, MemberData, PrivilegePersonAssignmentData,
-            GlobalPrivilegeAssignmentData)
+            GlobalPrivilegeAssignmentData, EventData)
 entity_test_data = (EntityData, AddressData, ContactData, OrganizationData, PersonData)
 address_test_data = (AddressData, EntityData)
 contact_test_data = (ContactData, EntityData)
@@ -261,3 +272,4 @@ member_test_data = (MemberData, PersonData, OrganizationData, PrivilegePersonAss
 privilege_test_data = (PrivilegeData, PrivilegePersonAssignmentData, GlobalPrivilegeAssignmentData, MemberData)
 ppa_test_data = (PrivilegeData, PrivilegePersonAssignmentData, MemberData)
 gpa_test_data = (PrivilegeData, GlobalPrivilegeAssignmentData, MemberData, PersonData)
+event_test_data = (EventData,)

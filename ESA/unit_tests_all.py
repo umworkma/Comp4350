@@ -10,6 +10,7 @@ import unit_tests_privilege
 import unit_tests_member
 import unit_tests_privilegepersonassignment
 import unit_tests_globalprivilegeassignment
+import unit_tests_event
 
 
 def suite():
