@@ -8,6 +8,7 @@
 
 class Config(object):
     APPLICATION_ROOT = "/var/local/Comp4350/ESA"
+    SECRET_KEY = 'This is a very secure secret key'
 
 class ProdConfig(Config):
     ENV = "Prod"

@@ -43,16 +43,22 @@ class PersonTestCase(TestCase):
         self.assertEqual(chris.entityFK, 3)
         self.assertEqual(chris.firstname, 'Chris')
         self.assertEqual(chris.lastname, 'Workman')
+        self.assertEqual(chris.username, 'user0')
+        self.assertEqual(chris.password, 'password0')
 
         ryoji = models.Person.query.filter_by(entityFK=4).first()
         self.assertEqual(ryoji.entityFK, 4)
         self.assertEqual(ryoji.firstname, 'Ryoji')
         self.assertEqual(ryoji.lastname, 'Betchaku')
+        self.assertEqual(ryoji.username, 'user1')
+        self.assertEqual(ryoji.password, 'password1')
 
         dan = models.Person.query.filter_by(entityFK=5).first()
         self.assertEqual(dan.entityFK, 5)
         self.assertEqual(dan.firstname, 'Dan')
         self.assertEqual(dan.lastname, 'Nelson')
+        self.assertEqual(dan.username, 'meat_lol')
+        self.assertEqual(dan.password, 'password2')
         
     
     """ Test that we can retrieve an entity from the person relationship. """
@@ -61,6 +67,8 @@ class PersonTestCase(TestCase):
         entityKey = 3
         fname = 'Chris'
         lname = 'Workman'
+        username = 'user0'
+        password = 'password0'
         # Retrieve the target object directly.
         direct = models.Entity.query.filter_by(pk=entityKey).first()
         self.assertIsNotNone(direct)
@@ -70,6 +78,8 @@ class PersonTestCase(TestCase):
         self.assertEqual(host.entityFK, entityKey)
         self.assertEqual(host.firstname, fname)
         self.assertEqual(host.lastname, lname)
+        self.assertEqual(host.username, username)
+        self.assertEqual(host.password, password)
         # Retrieve the target object through the containing object.
         target = host.entity
         self.assertIsNotNone(target)
@@ -79,6 +89,8 @@ class PersonTestCase(TestCase):
         entityKey = 4
         fname = 'Ryoji'
         lname = 'Betchaku'
+        username = 'user1'
+        password = 'password1'
         # Retrieve the target object directly.
         direct = models.Entity.query.filter_by(pk=entityKey).first()
         self.assertIsNotNone(direct)
@@ -88,6 +100,8 @@ class PersonTestCase(TestCase):
         self.assertEqual(host.entityFK, entityKey)
         self.assertEqual(host.firstname, fname)
         self.assertEqual(host.lastname, lname)
+        self.assertEqual(host.username, username)
+        self.assertEqual(host.password, password)
         # Retrieve the target object through the containing object.
         target = host.entity
         self.assertIsNotNone(target)
@@ -97,6 +111,8 @@ class PersonTestCase(TestCase):
         entityKey = 5
         fname = 'Dan'
         lname = 'Nelson'
+        username = 'meat_lol'
+        password = 'password2'
         # Retrieve the target object directly.
         direct = models.Entity.query.filter_by(pk=entityKey).first()
         self.assertIsNotNone(direct)
@@ -106,6 +122,8 @@ class PersonTestCase(TestCase):
         self.assertEqual(host.entityFK, entityKey)
         self.assertEqual(host.firstname, fname)
         self.assertEqual(host.lastname, lname)
+        self.assertEqual(host.username, username)
+        self.assertEqual(host.password, password)
         # Retrieve the target object through the containing object.
         target = host.entity
         self.assertIsNotNone(target)
@@ -164,7 +182,9 @@ class PersonTestCase(TestCase):
         # Define prerequisite data.
         fname = 'new fname'
         lname = 'new lname'
-        target = models.Person(fname, lname)
+        username = 'new_user'
+        password = 'new_password'
+        target = models.Person(fname, lname, username, password)
         target.entity = models.Entity(models.TYPE_EMPLOYEE)
 
         # Verify that the data does not already exist.
@@ -182,6 +202,8 @@ class PersonTestCase(TestCase):
         for item in fetchedList:
             self.assertEqual(item.firstname, target.firstname)
             self.assertEqual(item.lastname, target.lastname)
+            self.assertEqual(item.username, target.username)
+            self.assertEqual(item.password, target.password)
             count += 1
         self.assertEqual(count, 1)
 
@@ -225,6 +247,10 @@ class PersonTestCase(TestCase):
         self.assertEqual(fetched.entityFK, target.entityFK)
         self.assertEqual(fetched.firstname, target.firstname)
         self.assertEqual(fetched.lastname, target.lastname)
+        self.assertEqual(fetched.username, target.username)
+        self.assertEqual(fetched.password, target.password)
+
+
 
         # Verify state of related tables after the operation.
         personCountAfter = models.Person.query.count()

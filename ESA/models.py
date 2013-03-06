@@ -59,8 +59,8 @@ class Entity(db.Model):
     __tablename__ = 'entity'
     pk = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.Integer)
-    addresses = db.relationship('Address', cascade='all, delete-orphan', backref='entity')
-    contacts = db.relationship('Contact', cascade='all, delete-orphan', backref='entity')
+    addresses = db.relationship('Address', order_by='Address.isprimary', cascade='all, delete-orphan', backref='entity')
+    contacts = db.relationship('Contact', order_by='Contact.isprimary, Contact.type', cascade='all, delete-orphan', backref='entity')
     organization = db.relationship('Organization', uselist=False, cascade='all,delete-orphan')
     person = db.relationship('Person', uselist=False, cascade='all, delete-orphan')
     
@@ -159,10 +159,28 @@ class Person(db.Model):
     memberships = db.relationship('Member', cascade='all, delete-orphan', backref='person')
     gpaList = db.relationship('GlobalPrivilegeAssignment', cascade='all, delete-orphan', backref='person')
     
-    def __init__(self, fname=None, lname=None):
+    def __init__(self, fname=None, lname=None, username=None, passwd=None):
         self.firstname = fname
         self.lastname = lname
+        self.username = username
+        self.password = passwd
         #self.entity = Entity(TYPE_EMPLOYEE)    # Stoopid python...
+
+    # require by login manager
+    def is_authenticated(self):
+        return True
+
+    # require by login manager
+    def is_active(self):
+        return True
+
+    # require by login manager
+    def is_anonymous(self):
+        return False
+
+    # require by login manager
+    def get_id(self):
+        return unicode(self.entityFK)
 
     def __repr__(self):
         return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname)
