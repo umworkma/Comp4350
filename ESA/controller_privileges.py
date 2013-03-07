@@ -249,6 +249,15 @@ def _grantPrivilegeToPerson(db, privilegeKey,personKey,organizationKey=None):
 
     return returnValue
 
+""" Grant a privilege to a person, result returned in JSON format. """
+# Format: {"Result":"True"} or {"Result":"False"}
+def grantPrivilegeToPersonJSON(db, privilegeKey, personKey, organizationKey=None):
+    result = _grantPrivilegeToPerson(db, privilegeKey,personKey,organizationKey)
+    resultString = "True"
+    if result is False:
+        resultString = "False"
+    jsonString = '{"Result":' + '"{val}"'.format(val=resultString) + '}'
+    return jsonString
 
 
 """ Revoke a privilege from a person. """
