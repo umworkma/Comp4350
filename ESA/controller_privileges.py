@@ -65,6 +65,24 @@ def _getOrgsWithPrivilegesForPerson(personKey):
         returnValue = None
 
     return returnValue
+    
+    
+""" Retrieve all organizations that the given person has privileges for in JSON format. """
+# Format: {"OrganizationKeys":[#,#,#,#,...]}
+def getOrgsWithPrivilegesForPersonJSON(personKey):
+    orgKeys = _getOrgsWithPrivilegesForPerson(personKey)
+    jsonString = '{"OrganizationKeys":'
+    if len(orgKeys) > 0:
+        jsonString += '['
+        count = 0
+        for key in orgKeys:
+            if count > 0:
+                jsonString += ','
+            count += 1
+            jsonString += str(key)  # convert key to string for concatenation, python restriction
+        jsonString += ']'
+    jsonString += '}'
+    return jsonString
 
 
 
