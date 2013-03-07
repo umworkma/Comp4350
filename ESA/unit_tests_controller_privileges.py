@@ -174,6 +174,23 @@ class ControllerPrivilegesTestCase(TestCase):
             count += 1
             self.assertTrue(value == 1 or value == 2)
         self.assertEqual(count, 2)
+        
+    def test_getOrgsWithPersonPrivilegeJSON(self):
+        # Define prerequisite data.
+        personKey = 4
+        privilegeKey = 7
+        # Get the restult of the tested method.
+        jsonString = controller_privileges.getOrgsWithPersonPrivilegeJSON(personKey,privilegeKey)
+        # Validate the result.
+        self.assertIsNotNone(jsonString)
+        dict = json.loads(jsonString)
+        count = 0
+        for key,values in dict.iteritems():
+            self.assertEqual(key, "OrganizationKeys")
+            for value in values:
+                count += 1
+                self.assertTrue(value is 1 or value is 2)
+        self.assertEqual(count, 2)
 
 
 
@@ -437,6 +454,7 @@ def suite():
     suite.addTest(ControllerPrivilegesTestCase('test__getGlobalPrivilegesForPerson'))
     suite.addTest(ControllerPrivilegesTestCase('test_getGlobalPrivilegesForPersonJSON'))
     suite.addTest(ControllerPrivilegesTestCase('test__getOrgsWithPersonPrivilege'))
+    suite.addTest(ControllerPrivilegesTestCase('test_getOrgsWithPersonPrivilegeJSON'))
     suite.addTest(ControllerPrivilegesTestCase('test__grantPrivilegeToPerson_Global'))
     suite.addTest(ControllerPrivilegesTestCase('test__grantPrivilegeToPerson_Person'))
     suite.addTest(ControllerPrivilegesTestCase('test__revokePrivilegeForPerson_Global'))

@@ -21,7 +21,7 @@ def getAllPrivilegesJSON():
             jsonString += privilegeToJSON(privilege)
         jsonString += ']'
     else:
-        jsonString += 'None'
+        jsonString += '"None"'
     jsonString += '}'
     return jsonString
     
@@ -69,7 +69,7 @@ def getPrivilegesForPersonJSON(personKey, organizationKey):
             count += 1;
         jsonString += ']'
     else:
-        jsonString += 'None'
+        jsonString += '"None"'
     jsonString += '}'
     return jsonString
 
@@ -116,7 +116,7 @@ def getOrgsWithPrivilegesForPersonJSON(personKey):
             jsonString += str(key)  # convert key to string for concatenation, python restriction
         jsonString += ']'
     else:
-        jsonString += 'None'
+        jsonString += '"None"'
     jsonString += '}'
     return jsonString
 
@@ -160,7 +160,7 @@ def getGlobalPrivilegesForPersonJSON(personKey):
             count += 1;
         jsonString += ']'
     else:
-        jsonString += 'None'
+        jsonString += '"None"'
     jsonString += '}'
     return jsonString
     
@@ -190,7 +190,26 @@ def _getOrgsWithPersonPrivilege(personKey, privilegeKey):
         returnValue = None
 
     return returnValue
-    
+
+""" Retrieves all organization keys where the given person has the given privilege, in JSON format. """
+# Format: {"OrganizationKeys":[#,#,#,#,...]}    
+def getOrgsWithPersonPrivilegeJSON(personKey, privilegeKey):
+    orgKeys = _getOrgsWithPersonPrivilege(personKey, privilegeKey)
+    jsonString = '{"OrganizationKeys":'
+    if orgKeys is not None and len(orgKeys) > 0:
+        jsonString += '['
+        count = 0
+        for key in orgKeys:
+            if count > 0:
+                jsonString += ','
+            count += 1
+            jsonString += str(key)  # convert key to string for concatenation, python restriction
+        jsonString += ']'
+    else:
+        jsonString += '"None"'
+    jsonString += '}'
+    return jsonString
+
 
 
 """ Grant a privilege to a person. """
