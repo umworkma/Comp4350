@@ -290,8 +290,17 @@ def _revokePrivilegeForPerson(db, privilegeKey,personKey,organizationKey=None):
             returnValue = True
         else:
             returnValue = True
-
     return returnValue
+    
+""" Revoke a privilege from a person, result returned in JSON format. """
+# Format: {"Result":"True"} or {"Result":"False"}
+def revokePrivilegeForPersonJSON(db, privilegeKey, personKey, organizationKey=None):
+    result = _revokePrivilegeForPerson(db, privilegeKey,personKey,organizationKey)
+    resultString = "True"
+    if result is False:
+        resultString = "False"
+    jsonString = '{"Result":' + '"{val}"'.format(val=resultString) + '}'
+    return jsonString
     
     
     
