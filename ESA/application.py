@@ -155,6 +155,12 @@ def submit_employee_form():
         return jsonify(msg='Other request method[%s]' % request.method)
 
 
+@app.route('/privilege/')
+@login_required
+def privilege():
+
+    return render_template('privilege.html')
+
 @app.teardown_request
 def shutdown_session(exception=None):
     db.session.remove()
