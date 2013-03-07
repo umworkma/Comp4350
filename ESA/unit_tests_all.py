@@ -27,6 +27,7 @@ def suite():
     allUnitTests.addTest(unit_tests_member.suite())
     allUnitTests.addTest(unit_tests_privilegepersonassignment.suite())
     allUnitTests.addTest(unit_tests_globalprivilegeassignment.suite())
+    allUnitTests.addTest(unit_tests_event.suite())
 
     return allUnitTests
 

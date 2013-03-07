@@ -7,28 +7,15 @@ from flask import *
 import models
 
 #####################################
-# registerEvent
-# Handles registration of a new event
-# Requires event dict object and database pointer
-# Will update the database and notify of success
-# of provide cause of failure
-#####################################
-def registerEvent(eventDict, db):
-    result = False
-    failCause = 'Unknown'
-
-    ''' Parse the dict data and create a basic event object '''
-    event = extractEventFromDict(eventDict)
-
-####################################
 # extractEventFromDict
-# Takes a dict object of event data and
-# returns an Event object
-####################################
+# Takes a dict of event data and parses
+# it into a new event object then
+# returns the event object
+#####################################
 def extractEventFromDict(eventDict):
     newEvent = models.Event()
 
-    for eventKey, eventValue in eventDict:
+    for eventKey, eventValue in eventDict.iteritems():
         if(eventKey == models.EVENT_PK_KEY and eventValue != 'None'):
             newEvent.pk = int(eventValue)
         if(eventKey == models.EVENT_NAME_KEY):

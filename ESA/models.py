@@ -39,6 +39,12 @@ CONTACT_TYPE_KEY = 'type'
 CONTACT_VALUE_KEY = 'value'
 CONTACT_ISPRIMARY_KEY = 'isprimary'
 
+EVENT_PK_KEY = 'event_pk'
+EVENT_NAME_KEY = 'event_name'
+EVENT_DESC_KEY = 'event_desc'
+EVENT_START_KEY = 'event_start'
+EVENT_END_KEY = 'event_end'
+EVENT_ORGFK_KEY = 'event_orgfk'
 
 # DB Initialization
 db = SQLAlchemy()
@@ -138,6 +144,7 @@ class Organization(db.Model):
     description = db.Column(db.Text)
     entity = db.relationship('Entity', uselist=False, cascade='all,delete')
     employees = db.relationship('Member', cascade='all, delete-orphan', backref='organization')
+    events = db.relationship('Event', cascade='all, delete-orphan', backref='organization')
 
     def __init__(self, name=None, description=None):
         self.name = name

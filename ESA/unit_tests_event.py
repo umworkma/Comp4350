@@ -1,14 +1,16 @@
 #!../venv/bin/python
 import unittest
+import json
 
 from flask import Flask
 from flask.ext.testing import TestCase
 
 import fixtures
 import models
+import events
 import datetime
 
-class MemberTestCase(TestCase):
+class EventTestCase(TestCase):
     database_uri = "sqlite:///event_unittest.db"
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
@@ -103,15 +105,26 @@ class MemberTestCase(TestCase):
         eventCountAfter = models.Event.query.count()
         self.assertTrue(eventCountAfter == eventCount + 1)
 
+    def test_extractEventFromDict(self):
+        control = models.Event.query.first()
+        stringJSON = '{"event_pk":1, "event_name":"My Event", "event_desc":"This is my event", "event_orgfk":1}'
+        data = json.loads(stringJSON)
+        target = events.extractEventFromDict(data)
+
+        self.assertEqual(control.pk, target.pk)
+        self.assertEqual(control.name, target.name)
+        self.assertEqual(control.description, target.description)
+        self.assertEqual(control.organizationFK, target.organizationFK)
 
 def suite():
     # Define the container for this module's tests.
     suite = unittest.TestSuite()
 
     # Add tests to suite.
-    suite.addTest(MemberTestCase('test_event_model'))
-    suite.addTest(MemberTestCase('test_event_organization_relationship'))
-    suite.addTest(MemberTestCase('test_event_add'))
+    suite.addTest(EventTestCase('test_event_model'))
+    suite.addTest(EventTestCase('test_event_organization_relationship'))
+    suite.addTest(EventTestCase('test_event_add'))
+    suite.addTest(EventTestCase('test_extractEventFromDict'))
     
     return suite
     

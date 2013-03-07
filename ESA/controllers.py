@@ -73,7 +73,6 @@ def employeeToJSON(emp):
     jsonString += '}'
     return jsonString
 
-
 # Organizations
 def getAllOrganizations(db):
     results = models.Organization.query.all()
