@@ -89,6 +89,26 @@ def _getGlobalPrivilegesForPerson(personKey):
     return returnValue
     
 
+""" Retrieve all global privileges for a given person in JSON format. """
+# Format: {"<person key string>":<person.pk>, "GlobalPrivileges":[{privilege json format}, ...]}
+def getGlobalPrivilegesForPersonJSON(personKey):
+    privileges = _getGlobalPrivilegesForPerson(personKey)
+    jsonString = '{'
+    jsonString += '"{key}":{value}'.format(key=models.EMPLOYEE_ENTITYFK_KEY, value=personKey)
+    jsonString += ',"GlobalPrivileges":'
+    if len(privileges) > 0:
+        jsonString += '['
+        count = 0
+        for privilege in privileges:
+            if count > 0:
+                jsonString += ','
+            jsonString += privilegeToJSON(privilege)
+            count += 1;
+        jsonString += ']'
+    jsonString += '}'
+    return jsonString
+    
+
 
 """ Retrieves all organization keys where the given person has the given privilege. """
 # Returns a list of organization entityFK values where the given person has
@@ -188,6 +208,7 @@ def _revokePrivilegeForPerson(db, privilegeKey,personKey,organizationKey=None):
             returnValue = True
 
     return returnValue
+    
     
     
 """ Converts a Privilege into JSON format. """

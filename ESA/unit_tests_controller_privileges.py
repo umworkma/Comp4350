@@ -87,6 +87,32 @@ class ControllerPrivilegesTestCase(TestCase):
             self.assertTrue(priv.privilege == 'REGISTER_NEW_ORGANIZATION' or
                             priv.privilege == 'VIEW_ALL_ORGANIZATIONS')
         self.assertEqual(count, 2)
+        
+        
+    def test_getGlobalPrivilegesForPersonJSON(self):
+        # Define prerequisite data.
+        personKey = 3
+        # Get the result of the tested method.
+        jsonString = controller_privileges.getGlobalPrivilegesForPersonJSON(personKey)
+        # Validate the result.
+        self.assertIsNotNone(jsonString)
+        self.assertTrue(len(jsonString) > 0)
+        dict = json.loads(jsonString)
+        personKeyInOutput = False
+        for key1,value1 in dict.iteritems():
+            if key1 == models.EMPLOYEE_ENTITYFK_KEY:
+                self.assertEqual(value1, personKey)
+                personKeyInOutput = True
+            if key1 == 'GlobalPrivileges':
+                privCount = 0
+                for dictPrivilege in value1:
+                    privilege = controller_privileges.extractPrivilegeFromDict(dictPrivilege)
+                    privCount += 1
+                    self.assertTrue(privilege.pk is 1 or privilege.pk is 4)
+                    self.assertTrue(privilege.privilege == 'REGISTER_NEW_ORGANIZATION' or privilege.privilege == 'VIEW_ALL_ORGANIZATIONS')
+                self.assertEqual(privCount, 2)
+            self.assertTrue(personKeyInOutput)
+            
 
 
 
@@ -343,11 +369,14 @@ def suite():
     suite.addTest(ControllerPrivilegesTestCase('test__getPrivilegesForPerson'))
     suite.addTest(ControllerPrivilegesTestCase('test__getOrgsWithPrivilegesForPerson'))
     suite.addTest(ControllerPrivilegesTestCase('test__getGlobalPrivilegesForPerson'))
+    suite.addTest(ControllerPrivilegesTestCase('test_getGlobalPrivilegesForPersonJSON'))
     suite.addTest(ControllerPrivilegesTestCase('test__getOrgsWithPersonPrivilege'))
     suite.addTest(ControllerPrivilegesTestCase('test__grantPrivilegeToPerson_Global'))
     suite.addTest(ControllerPrivilegesTestCase('test__grantPrivilegeToPerson_Person'))
     suite.addTest(ControllerPrivilegesTestCase('test__revokePrivilegeForPerson_Global'))
     suite.addTest(ControllerPrivilegesTestCase('test__revokePrivilegeForPerson_Person'))
+    
+    
     
     return suite
     
