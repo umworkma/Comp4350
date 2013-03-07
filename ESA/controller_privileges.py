@@ -7,10 +7,23 @@ def _getAllPrivileges():
     return models.Privilege.query.order_by(models.Privilege.privilege).all()
 
 """ Retrieve all privileges and wrap them in JSON. """
-# Format: {"Privileges":[{
+# Format: {"Privileges":[<privilege json string>,...]}
 def getAllPrivilegesJSON():
-    
     privileges = _getAllPrivileges()
+    jsonString = '{"Privileges":'
+    if len(privileges) > 0:
+        jsonString += '['
+        count = 0
+        for privilege in privileges:
+            if count > 0:
+                jsonString += ','
+            count += 1
+            jsonString += privilegeToJSON(privilege)
+        jsonString += ']'
+    else:
+        jsonString += 'None'
+    jsonString += '}'
+    return jsonString
     
     
 
@@ -55,6 +68,8 @@ def getPrivilegesForPersonJSON(personKey, organizationKey):
             jsonString += privilegeToJSON(privilege)
             count += 1;
         jsonString += ']'
+    else:
+        jsonString += 'None'
     jsonString += '}'
     return jsonString
 
@@ -100,6 +115,8 @@ def getOrgsWithPrivilegesForPersonJSON(personKey):
             count += 1
             jsonString += str(key)  # convert key to string for concatenation, python restriction
         jsonString += ']'
+    else:
+        jsonString += 'None'
     jsonString += '}'
     return jsonString
 
@@ -142,6 +159,8 @@ def getGlobalPrivilegesForPersonJSON(personKey):
             jsonString += privilegeToJSON(privilege)
             count += 1;
         jsonString += ']'
+    else:
+        jsonString += 'None'
     jsonString += '}'
     return jsonString
     

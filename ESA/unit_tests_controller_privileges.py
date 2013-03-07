@@ -384,6 +384,24 @@ class ControllerPrivilegesTestCase(TestCase):
         self.assertEqual(privileges[6].privilege, 'VIEW_ALL_ORGANIZATIONS');
         self.assertEqual(privileges[7].privilege, 'YET_ANOTHER_EMP_PRIVILEGE');
         
+    def test_getAllPrivilegesJSON(self):
+        jsonString = controller_privileges.getAllPrivilegesJSON()
+        self.assertIsNotNone(jsonString)
+        self.assertTrue(len(jsonString) > 0)
+        dict = json.loads(jsonString)
+        privCount = 0
+        for key1,value1 in dict.iteritems():
+            if key1 == 'Privileges':
+                for dictPrivilege in value1:
+                    privilege = controller_privileges.extractPrivilegeFromDict(dictPrivilege)
+                    privCount += 1
+                    self.assertTrue(privilege.pk >= 1 or privilege.pk <= 8)
+                    self.assertTrue(privilege.privilege == 'ASSIGN_EMPS_TO_SHIFTS' or privilege.privilege == 'DELETE_ORGANIZATION' or
+                                    privilege.privilege == 'MODIFY_ORGANIZATION' or privilege.privilege == 'REGISTER_NEW_ORGANIZATION' or
+                                    privilege.privilege == 'SOME_OTHER_EMP_PRIVILEGE' or privilege.privilege == 'VIEW_ALL_EMPLOYEES_IN_ORG' or
+                                    privilege.privilege == 'VIEW_ALL_ORGANIZATIONS' or privilege.privilege == 'YET_ANOTHER_EMP_PRIVILEGE')
+        self.assertEqual(privCount, 8)
+        
         
         
     def test_privilegeToJSON(self):
@@ -409,6 +427,7 @@ def suite():
 
     # Add tests to suite.
     suite.addTest(ControllerPrivilegesTestCase('test__getAllPrivileges'))
+    suite.addTest(ControllerPrivilegesTestCase('test_getAllPrivilegesJSON'))
     suite.addTest(ControllerPrivilegesTestCase('test_privilegeToJSON'))
     suite.addTest(ControllerPrivilegesTestCase('test_extractPrivilegeFromDict'))
     suite.addTest(ControllerPrivilegesTestCase('test__getPrivilegesForPerson'))
