@@ -287,9 +287,72 @@ function createJsonObjectForEmployee() {
 
 }
 
+function join_org(id) {
+    //url = '/_submit_org_form',
+
+    /*data = {
+        org_name: $('input[name="org_name"]').val(),
+        org_desc: $('#org_desc').val(),
+        Entity:   {
+            entity_type: 1,
+            addresses: [
+                {
+                    address1:   $('input[name="address1"]').val(),
+                    address2:   $('input[name="address2"]').val(),
+                    address3:   $('input[name="address3"]').val(),
+                    city:       $('input[name="city"]').val(),
+                    province:   $('input[name="province"]').val(),
+                    country:    $('input[name="country"]').val(),
+                    postalcode: $('input[name="postalcode"]').val(),
+                    isprimary:  "True"
+                }
+            ],
+            contacts: [
+                {
+                    type:       1,
+                    value:      $('input[name="phone"]').val(),
+                    isprimary:  "True"
+                },
+                {
+                    type:       2,
+                    value:      $('input[name="email"]').val(),
+                    isprimary:  "False"
+                }
+            ]
+        }
+    },*/
+
+    //what needs to happen client-side on success (response)
+    /*success = function(data) {
+        // check for server return data.result
+        if(typeof data.result != 'undefined' ) {
+            // display the 2 type of alert box base of the result
+            if(data.result == 'True') {
+                ESA.display_alert('success', data.result);
+
+            } else {
+                ESA.display_alert('block', data.result);
+
+            }
+        }
+    },
+
+    //disable button here
+
+    ESA.ajaxJSON(url, data, success);
+
+    return false;*/
+
+    console.debug("org_id"+id);
+
+}   
+
+
 
 // active carousel when DOM is fully loaded
 $(document).ready(function() {
     $('.carousel').carousel({  interval: 3000
     });
+
+    $("button").click(join_org);
 });

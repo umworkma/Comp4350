@@ -8,7 +8,16 @@
 	</thead>
 	<tbody>
         	{% for org in data.OrgNames %}
-		<tr><td><a href="/organization/{{org.org_entityfk}}">{{org.org_name}}</a></td></tr>
+		<tr>
+			<td>
+				<a href="/organization/{{org.org_entityfk}}">{{org.org_name}}</a>
+			</td>
+			<td>
+				<button type="button" id="org_{{org.org_entityfk}}" class="btn">
+					Join
+				</button>
+			</td>
+		</tr>
   		{% endfor %}
 	</tbody>
 	</table>
