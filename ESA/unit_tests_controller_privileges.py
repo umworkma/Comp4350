@@ -174,6 +174,23 @@ class ControllerPrivilegesTestCase(TestCase):
             count += 1
             self.assertTrue(value == 1 or value == 2)
         self.assertEqual(count, 2)
+        
+    def test_getOrgsWithPersonPrivilegeJSON(self):
+        # Define prerequisite data.
+        personKey = 4
+        privilegeKey = 7
+        # Get the restult of the tested method.
+        jsonString = controller_privileges.getOrgsWithPersonPrivilegeJSON(personKey,privilegeKey)
+        # Validate the result.
+        self.assertIsNotNone(jsonString)
+        dict = json.loads(jsonString)
+        count = 0
+        for key,values in dict.iteritems():
+            self.assertEqual(key, "OrganizationKeys")
+            for value in values:
+                count += 1
+                self.assertTrue(value is 1 or value is 2)
+        self.assertEqual(count, 2)
 
 
 
@@ -215,6 +232,45 @@ class ControllerPrivilegesTestCase(TestCase):
         result = controller_privileges._grantPrivilegeToPerson(self.db, privilegeKey, personKey, None)
         # Validate the result.
         self.assertTrue(result)
+        
+    def test_grantPrivilegeToPerson_Global_JSON(self):
+        # Sub-Test 1: Invalid person key.
+        # Define prerequisite data.
+        privilegeKey = 7
+        personKey = 9999
+        # Get the result of the tested method.
+        result = controller_privileges.grantPrivilegeToPersonJSON(self.db, privilegeKey, personKey, None)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"False"}')
+
+        # Sub-Test 2: Invalid privilege key.
+        # Define prerequisite data.
+        privilegeKey = 9999
+        personKey = 5
+        # Get the result of the tested method.
+        result = controller_privileges.grantPrivilegeToPersonJSON(self.db, privilegeKey, personKey, None)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"False"}')
+
+        # Sub-Test 3: Valid execution.
+        # Define prerequisite data.
+        privilegeKey = 7
+        personKey = 5
+        # Get the result of the tested method.
+        result = controller_privileges.grantPrivilegeToPersonJSON(self.db, privilegeKey, personKey, None)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"True"}')
+
+        # Sub-Test 4: Duplicate permission.
+        # Define prerequisite data.
+        privilegeKey = 7
+        personKey = 5
+        # Get the result of the tested method.
+        result = controller_privileges.grantPrivilegeToPersonJSON(self.db, privilegeKey, personKey, None)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"True"}')
+
+
 
     def test__grantPrivilegeToPerson_Person(self):
         #self.resetDB()
@@ -278,6 +334,69 @@ class ControllerPrivilegesTestCase(TestCase):
         result = controller_privileges._grantPrivilegeToPerson(self.db, privilegeKey, personKey, organizationKey)
         # Validate the result.
         self.assertTrue(result)
+        
+    def test_grantPrivilegeToPerson_Person_JSON(self):
+        # Sub-Test 1: Invalid person key.
+        # Define prerequisite data.
+        privilegeKey = 1
+        personKey = 9999
+        organizationKey = 1
+        # Get the result of the tested method.
+        result = controller_privileges.grantPrivilegeToPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"False"}')
+
+        # Sub-Test 2: Invalid privilege key.
+        # Define prerequisite data.
+        privilegeKey = 9999
+        personKey = 4
+        organizationKey = 1
+        # Get the result of the tested method.
+        result = controller_privileges.grantPrivilegeToPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"False"}')
+
+        # Sub-Test 3: Invalid organization key.
+        # Define prerequisite data.
+        privilegeKey = 1
+        personKey = 4
+        organizationKey = 9999
+        # Get the result of the tested method.
+        result = controller_privileges.grantPrivilegeToPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"False"}')
+
+        # Sub-Test 4: Valid execution.
+        # Define prerequisite data.
+        privilegeKey = 2
+        personKey = 4
+        organizationKey = 1
+        # Get the result of the tested method.
+        result = controller_privileges.grantPrivilegeToPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"True"}')
+
+        # Sub-Test 5: Duplicate permission.
+        # Define prerequisite data.
+        privilegeKey = 2
+        personKey = 4
+        organizationKey = 1
+        # Get the result of the tested method.
+        result = controller_privileges.grantPrivilegeToPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"True"}')
+
+        # Sub-Test 6: Duplicate permission, but different organization.
+        # Define prerequisite data.
+        privilegeKey = 2
+        personKey = 4
+        organizationKey = 2
+        # Get the result of the tested method.
+        result = controller_privileges.grantPrivilegeToPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"True"}')
+        
+        
 
     def test__revokePrivilegeForPerson_Global(self):
         # Sub-Test 1: Invalid person key.
@@ -317,6 +436,44 @@ class ControllerPrivilegesTestCase(TestCase):
         self.assertTrue(result)
 
         #self.resetDB()
+        
+    def test_revokePrivilegeForPerson_Global_JSON(self):
+        # Sub-Test 1: Invalid person key.
+        # Define prerequisite data.
+        privilegeKey = 4
+        personKey = 9999
+        # Get the result of the tested method.
+        result = controller_privileges.revokePrivilegeForPersonJSON(self.db, privilegeKey, personKey, None)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"False"}')
+
+        # Sub-Test 2: Invalid privilege key.
+        # Define prerequisite data.
+        privilegeKey = 9999
+        personKey = 4
+        # Get the result of the tested method.
+        result = controller_privileges.revokePrivilegeForPersonJSON(self.db, privilegeKey, personKey, None)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"False"}')
+
+        # Sub-Test 3: Valid execution.
+        # Define prerequisite data.
+        privilegeKey = 3
+        personKey = 4
+        # Get the result of the tested method.
+        result = controller_privileges.revokePrivilegeForPersonJSON(self.db, privilegeKey, personKey, None)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"True"}')
+
+        # Sub-Test 4: Duplicate permission.
+        # Define prerequisite data.
+        privilegeKey = 3
+        personKey = 4
+        # Get the result of the tested method.
+        result = controller_privileges.revokePrivilegeForPersonJSON(self.db, privilegeKey, personKey, None)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"True"}')
+        
 
     def test__revokePrivilegeForPerson_Person(self):
         # Sub-Test 1: Invalid person key.
@@ -370,6 +527,57 @@ class ControllerPrivilegesTestCase(TestCase):
         self.assertTrue(result)
 
         #self.resetDB()
+        
+    def test_revokePrivilegeForPerson_Person_JSON(self):
+        # Sub-Test 1: Invalid person key.
+        # Define prerequisite data.
+        privilegeKey = 7
+        personKey = 9999
+        organizationKey = 1
+        # Get the result of the tested method.
+        result = controller_privileges.revokePrivilegeForPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"False"}')
+
+        # Sub-Test 2: Invalid privilege key.
+        # Define prerequisite data.
+        privilegeKey = 9999
+        personKey = 4
+        organizationKey = 1
+        # Get the result of the tested method.
+        result = controller_privileges.revokePrivilegeForPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"False"}')
+
+        # Sub-Test 3: Invalid organization key.
+        # Define prerequisite data.
+        privilegeKey = 7
+        personKey = 4
+        organizationKey = 9999
+        # Get the result of the tested method.
+        result = controller_privileges.revokePrivilegeForPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"False"}')
+
+        # Sub-Test 4: Valid execution.
+        # Define prerequisite data.
+        privilegeKey = 8
+        personKey = 4
+        organizationKey = 1
+        # Get the result of the tested method.
+        result = controller_privileges.revokePrivilegeForPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"True"}')
+
+        # Sub-Test 5: Duplicate permission.
+        # Define prerequisite data.
+        privilegeKey = 8
+        personKey = 4
+        organizationKey = 1
+        # Get the result of the tested method.
+        result = controller_privileges.revokePrivilegeForPersonJSON(self.db, privilegeKey, personKey, organizationKey)
+        # Validate the result.
+        self.assertEqual(result, '{"Result":"True"}')
         
         
     def test__getAllPrivileges(self):
@@ -437,10 +645,15 @@ def suite():
     suite.addTest(ControllerPrivilegesTestCase('test__getGlobalPrivilegesForPerson'))
     suite.addTest(ControllerPrivilegesTestCase('test_getGlobalPrivilegesForPersonJSON'))
     suite.addTest(ControllerPrivilegesTestCase('test__getOrgsWithPersonPrivilege'))
+    suite.addTest(ControllerPrivilegesTestCase('test_getOrgsWithPersonPrivilegeJSON'))
     suite.addTest(ControllerPrivilegesTestCase('test__grantPrivilegeToPerson_Global'))
+    suite.addTest(ControllerPrivilegesTestCase('test_grantPrivilegeToPerson_Global_JSON'))
     suite.addTest(ControllerPrivilegesTestCase('test__grantPrivilegeToPerson_Person'))
+    suite.addTest(ControllerPrivilegesTestCase('test_grantPrivilegeToPerson_Person_JSON'))
     suite.addTest(ControllerPrivilegesTestCase('test__revokePrivilegeForPerson_Global'))
+    suite.addTest(ControllerPrivilegesTestCase('test_revokePrivilegeForPerson_Global_JSON'))
     suite.addTest(ControllerPrivilegesTestCase('test__revokePrivilegeForPerson_Person'))
+    suite.addTest(ControllerPrivilegesTestCase('test_revokePrivilegeForPerson_Person_JSON'))
     
     
     return suite
