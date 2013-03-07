@@ -72,6 +72,24 @@ ESA = new ESA();
 
 
 // Check for valid organization name as the user types.
+function checkForDuplicateEmployeeUserName() {
+	url = '/check_dup_employee_user_name'
+	userName = $('input[name="username"]').val(),
+	data = { 'username': userName },
+	success = function(data) {
+		if(typeof data.result != 'undefined' ) {
+			if(data.result == 'True') {
+				updateIsValidEmployeeUserNameMsg(true);
+			} else {
+				updateIsValidEmployeeUserNameMsg(false);
+			}
+		}
+    },
+	ESA.ajaxJSON(url, data, success);
+    return false;
+}
+
+// Check for valid organization name as the user types.
 function checkForDuplicateOrgName() {
 	url = '/_check_dup_org_name',
     orgName = $('input[name="org_name"]').val(),
@@ -90,6 +108,39 @@ function checkForDuplicateOrgName() {
     ESA.ajaxJSON(url, data, success);
     return false;
 }
+
+
+// Display an alert if the organization name is a duplicate.
+function updateIsValidEmployeeUserNameMsg(isActive) {
+    type = 'alert alert-error';
+    msg = 'This user name already exists. Please choose a different name.';
+    alert = $('<div>');
+    alert.attr('class', type);
+
+    // Adding the close button to close the alert box
+    button = $('<button>', {
+        'type':'button',
+        'class': 'close',
+        'data-dismiss': 'alert',
+        text: '&times;'
+    });
+    // display the &times; html extended characters
+    button.html(button.text());
+
+    // adding close button and message to alert box
+    alert.append(button);
+    alert.append(msg);
+
+    // adding the alert box into the message area
+    if(isActive){
+    	$('.alert_isValidOrgName').append(alert);
+	} else {
+		$('.alert_isValidOrgName').children().remove()
+		//alert.alert('close');
+		//$('.alert_isValidOrgName').innerHTML = '';
+	}
+};
+
 
 // Display an alert if the organization name is a duplicate.
 function updateIsValidOrgNameMsg(isActive) {
@@ -122,10 +173,10 @@ function updateIsValidOrgNameMsg(isActive) {
 	}
 };
 
-
 // create json object and send it to server
-function createJsonObject() {
+function createJsonObjectForOrganization() {
     url = '/_submit_org_form',
+
     data = {
         org_name: $('input[name="org_name"]').val(),
         org_desc: $('#org_desc').val(),
@@ -175,6 +226,63 @@ function createJsonObject() {
 
     ESA.ajaxJSON(url, data, success);
 
+    return false;
+
+}
+
+// create json object and send it to server
+function createJsonObjectForEmployee() {
+
+	url = '/_submit_employee_form',
+    data = {
+		username: $('input[name="username"]').val(),
+		password: $('input[name="pwd1"]').val(),
+        firstname: $('input[name="firstname"]').val(),
+        lastname: $('input[name="lastname"]').val(),
+        Entity:   {
+        	entity_type: 1,
+        	addresses: [
+        		{
+					address1: 	$('input[name="address1"]').val(),
+        			address2: 	$('input[name="address2"]').val(),
+        			address3: 	$('input[name="address3"]').val(),
+        			city:     	$('input[name="city"]').val(),
+        			province: 	$('input[name="province"]').val(),
+        			country:	$('input[name="country"]').val(),
+        			postalcode:	$('input[name="postalcode"]').val(),
+        			isprimary:	"True"
+				}
+			],
+			contacts: [
+				{
+					type: 		1,
+        			value:    	$('input[name="phone"]').val(),
+        			isprimary:	"True"
+				},
+				{
+					type:		2,
+					value:		$('input[name="email"]').val(),
+					isprimary:	"False"
+				}
+			]
+		}
+    },
+    success = function(data) {
+        // check for server return data.result
+        if(typeof data.result != 'undefined' ) {
+            // display the 2 type of alert box base of the result
+            if(data.result == 'True') {
+               ESA.display_alert('success', data.result);
+
+            } else {
+                ESA.display_alert('block', data.result);
+
+            }
+        }
+    },
+
+    // ajax post request
+	ESA.ajaxJSON(url, data, success);
     return false;
 
 }

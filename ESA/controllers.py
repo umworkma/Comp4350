@@ -1,6 +1,78 @@
 from flask import *
 import models
 
+# Login
+def getPersonById(empId, db):
+    return models.Person.query.get(empId)
+
+def getPersonByUsername(username, db):
+    if username:
+        person = models.Person.query.filter_by(username=username).first()
+
+        if person is not None:
+            return person
+    
+    return None
+
+# Employees
+
+def registerEmployee(employeeDict, db):
+    result = False
+    failCause = 'Unknown'
+    employee = extractEmployeeFromDict(employeeDict)
+    isDuplicate = _checkForDuplicateEmployee(employee)
+
+    if(isDuplicate is True):
+        failcause = 'duplicate'
+    else:
+        db.session.add(employee)
+        db.session.commit()
+        result = True
+    if(result is True):
+        resultjson = '{"result": "True"}'
+    else:
+        resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
+    return resultjson
+
+
+""" Internal method for checking for duplicate employee. Currently only checks
+    the employee.username property. """
+
+def _checkForDuplicateEmployee(employee):
+    result = False
+    if(employee is not None and employee.username is not None):
+        existing = models.Person.query.filter_by(username = employee.username).first()		
+        if(existing is not None):
+            result = True
+    return result
+
+""" Allows the view to check whether a given  username already exists
+    in the application. Returns True if duplicated. """
+def checkForDuplicateEmployeeUserName(employeeUserNameDict):
+    result = False
+   
+    if(employeeUserNameDict is not None and employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY] is not None):
+        employeeUserName = employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY]
+        employee = models.Employee()
+        employee.username = employeeUserName
+        result = _checkForDuplicateEmployee(employee)
+
+    resultJSON = '{'
+    resultJSON += '"result":"{val}"'.format(val=result)
+    resultJSON += '}'
+    return resultJSON
+
+""" Converts an Employee (including the entity object) into JSON format. """
+def employeeToJSON(emp):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.EMPLOYEE_ENTITYFK_KEY,val=emp.entityFK if (emp.entityFK is not None) else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_USER_NAME_KEY,val=emp.username)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_PASSWORD_KEY,val=emp.password)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_FIRST_NAME_KEY,val=emp.firstname)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_LAST_NAME_KEY,val=emp.lastname)
+    jsonString += '"Entity":{val}'.format(val=entityToJSON(emp.entity))
+    jsonString += '}'
+    return jsonString
+
 
 # Organizations
 def getAllOrganizations(db):
@@ -153,6 +225,25 @@ def contactToJSON(contact):
     jsonString += '"{key}":"{val}"'.format(key=models.CONTACT_ISPRIMARY_KEY,val=contact.isprimary if contact.isprimary != None else 'False')
     jsonString += '}'
     return jsonString
+
+
+""" Converts an employee in JSON format to an employee object. """
+def extractEmployeeFromDict(employee):
+    newEmp = models.Person()
+    for employeeKey,employeeValue in employee.iteritems():
+        if(employeeKey == models.EMPLOYEE_ENTITYFK_KEY and employeeValue != 'None'):
+            newEmp.entityFK = int(employeeValue)
+        if(employeeKey == models.EMPLOYEE_USER_NAME_KEY):
+            newEmp.username = employeeValue
+        if(employeeKey == models.EMPLOYEE_PASSWORD_KEY):
+            newEmp.password = employeeValue    
+        if(employeeKey == models.EMPLOYEE_FIRST_NAME_KEY):
+            newEmp.firstname = employeeValue
+        if(employeeKey == models.EMPLOYEE_LAST_NAME_KEY):
+            newEmp.lastname = employeeValue
+        if(employeeKey == 'Entity'):
+            newEmp.entity = extractEntityFromDict(employeeValue)
+    return newEmp
 
 
 """ Converts an Organization in Dict format to an Organization object. """

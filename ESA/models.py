@@ -16,10 +16,10 @@ ORGANIZATION_ENTITYFK_KEY = 'org_entityfk'
 ORGANIZATION_NAME_KEY = 'org_name'
 ORGANIZATION_DESCRIPTION_KEY = 'org_desc'
 
-EMPLOYEE_ENTITY_KEY = 'emp_entityfk'
+EMPLOYEE_ENTITYFK_KEY = 'emp_entityfk'
 EMPLOYEE_USER_NAME_KEY = 'username'
-EMPLOYEE_FIRST_NAME_KEY = 'fname'
-EMPLOYEE_LAST_NAME_KEY = 'lname'
+EMPLOYEE_FIRST_NAME_KEY = 'firstname'
+EMPLOYEE_LAST_NAME_KEY = 'lastname'
 EMPLOYEE_PASSWORD_KEY = 'password'
 
 ADDRESS_ENTITYFK_KEY = 'addr_entityfk'
@@ -152,16 +152,36 @@ class Organization(db.Model):
 class Person(db.Model):
     __tablename__ = 'person'
     entityFK = db.Column(db.Integer, db.ForeignKey(Entity.pk, ondelete='cascade'), primary_key=True)
+    username = db.Column(db.String(45))
+    password = db.Column(db.String(45))
     firstname = db.Column(db.String(45))
     lastname = db.Column(db.String(45))
     entity = db.relationship('Entity', uselist=False, cascade='all, delete')
     memberships = db.relationship('Member', cascade='all, delete-orphan', backref='person')
     gpaList = db.relationship('GlobalPrivilegeAssignment', cascade='all, delete-orphan', backref='person')
     
-    def __init__(self, fname=None, lname=None):
+    def __init__(self, fname=None, lname=None, username=None, passwd=None):
         self.firstname = fname
         self.lastname = lname
+        self.username = username
+        self.password = passwd
         #self.entity = Entity(TYPE_EMPLOYEE)    # Stoopid python...
+
+    # require by login manager
+    def is_authenticated(self):
+        return True
+
+    # require by login manager
+    def is_active(self):
+        return True
+
+    # require by login manager
+    def is_anonymous(self):
+        return False
+
+    # require by login manager
+    def get_id(self):
+        return unicode(self.entityFK)
 
     def __repr__(self):
         return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname)

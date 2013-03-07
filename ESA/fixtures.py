@@ -42,16 +42,22 @@ class PersonData(DataSet):
         entityFK = 3
         firstname = 'Chris'
         lastname = 'Workman'
+        username = 'user0'
+        password = 'password0'
 
     class person02:
         entityFK = 4
         firstname = 'Ryoji'
         lastname = 'Betchaku'
+        username = 'user1'
+        password = 'password1'
 
     class person04:
         entityFK = 5
         firstname = 'Dan'
         lastname = 'Nelson'
+        username = 'meat_lol'
+        password = 'password2'
 
 class AddressData(DataSet):
     class address01:
@@ -150,6 +156,7 @@ class ContactData(DataSet):
         type = 1
         value = '2046634588'
         isprimary = 1
+
 
 class PrivilegeData(DataSet):
     class privilege01:

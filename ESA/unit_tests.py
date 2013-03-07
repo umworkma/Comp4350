@@ -38,7 +38,6 @@ class ESATestCase(TestCase):
         models.create_tables(self.app)
         fixtures.install(self.app, *fixtures.all_data)
         self.db = models.init_app(self.app)
-
     
 
 if __name__ == "__main__":

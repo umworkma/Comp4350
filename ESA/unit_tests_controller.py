@@ -405,8 +405,8 @@ class ESATestCase(TestCase):
         testOrgJSON = controllers.organizationToJSON(testOrg)
         resultDict = json.loads(testOrgJSON)
         result1 = controllers.registerOrganization(resultDict, self.db)
-        result1Dict = json.loads(result1)
-        self.assertEqual(result1Dict['result'], 'True')
+        resultDict = json.loads(result1)
+        self.assertEqual(resultDict['result'], 'True')
 
         # Check for duplicates (should be duplicate).
         isDuplicate = controllers._checkForDuplicateOrganization(testOrg)
@@ -432,21 +432,20 @@ class ESATestCase(TestCase):
         # Check for duplicates (should be no duplicates).
         resultDict = json.loads(orgNameJSON)
         result1 = controllers.checkForDuplicateOrganizationName(resultDict)
-        result1Dict = json.loads(result1)
-        self.assertEqual(result1Dict['result'], 'False')
+        resultDict = json.loads(result1)
+        self.assertEqual(resultDict['result'], 'False')
 
         # Insert the organization (should succeed).
         resultDict = json.loads(testOrgJSON)
         result1 = controllers.registerOrganization(resultDict, self.db)
-        result1Dict = json.loads(result1)
-        self.assertEqual(result1Dict['result'], 'True')
+        resultDict = json.loads(result1)
+        self.assertEqual(resultDict['result'], 'True')
 
         # Check for duplicates (should be duplicate).
         resultDict = json.loads(orgNameJSON)
         result1 = controllers.checkForDuplicateOrganizationName(resultDict)
-        result1Dict = json.loads(result1)
-        self.assertEqual(result1Dict['result'], 'True')
-
+        resultDict = json.loads(result1)
+        self.assertEqual(resultDict['result'], 'True')
 
 
     """ Tests for Permissions feature """
@@ -716,6 +715,213 @@ class ESATestCase(TestCase):
 
         self.resetDB()
         
+    ########################################		
+    # Tests For Employee_Registration_Form #
+    ########################################
+
+    # Test functionality of the check for duplicate employee function 
+    def test__checkForDuplicateEmployee(self):
+        # Define an Person Class
+        testEmp = models.Person()
+        testEmp.username = 'betcha'
+        testEmp.password = '2345'
+        testEmp.firstname = 'VedryPrivate'
+        testEmp.lastname = 'BetchdakuKun'
+        testEmp.entity = models.Entity()
+        testEmp.entity.type = models.TYPE_EMPLOYEE
+        # Check if there is a duplicate and it should return with false
+        isDuplicate = controllers._checkForDuplicateEmployee(testEmp)
+        self.assertFalse(isDuplicate)
+
+        #Test employeeToJSON
+        testEmpJSON = controllers.employeeToJSON(testEmp)
+        resultDict = json.loads(testEmpJSON)
+        result = controllers.registerEmployee(resultDict, self.db)
+        resultDict = json.loads(result)
+        self.assertEqual(resultDict['result'], 'True')
+
+        # Check if there is a duplicate username and should be there.
+        isDuplicate = controllers._checkForDuplicateEmployee(testEmp)
+        self.assertTrue(isDuplicate)
+        
+    # Test functionality of the regiser employee function 
+    def test_registerEmployee(self):
+        # Make emp empty to test if it gets successfully assiged as Person object
+        emp = None
+        # emp should be empty 
+        self.assertIsNone(emp);
+        emp = models.Person()
+        # Check if emp is not empty
+        self.assertIsNotNone(emp)
+        # Assign values to this person object
+        emp.username = 'umbet'
+        emp.password = '123456'
+        emp.firstname = 'Elyse'
+        emp.lastname = 'Goodall'
+        emp.entity = models.Entity()
+        emp.entity.type = models.TYPE_EMPLOYEE
+        # addr should be empty to begin with
+        addr = None
+        self.assertIsNone(addr);
+        #Create address instance
+        addr = models.Address()
+        # Check if addr is not empty
+        self.assertIsNotNone(addr)
+        # Assign values to addr object
+        addr.address1 = '242 Lipton'
+        addr.address2 = ''
+        addr.address3 = ''
+        addr.city = 'WPG'
+        addr.province = 'MB'
+        addr.country = 'Canada'
+        addr.postalcode = 'R3M2X6'
+        addr.isprimary = True
+        # Attach the address instance to the employee
+        emp.entity.addresses.append(addr)
+        # Create a contact instance for phone
+        contactP = None
+        self.assertIsNone(contactP)
+        contactP = models.Contact()
+        self.assertIsNotNone(contactP)
+        contactP.type = models.TYPE_PHONE
+        contactP.value = '18001234567'
+        contactP.isprimary = False
+        emp.entity.contacts.append(contactP)
+        # Create a contact instanace for Email
+        contactE = None
+        self.assertIsNone(contactE)
+        contactE = models.Contact()
+        self.assertIsNotNone(contactE)
+        contactE.type = models.TYPE_EMAIL
+        contactE.value = 'elyse@dmt.ca'
+        contactE.isprimary = False
+        emp.entity.contacts.append(contactE)
+
+        # emp should not be None
+        self.assertIsNotNone(emp)
+        
+        # Register the employee
+        empJSON = controllers.employeeToJSON(emp)
+        self.assertIsNotNone(empJSON)
+        resultDict = json.loads(empJSON)
+        result = controllers.registerEmployee(resultDict, self.db)
+        # Check if everything successfully gets registered
+        check = json.loads(result)
+        found = False
+        for key,value in check.iteritems():
+            if(key == 'result'):
+                found = True
+                self.assertEqual('True', value)
+        
+        emp2 = models.Person.query.filter_by(username = emp.username).first()
+        # Get the FK
+        emp.entityFK = emp2.entityFK
+        # Make sure that emp2 should not be null
+        self.assertNotEqual(emp2, None)
+        # emp and emp2 SHOULD NOT BE THE SAME OBJECT
+        self.assertIsNot(emp, emp2)
+        
+        # emp2 should be Person class since we created from emp
+        self.assertIsInstance(emp, type(emp2), msg="emp and emp2 are not the same Person class")
+        self.assertNotIsInstance(emp2, type('Person'), msg="emp2 is not Person class")
+        
+        # These values should be equal if everything correctly saved
+        self.assertEqual(emp2.firstname, 'Elyse')
+        self.assertEqual(emp2.lastname, 'Goodall')
+        self.assertEqual(emp2.password, '123456')
+        # Check the address (emp and emp2 addresses should be equal)
+        for a1,a2 in zip(emp2.entity.addresses, emp.entity.addresses):
+            self.assertEqual(a1.address1, a2.address1)
+            self.assertEqual(a1.address2, a2.address2)
+            self.assertEqual(a1.address3, a2.address3)
+            self.assertEqual(a1.city, a2.city)
+            self.assertEqual(a1.province, a2.province)
+            self.assertEqual(a1.country, a2.country)
+            self.assertEqual(a1.postalcode, a2.postalcode)
+            self.assertEqual(a1.isprimary, a2.isprimary)
+        # Check the contacts (emp2 and emp contacts should be equal)
+        for c1,c2 in zip(emp2.entity.contacts, emp.entity.contacts):
+            self.assertEqual(c1.type, c2.type)
+            self.assertEqual(c1.value, c2.value)
+            self.assertEqual(c1.isprimary, c2.isprimary)
+        self.resetDB()
+
+    # Test functionality of the get person by id 
+    def test_getPersonById(self):
+        person = controllers.getPersonById(0, self.db)
+        self.assertIsNone(person)
+
+        person = controllers.getPersonById(1, self.db)
+        self.assertIsNone(person)
+
+        person = controllers.getPersonById(2, self.db)
+        self.assertIsNone(person)
+
+        person = controllers.getPersonById(3, self.db)
+        self.assertIsNotNone(person)
+        self.assertEqual(person.firstname, 'Chris')
+        self.assertEqual(person.lastname, 'Workman')
+        self.assertEqual(person.username, 'user0')
+        self.assertEqual(person.password, 'password0')
+
+        person = controllers.getPersonById(4, self.db)
+        self.assertIsNotNone(person)
+        self.assertEqual(person.firstname, 'Ryoji')
+        self.assertEqual(person.lastname, 'Betchaku')
+        self.assertEqual(person.username, 'user1')
+        self.assertEqual(person.password, 'password1')
+
+        person = controllers.getPersonById(5, self.db)
+        self.assertIsNotNone(person)
+        self.assertEqual(person.firstname, 'Dan')
+        self.assertEqual(person.lastname, 'Nelson')
+        self.assertEqual(person.username, 'meat_lol')
+        self.assertEqual(person.password, 'password2')
+
+        person = controllers.getPersonById(6, self.db)
+        self.assertIsNone(person)
+
+        self.resetDB
+
+    # Test functionality of the get person by username
+    def test_getPersonByUsername(self):
+        person = controllers.getPersonByUsername('', self.db)
+        self.assertIsNone(person)
+
+        person = controllers.getPersonById(0, self.db)
+        self.assertIsNone(person)
+
+        person = controllers.getPersonById(3, self.db)
+        self.assertIsNotNone(person)
+
+        result = controllers.getPersonByUsername(person.username, self.db)
+        self.assertIsNotNone(result)
+        self.assertEqual(result.firstname, person.firstname)
+        self.assertEqual(result.lastname, person.lastname)
+        self.assertEqual(result.username, person.username)
+        self.assertEqual(result.password, person.password)
+
+        person = controllers.getPersonById(4, self.db)
+        self.assertIsNotNone(person)
+
+        result = controllers.getPersonByUsername(person.username, self.db)
+        self.assertIsNotNone(result)
+        self.assertEqual(result.firstname, person.firstname)
+        self.assertEqual(result.lastname, person.lastname)
+        self.assertEqual(result.username, person.username)
+        self.assertEqual(result.password, person.password)
+
+        person = controllers.getPersonById(5, self.db)
+        self.assertIsNotNone(person)
+
+        result = controllers.getPersonByUsername(person.username, self.db)
+        self.assertIsNotNone(result)
+        self.assertEqual(result.firstname, person.firstname)
+        self.assertEqual(result.lastname, person.lastname)
+        self.assertEqual(result.username, person.username)
+        self.assertEqual(result.password, person.password)
+
+        self.resetDB
 
 if __name__ == "__main__":
     unittest.main()
