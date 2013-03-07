@@ -186,7 +186,7 @@ class Person(db.Model):
         return unicode(self.entityFK)
 
     def __repr__(self):
-        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname)
+        return "<Person('%s', '%s', '%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname, self.username, self.password)
 
 
 class Member(db.Model):

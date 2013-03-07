@@ -322,6 +322,12 @@ class ControllerTestCase(TestCase):
         targetJSON = controllers.contactToJSON(target)
         stringJSON = '{"contact_entityfk":1,"type":"2","value":"info@ai-kon.org","isprimary":"True"}'
         self.assertEqual(targetJSON, stringJSON)
+        
+    def test_personToJSON(self):
+        target = models.Person.query.first()
+        targetJSON = controllers.personToJSON(target)
+        stringJSON = '{"emp_entityfk":3,"firstname":"Chris","lastname":"Workman","username":"user0","password":"password0"}'
+        self.assertEqual(targetJSON, stringJSON)
 
     def test_extractOrganizationFromDict(self):
         control = models.Organization.query.first()
@@ -400,6 +406,18 @@ class ControllerTestCase(TestCase):
         self.assertEqual(control.type, target.type)
         self.assertEqual(control.value, target.value)
         self.assertEqual(control.isprimary, target.isprimary)
+        
+    def test_extractPersonFromDict(self):
+        control = models.Person.query.first()
+        stringJSON = '{"emp_entityfk":3,"firstname":"Chris","lastname":"Workman","username":"user0","password":"password0"}'
+        data = json.loads(stringJSON)
+        target = controllers.extractPersonFromDict(data)
+        
+        self.assertEqual(control.entityFK, target.entityFK)
+        self.assertEqual(control.firstname, target.firstname)
+        self.assertEqual(control.lastname, target.lastname)
+        self.assertEqual(control.username, target.username)
+        self.assertEqual(control.password, target.password)
 
     def test__checkForDuplicateOrganization(self):
         # Define an organization.
@@ -464,14 +482,36 @@ class ControllerTestCase(TestCase):
         # Define prerequisite data.
         organizationKey = 1
         # Get the restult of the tested method.
-        personKeys = controllers._getPeopleInOrganization(organizationKey=organizationKey)
+        personList = controllers._getPeopleInOrganization(organizationKey)
         # Validate the result.
-        self.assertIsNotNone(personKeys)
+        self.assertIsNotNone(personList)
         count = 0
-        for value in personKeys:
+        for person in personList:
             count += 1
-            self.assertTrue(value == 3 or value == 4)
+            self.assertTrue(person.entityFK == 3 or person.entityFK == 4)
+            self.assertTrue(person.firstname == 'Chris' or person.firstname == 'Ryoji')
+            self.assertTrue(person.lastname == 'Workman' or person.lastname == 'Betchaku')
         self.assertEqual(count, 2)
+        
+    def test_getPeopleInOrganizationJSON(self):
+        # Define prerequisite data.
+        organizationKey = 1
+        # Get the restult of the tested method.
+        jsonString = controllers.getPeopleInOrganizationJSON(organizationKey)
+        # Validate the result.
+        self.assertIsNotNone(jsonString)
+        self.assertTrue(len(jsonString) > 0)
+        dict = json.loads(jsonString)
+        for key,value in dict.iteritems():
+            self.assertEqual(key, 'People')
+            count = 0
+            for personDict in value:
+                count += 1
+                person = controllers.extractPersonFromDict(personDict)
+                self.assertTrue(person.entityFK == 3 or person.entityFK == 4)
+                self.assertTrue(person.firstname == 'Chris' or person.firstname == 'Ryoji')
+                self.assertTrue(person.lastname == 'Workman' or person.lastname == 'Betchaku')
+            self.assertEqual(count, 2)
 
 
         
@@ -743,13 +783,16 @@ def suite():
     suite.addTest(ControllerTestCase('test_entityToJSON'))
     suite.addTest(ControllerTestCase('test_addressToJSON'))
     suite.addTest(ControllerTestCase('test_contactToJSON'))
+    suite.addTest(ControllerTestCase('test_personToJSON'))
     suite.addTest(ControllerTestCase('test_extractOrganizationFromDict'))
     suite.addTest(ControllerTestCase('test_extractEntityFromDict'))
     suite.addTest(ControllerTestCase('test_extractAddressFromDict'))
     suite.addTest(ControllerTestCase('test_extractContactFromDict'))
+    suite.addTest(ControllerTestCase('test_extractPersonFromDict'))
     suite.addTest(ControllerTestCase('test__checkForDuplicateOrganization'))
     suite.addTest(ControllerTestCase('test_checkForDuplicateOrganizationName'))
     suite.addTest(ControllerTestCase('test__getPeopleInOrganization'))
+    suite.addTest(ControllerTestCase('test_getPeopleInOrganizationJSON'))
     suite.addTest(ControllerTestCase('test__checkForDuplicateEmployee'))
     suite.addTest(ControllerTestCase('test_registerEmployee'))
     suite.addTest(ControllerTestCase('test_getPersonById'))
@@ -759,4 +802,4 @@ def suite():
     return suite
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.TextTestRunner().run(suite())

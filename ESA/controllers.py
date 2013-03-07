@@ -243,6 +243,16 @@ def contactToJSON(contact):
     jsonString += '"{key}":"{val}"'.format(key=models.CONTACT_ISPRIMARY_KEY,val=contact.isprimary if contact.isprimary != None else 'False')
     jsonString += '}'
     return jsonString
+    
+""" Converts a Person into JSON format. """
+def personToJSON(person):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.EMPLOYEE_ENTITYFK_KEY,val=person.entityFK if person.entityFK != None else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_FIRST_NAME_KEY,val=person.firstname)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_LAST_NAME_KEY,val=person.lastname)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_USER_NAME_KEY,val=person.username)
+    jsonString += '"{key}":"{val}"'.format(key=models.EMPLOYEE_PASSWORD_KEY,val=person.password)
+    jsonString += '}'
+    return jsonString
 
 
 """ Converts an employee in JSON format to an employee object. """
@@ -339,10 +349,27 @@ def extractContactFromDict(contact):
     return newContact
     
     
-""" Retrieve all person keys associated with the given organization. """
-# Returns a list of person entityFK values, or None if the person has no
-#   privileges in the given organization, or the organization key is invalid.
+""" Extracts a Person in Dict format to a Person object. """
+def extractPersonFromDict(person):
+    newPerson = models.Person()
+    for key,value in person.iteritems():
+        if(key == models.EMPLOYEE_ENTITYFK_KEY and value != 'None'):
+            newPerson.entityFK = int(value)
+        if(key == models.EMPLOYEE_FIRST_NAME_KEY):
+            newPerson.firstname = value
+        if(key == models.EMPLOYEE_LAST_NAME_KEY):
+            newPerson.lastname = value
+        if(key == models.EMPLOYEE_USER_NAME_KEY):
+            newPerson.username = value
+        if(key == models.EMPLOYEE_PASSWORD_KEY):
+            newPerson.password = value
+    return newPerson
+    
+    
+""" Retrieve all person objects associated with the given organization. """
+# Returns a list of person objects associated with the organization, or None if the organization key is invalid or no people are associated.
 def _getPeopleInOrganization(organizationKey):
+    personList = list()
     personKeys = list()
     returnValue = None
 
@@ -351,11 +378,34 @@ def _getPeopleInOrganization(organizationKey):
         count = 0
         for member in memberList:
             if member.personentityFK not in personKeys:
-                personKeys.append(member.personentityFK)
-                count += 1
+                person = models.Person.query.filter_by(entityFK=member.personentityFK).first()
+                if person is not None:
+                    person.username = ""
+                    person.password = ""
+                    personList.append(person)
+                    personKeys.append(person.entityFK)
+                    count += 1
         if count > 0:
-            returnValue = personKeys
+            returnValue = personList
     else:
         returnValue = None
-
     return returnValue
+    
+""" Retrieve all person objects associated with the given organization, in JSON format. """
+# Format: {"People":[<person json string>,...]}
+def getPeopleInOrganizationJSON(organizationKey):
+    people = _getPeopleInOrganization(organizationKey)
+    jsonString = '{"People":'
+    if len(people) > 0:
+        jsonString += '['
+        count = 0
+        for person in people:
+            if count > 0:
+                jsonString += ','
+            count += 1
+            jsonString += personToJSON(person)
+        jsonString += ']'
+    else:
+        jsonString += '"None"'
+    jsonString += '}'
+    return jsonString
