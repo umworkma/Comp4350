@@ -1,5 +1,6 @@
 from fixture import DataSet, SQLAlchemyFixture
 from fixture.style import NamedDataStyle
+from datetime import datetime
 
 import models
 
@@ -260,6 +261,8 @@ class EventData(DataSet):
     class event1:
         name='My Event'
         description='This is my event'
+        startdate=datetime(2013, 7, 12, 12, 0)
+        enddate=datetime(2013, 7, 14, 16, 0)
         organizationFK=1
 
     class event2:

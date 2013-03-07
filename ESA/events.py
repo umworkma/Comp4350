@@ -5,6 +5,7 @@
 
 from flask import *
 import models
+from datetime import datetime
 
 #####################################
 # extractEventFromDict
@@ -23,9 +24,9 @@ def extractEventFromDict(eventDict):
         if(eventKey == models.EVENT_DESC_KEY):
             newEvent.description = eventValue
         if(eventKey == models.EVENT_START_KEY):
-            newEvent.startdate = datetime.datetime.strptime(eventValue, '%Y-%m-%dT%H:%M:%S.%f')
+            newEvent.startdate = datetime.strptime(eventValue, '%Y-%m-%dT%H:%M:%S.%f')
         if(eventKey == models.EVENT_END_KEY):
-            newEvent.enddate = datetime.datetime.strptime(eventValue, '%Y-%m-%dT%H:%M:%S.%f')
+            newEvent.enddate = datetime.strptime(eventValue, '%Y-%m-%dT%H:%M:%S.%f')
         if(eventKey == models.EVENT_ORGFK_KEY):
             newEvent.organizationFK = eventValue
 

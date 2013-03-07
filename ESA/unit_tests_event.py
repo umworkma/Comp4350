@@ -107,13 +107,15 @@ class EventTestCase(TestCase):
 
     def test_extractEventFromDict(self):
         control = models.Event.query.first()
-        stringJSON = '{"event_pk":1, "event_name":"My Event", "event_desc":"This is my event", "event_orgfk":1}'
+        stringJSON = '{"event_pk":1, "event_name":"My Event", "event_desc":"This is my event", "event_start":"2013-07-12T12:00:00.0", "event_end":"2013-07-14T16:00:00.0", "event_orgfk":1}'
         data = json.loads(stringJSON)
         target = events.extractEventFromDict(data)
 
         self.assertEqual(control.pk, target.pk)
         self.assertEqual(control.name, target.name)
         self.assertEqual(control.description, target.description)
+        self.assertEqual(control.startdate, target.startdate)
+        self.assertEqual(control.enddate, target.enddate)
         self.assertEqual(control.organizationFK, target.organizationFK)
 
 def suite():
