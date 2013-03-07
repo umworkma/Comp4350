@@ -36,8 +36,27 @@ def _getPrivilegesForPerson(personKey, organizationKey):
             returnValue = None
     else:
         returnValue = None
-
     return returnValue
+    
+""" Retrieve all assigned privileges for a given person in JSON format. """
+# Format: {"<person key string>":<person.pk>,"<organization key string>":<org pk>,"PersonPrivileges":[{privilege json format}, ...]}
+def getPrivilegesForPersonJSON(personKey, organizationKey):
+    privileges = _getPrivilegesForPerson(personKey, organizationKey)
+    jsonString = '{'
+    jsonString += '"{key}":{value}'.format(key=models.EMPLOYEE_ENTITYFK_KEY, value=personKey)
+    jsonString += ',"{key}":{value}'.format(key=models.ORGANIZATION_ENTITYFK_KEY, value=organizationKey)
+    jsonString += ',"PersonPrivileges":'
+    if len(privileges) > 0:
+        jsonString += '['
+        count = 0
+        for privilege in privileges:
+            if count > 0:
+                jsonString += ','
+            jsonString += privilegeToJSON(privilege)
+            count += 1;
+        jsonString += ']'
+    jsonString += '}'
+    return jsonString
 
 
 

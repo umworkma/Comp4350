@@ -55,6 +55,36 @@ class ControllerPrivilegesTestCase(TestCase):
             self.assertTrue(priv.privilege == 'VIEW_ALL_EMPLOYEES_IN_ORG' or
                             priv.privilege == 'ASSIGN_EMPS_TO_SHIFTS')
         self.assertEqual(count, 2)
+        
+    def test_getPrivilegesForPersonJSON(self):
+        # Define prerequisite data.
+        personKey = 3
+        organizationKey = 1
+        # Get the result of the tested method.
+        jsonString = controller_privileges.getPrivilegesForPersonJSON(personKey, organizationKey)
+        # Validate the result.
+        self.assertIsNotNone(jsonString)
+        self.assertTrue(len(jsonString) > 0)
+        dict = json.loads(jsonString)
+        personKeyInOutput = False
+        orgKeyInOutput = False
+        privCount = 0
+        for key1,value1 in dict.iteritems():
+            if key1 == models.EMPLOYEE_ENTITYFK_KEY:
+                self.assertEqual(value1, personKey)
+                personKeyInOutput = True
+            elif key1 == models.ORGANIZATION_ENTITYFK_KEY:
+                self.assertEqual(value1, organizationKey)
+                orgKeyInOutput = True
+            elif key1 == 'PersonPrivileges':
+                for dictPrivilege in value1:
+                    privilege = controller_privileges.extractPrivilegeFromDict(dictPrivilege)
+                    privCount += 1
+                    self.assertTrue(privilege.pk is 5 or privilege.pk is 6)
+                    self.assertTrue(privilege.privilege == 'VIEW_ALL_EMPLOYEES_IN_ORG' or privilege.privilege == 'ASSIGN_EMPS_TO_SHIFTS')
+        self.assertEqual(privCount, 2)
+        self.assertTrue(personKeyInOutput)
+        self.assertTrue(orgKeyInOutput)
 
 
 
@@ -79,13 +109,13 @@ class ControllerPrivilegesTestCase(TestCase):
         # Validate the result.
         self.assertIsNotNone(jsonString)
         dict = json.loads(jsonString)
+        count = 0
         for key,values in dict.iteritems():
             self.assertEqual(key, "OrganizationKeys")
-            count = 0
             for value in values:
                 count += 1
                 self.assertTrue(value is 1 or value is 2)
-            self.assertEqual(count, 2)
+        self.assertEqual(count, 2)
 
 
 
@@ -104,7 +134,6 @@ class ControllerPrivilegesTestCase(TestCase):
                             priv.privilege == 'VIEW_ALL_ORGANIZATIONS')
         self.assertEqual(count, 2)
         
-        
     def test_getGlobalPrivilegesForPersonJSON(self):
         # Define prerequisite data.
         personKey = 3
@@ -119,7 +148,7 @@ class ControllerPrivilegesTestCase(TestCase):
             if key1 == models.EMPLOYEE_ENTITYFK_KEY:
                 self.assertEqual(value1, personKey)
                 personKeyInOutput = True
-            if key1 == 'GlobalPrivileges':
+            elif key1 == 'GlobalPrivileges':
                 privCount = 0
                 for dictPrivilege in value1:
                     privilege = controller_privileges.extractPrivilegeFromDict(dictPrivilege)
@@ -127,7 +156,7 @@ class ControllerPrivilegesTestCase(TestCase):
                     self.assertTrue(privilege.pk is 1 or privilege.pk is 4)
                     self.assertTrue(privilege.privilege == 'REGISTER_NEW_ORGANIZATION' or privilege.privilege == 'VIEW_ALL_ORGANIZATIONS')
                 self.assertEqual(privCount, 2)
-            self.assertTrue(personKeyInOutput)
+        self.assertTrue(personKeyInOutput)
             
 
 
@@ -383,6 +412,7 @@ def suite():
     suite.addTest(ControllerPrivilegesTestCase('test_privilegeToJSON'))
     suite.addTest(ControllerPrivilegesTestCase('test_extractPrivilegeFromDict'))
     suite.addTest(ControllerPrivilegesTestCase('test__getPrivilegesForPerson'))
+    suite.addTest(ControllerPrivilegesTestCase('test_getPrivilegesForPersonJSON'))
     suite.addTest(ControllerPrivilegesTestCase('test__getOrgsWithPrivilegesForPerson'))
     suite.addTest(ControllerPrivilegesTestCase('test_getOrgsWithPrivilegesForPersonJSON'))
     suite.addTest(ControllerPrivilegesTestCase('test__getGlobalPrivilegesForPerson'))
