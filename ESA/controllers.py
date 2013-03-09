@@ -29,7 +29,7 @@ def registerEmployee(employeeDict, db):
         db.session.commit()
         result = True
     if(result is True):
-        resultjson = '{"result": "True"}'
+        resultjson = '{"username":'+employee.username+'}'
     else:
         resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
     return resultjson
@@ -53,7 +53,7 @@ def checkForDuplicateEmployeeUserName(employeeUserNameDict):
    
     if(employeeUserNameDict is not None and employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY] is not None):
         employeeUserName = employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY]
-        employee = models.Employee()
+        employee = models.Person()
         employee.username = employeeUserName
         result = _checkForDuplicateEmployee(employee)
 

@@ -130,6 +130,7 @@ def submit_employee_form():
     if request.method == 'POST' and is_request_json():
         result = controllers.registerEmployee(request.json,db)
         return result
+        
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 

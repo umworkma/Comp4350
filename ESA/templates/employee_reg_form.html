@@ -12,8 +12,9 @@
                         <label>User Name</label>
                     </div>
                     <div>
-                        <input name="username" required type="text" class="input-xlarge">
+                        <input name="username" required type="text" class="input-xlarge" oninput="checkForDuplicateEmployeeUserName()">
                     </div>
+					<div class="alert_isValidEmployeeUserName"></div>
                     <div>
                         <label>First Name</label>
                     </div>
