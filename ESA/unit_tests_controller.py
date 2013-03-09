@@ -979,5 +979,56 @@ class ESATestCase(TestCase):
         org = json.loads(controllers.getOrganizationByIDJSON(3))
         self.assertNone(org)
 
+    ##Joining a person to an organization##
+
+    def test_putPersonInOrganization(self):
+        self.resetDB()
+
+        # Sub-Test 1: Invalid person key.
+        # Define prerequisite data.
+        personKey = 9999
+        request = {org_id: 1}
+        # Get the result of the tested method.
+        result = controllers.putPersonInOrganization(request, self.db, personKey)
+        # Validate the result.
+        self.assertFalse(result)
+
+        # Sub-Test 2: Invalid json.
+        # Define prerequisite data.
+        request = 'xxx'
+        personKey = 4
+        # Get the result of the tested method.
+        result = controllers.putPersonInOrganization(request, self.db, personKey)
+        # Validate the result.
+        self.assertFalse(result)
+
+        # Sub-Test 3: Invalid organization key.
+        # Define prerequisite data.
+        personKey = 4
+        request = {org_id: 9999}
+        # Get the result of the tested method.
+        result = controllers.putPersonInOrganization(request, self.db, personKey)
+        # Validate the result.
+        self.assertFalse(result)
+
+        # Sub-Test 4: Valid execution.
+        # Define prerequisite data.
+        personKey = 4
+        request = {org_id: 1}
+        # Get the result of the tested method.
+        result = controllers.putPersonInOrganization(request, self.db, personKey)
+        # Validate the result.
+        self.assertTrue(result)
+
+        # Sub-Test 5: Duplicate member.
+        # Define prerequisite data.
+        # use same data as before
+        # Get the result of the tested method.
+        result = controllers.putPersonInOrganization(request, self.db, personKey)
+        # Validate the result.
+        self.assertTrue(result)
+
+        self.resetDB()
+
 if __name__ == "__main__":
     unittest.main()
