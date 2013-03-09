@@ -288,7 +288,7 @@ function createJsonObjectForEmployee() {
 }
 
 function join_org(button, org_id) {
-    url = '/member',
+    url = '/_member',
 
     data = {
         org_id: org_id
@@ -301,7 +301,6 @@ function join_org(button, org_id) {
             // display the 2 type of alert box base of the result
             if(data.result == 'True') {
                 ESA.display_alert('success', data.result);
-                //make button look "successful"
                 $(button).button('complete')
             } else {
                 ESA.display_alert('block', data.result);

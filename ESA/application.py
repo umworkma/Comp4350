@@ -154,6 +154,15 @@ def submit_employee_form():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
+@app.route('/_member', methods=['POST'])
+@login_required
+def join_org():
+    if request.method == 'POST' and is_request_json():
+        result = controllers.putPersonInOrganization(request.json, db, current_user.get_id())
+        return result
+    else:
+        return jsonify(msg='Other request method[%s]' % request.method)
+
 
 @app.teardown_request
 def shutdown_session(exception=None):
