@@ -129,8 +129,17 @@ def submit_org_form():
 def submit_employee_form():
     if request.method == 'POST' and is_request_json():
         result = controllers.registerEmployee(request.json,db)
-        return result
-        
+        if(result is not None):
+            username = result
+            #Successfully saved so authenticate user !
+            authUser = controllers.getPersonByUsername(username, db)
+            login_user(authUser, remember=True)
+            resultjson = '{"result": "EmpTrue"}'
+            return resultjson
+        else:
+            resultjson = '{"result": "EmpFalse"}'
+            return resultjson
+       
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
