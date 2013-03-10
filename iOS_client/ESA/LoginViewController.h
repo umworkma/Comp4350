@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "Login.h"
 #import <RestKit/RestKit.h>
 
 @interface LoginViewController : ViewController

@@ -13,7 +13,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (readonly, strong, nonatomic) RKObjectManager *rkObjManager;
-@property (readonly, strong, nonatomic) RKManagedObjectStore *rkObjStore;
+//@property (readonly, strong, nonatomic) RKObjectManager *rkObjManager;
+//@property (readonly, strong, nonatomic) RKManagedObjectStore *rkObjStore;
 
 @end

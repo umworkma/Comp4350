@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <SBJson/SBJson.h>
 
 @interface ViewController : UIViewController
 -(void) alertStatus:(NSString *)msg :(NSString *)title;

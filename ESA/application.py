@@ -49,7 +49,7 @@ def login():
                 if user is not None:
                     if user.password == request.json['password']:
                         login_user(user, remember=True)
-                        return jsonify(success=True, msg='Login success', username=user.firstname)
+                        return jsonify(success=True, msg='Login success', firstname=user.firstname)
 
                 return jsonify(success=False, msg='Please check user name and password')
             return jsonify(success=False, msg='Please provide user name and password')    

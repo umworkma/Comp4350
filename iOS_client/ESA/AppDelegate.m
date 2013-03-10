@@ -9,21 +9,21 @@
 #import "AppDelegate.h"
 
 @interface AppDelegate()
-@property (readwrite, strong, nonatomic) RKObjectManager *rkObjManager;
-@property (readwrite, strong, nonatomic) RKManagedObjectStore *rkObjStore;
+//@property (readwrite, strong, nonatomic) RKObjectManager *rkObjManager;
+//@property (readwrite, strong, nonatomic) RKManagedObjectStore *rkObjStore;
 
 @end
 
 @implementation AppDelegate
 
-@synthesize rkObjManager;
-@synthesize rkObjStore;
+//@synthesize rkObjManager;
+//@synthesize rkObjStore;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    NSURL *baseURL      = [[NSURL alloc] initWithString:@"http://localhost:5000"];
-    self.rkObjManager   = [RKObjectManager managerWithBaseURL:baseURL];
+//    NSURL *baseURL      = [[NSURL alloc] initWithString:@"http://localhost:5000"];
+//    self.rkObjManager   = [RKObjectManager managerWithBaseURL:baseURL];
     
     return YES;
 }
