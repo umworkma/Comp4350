@@ -26,4 +26,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void) alertStatus:(NSString *)msg :(NSString *)title {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+    [alertView show];
+    
+}
+
 @end

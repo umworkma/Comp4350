@@ -31,6 +31,7 @@
 		2A9CBBFA16EAABE800041DF2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9CBBF516EAABE800041DF2 /* Security.framework */; };
 		2A9CBBFB16EAABE800041DF2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9CBBF616EAABE800041DF2 /* SystemConfiguration.framework */; };
 		2A9CBBFE16EAAD0400041DF2 /* libsbjson-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9CBBDD16EAAA3400041DF2 /* libsbjson-ios.a */; };
+		2AC56EE616EBD357000052D1 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC56EE516EBD357000052D1 /* LoginViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +145,8 @@
 		2A9CBBF416EAABE800041DF2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		2A9CBBF516EAABE800041DF2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2A9CBBF616EAABE800041DF2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		2AC56EE416EBD357000052D1 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		2AC56EE516EBD357000052D1 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +227,8 @@
 				2A9CBBAF16EAA66400041DF2 /* ViewController.h */,
 				2A9CBBB016EAA66400041DF2 /* ViewController.m */,
 				2A9CBB9816EAA66400041DF2 /* Supporting Files */,
+				2AC56EE416EBD357000052D1 /* LoginViewController.h */,
+				2AC56EE516EBD357000052D1 /* LoginViewController.m */,
 			);
 			path = ESA;
 			sourceTree = "<group>";
@@ -468,6 +473,7 @@
 				2A9CBB9E16EAA66400041DF2 /* main.m in Sources */,
 				2A9CBBA216EAA66400041DF2 /* AppDelegate.m in Sources */,
 				2A9CBBB116EAA66400041DF2 /* ViewController.m in Sources */,
+				2AC56EE616EBD357000052D1 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
