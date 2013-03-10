@@ -40,7 +40,23 @@ def login():
     if request.method == 'POST':
         remember = False
 
-        if request.form.has_key('username') and request.form.has_key('password'):
+        # Json login request. ie from iOS
+        if is_request_json():
+            if request.json is not None and request.json.has_key('username') and request.json.has_key('password'):
+                username = request.json['username']
+                user = controllers.getPersonByUsername(username, db)
+
+                if user is not None:
+                    if user.password == request.json['password']:
+                        login_user(user, remember=True)
+                        return jsonify(success=True, msg='Login success', username=user.firstname)
+
+                return jsonify(success=False, msg='Please check user name and password')
+            return jsonify(success=False, msg='Please provide user name and password')    
+
+
+        # else regular HTML request only
+        elif request.form.has_key('username') and request.form.has_key('password'):
             username = request.form['username']
             user = controllers.getPersonByUsername(username, db)
 
