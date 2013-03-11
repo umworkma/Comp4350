@@ -301,7 +301,8 @@ function join_org(button, org_id) {
             // display the 2 type of alert box base of the result
             if(data.result == 'True') {
                 ESA.display_alert('success', data.result);
-                $(button).button('complete')
+                setTimeout(function() { $(button).button('complete'); }, 500);
+                setTimeout(function() { $(button).attr('disabled', 'disabled').addClass('disabled'); }, 1000);
             } else {
                 ESA.display_alert('block', data.result);
                 $(button).button('reset')
