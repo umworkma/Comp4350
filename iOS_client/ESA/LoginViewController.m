@@ -28,6 +28,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    txt_username.delegate = self;
+    txt_password.delegate = self;
 	// Do any additional setup after loading the view.
 }
 
@@ -109,6 +111,21 @@
 
 }
 
+// Method to dismiss the keyboard after users hit return
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textFieldToReturn{
+    // check if return is from username field or password field
+    if(textFieldToReturn == self.txt_username){
+        
+        [textFieldToReturn resignFirstResponder];
+    }
+    else if (textFieldToReturn == self.txt_password)
+    {
+        [textFieldToReturn resignFirstResponder];
+   
+    }
+    return YES;
+}
 
 
 @end

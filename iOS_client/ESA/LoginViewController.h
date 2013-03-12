@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import <RestKit/RestKit.h>
 
-@interface LoginViewController : ViewController
+@interface LoginViewController : ViewController <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txt_username;
 @property (weak, nonatomic) IBOutlet UITextField *txt_password;
