@@ -3,3 +3,4 @@
 venv/
 .idea
 iOS_client/DerivedData/
+iOS_client/build/
