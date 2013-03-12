@@ -282,4 +282,4 @@ member_test_data = (MemberData, PersonData, OrganizationData, PrivilegePersonAss
 privilege_test_data = (PrivilegeData, PrivilegePersonAssignmentData, GlobalPrivilegeAssignmentData, MemberData)
 ppa_test_data = (PrivilegeData, PrivilegePersonAssignmentData, MemberData)
 gpa_test_data = (PrivilegeData, GlobalPrivilegeAssignmentData, MemberData, PersonData)
-event_test_data = (EventData, OrganizationData)
+event_test_data = (EventData,)
