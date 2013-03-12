@@ -26,7 +26,6 @@ unit_test_js = Bundle(
 
 # css file for ESA application
 common_css = Bundle(
-    'jquery-ui/css/smoothness/jquery-ui-1.10.1.custom.css',
     'bootstrap/css/bootstrap.css',
     'css/ESA-css.css',
     'bootstrap/css/bootstrap-responsive.css',
@@ -45,7 +44,6 @@ common_css = Bundle(
 # js files for ESA application
 common_js = Bundle(
     'jquery/jquery-1.9.1.js',
-    'jquery-ui/js/jquery-ui-1.10.1.custom.js',
     'bootstrap/js/bootstrap.js',
     ESA_js,
     # Assets manager output all js file and compress them into one js file

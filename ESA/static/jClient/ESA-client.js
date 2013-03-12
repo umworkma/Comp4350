@@ -16,6 +16,7 @@ function ESA() {
     this.display_alert = function (alertType, htmlMsg) {
         type = 'alert alert-' + alertType;
         msg = '';
+
         switch (alertType) {
             case 'block':
                 msg = '<strong>Warning:</strong>';
@@ -72,8 +73,7 @@ ESA = new ESA();
 
 // Check for valid organization name as the user types.
 function checkForDuplicateEmployeeUserName() {
-	
-	url = '/_check_dup_employee_user_name'
+	url = '/check_dup_employee_user_name'
 	userName = $('input[name="username"]').val(),
 	data = { 'username': userName },
 	success = function(data) {
@@ -104,7 +104,7 @@ function checkForDuplicateOrgName() {
 		}
     },
 
-	
+
     ESA.ajaxJSON(url, data, success);
     return false;
 }
@@ -133,9 +133,9 @@ function updateIsValidEmployeeUserNameMsg(isActive) {
 
     // adding the alert box into the message area
     if(isActive){
-    	$('.alert_isValidEmployeeUserName').append(alert);
+    	$('.alert_isValidOrgName').append(alert);
 	} else {
-		$('.alert_isValidEmployeeUserName').children().remove()
+		$('.alert_isValidOrgName').children().remove()
 		//alert.alert('close');
 		//$('.alert_isValidOrgName').innerHTML = '';
 	}
@@ -176,7 +176,7 @@ function updateIsValidOrgNameMsg(isActive) {
 // create json object and send it to server
 function createJsonObjectForOrganization() {
     url = '/_submit_org_form',
-	
+
     data = {
         org_name: $('input[name="org_name"]').val(),
         org_desc: $('#org_desc').val(),
@@ -212,7 +212,6 @@ function createJsonObjectForOrganization() {
 
     success = function(data) {
         // check for server return data.result
-		
         if(typeof data.result != 'undefined' ) {
             // display the 2 type of alert box base of the result
             if(data.result == 'True') {
@@ -224,16 +223,17 @@ function createJsonObjectForOrganization() {
             }
         }
     },
+
     ESA.ajaxJSON(url, data, success);
-	
+
     return false;
 
 }
 
 // create json object and send it to server
 function createJsonObjectForEmployee() {
+
 	url = '/_submit_employee_form',
-	
     data = {
 		username: $('input[name="username"]').val(),
 		password: $('input[name="pwd1"]').val(),
@@ -269,17 +269,19 @@ function createJsonObjectForEmployee() {
     },
     success = function(data) {
         // check for server return data.result
-		
         if(typeof data.result != 'undefined' ) {
             // display the 2 type of alert box base of the result
             if(data.result == 'True') {
                ESA.display_alert('success', data.result);
-				
+
             } else {
                 ESA.display_alert('block', data.result);
+
             }
         }
     },
+
+    // ajax post request
 	ESA.ajaxJSON(url, data, success);
     return false;
 
