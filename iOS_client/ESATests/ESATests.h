@@ -7,7 +7,17 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import <UIKit/UIKit.h>
 
-@interface ESATests : SenTestCase
+#import "AppDelegate.h"
+#import "ViewController.h"
+
+@interface ESATests : SenTestCase {
+    @private
+    AppDelegate     *app_delegate;
+    ViewController  *view_controller;
+    UIView          *view;
+    
+}
 
 @end

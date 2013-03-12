@@ -83,7 +83,10 @@
                 NSInteger success = [(NSNumber *) [jsonData objectForKey:@"success"] integerValue];
                 // login successfully 
                 if(success == 1) {
-                    NSString *msg = (NSString *) [jsonData objectForKey:@"msg"];
+                    NSString *msg0 = (NSString *) [jsonData objectForKey:@"msg"];
+                    NSString *msg1 = (NSString *) [jsonData objectForKey:@"firstname"];
+                    NSString *msg = [[NSString alloc] initWithFormat:@"%@\nHi %@!", msg0, msg1];
+
                     [self alertStatus:msg :@"Login Success!"];
                     
                 } else {

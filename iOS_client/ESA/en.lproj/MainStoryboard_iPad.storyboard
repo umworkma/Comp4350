@@ -144,7 +144,18 @@
                     <view key="view" contentMode="scaleToFill" id="Ja2-wk-ygE">
                         <rect key="frame" x="0.0" y="64" width="768" height="960"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Place holder for Sign up form" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F9r-w5-chN">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="F9r-w5-chN" firstAttribute="centerX" secondItem="Ja2-wk-ygE" secondAttribute="centerX" type="default" id="Q8B-6K-fAz"/>
+                            <constraint firstItem="F9r-w5-chN" firstAttribute="top" secondItem="Ja2-wk-ygE" secondAttribute="top" constant="469" id="YsM-Ww-FQY"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Sign Up" id="xOD-Fq-DUM"/>
                 </viewController>
@@ -160,7 +171,6 @@
                 <relationship kind="action" name="login_btn_touch:"/>
                 <relationship kind="outlet" name="txt_password" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txt_username" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="user" candidateClass="UITextField"/>
             </relationships>
         </class>
         <class className="NSLayoutConstraint" superclassName="NSObject">
