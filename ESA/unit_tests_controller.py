@@ -750,7 +750,7 @@ class ControllerTestCase(TestCase):
         resultDict = json.loads(testEmpJSON)
         result = controllers.registerEmployee(resultDict, self.db)
         resultDict = json.loads(result)
-        self.assertEqual(resultDict['result'], 'True')
+        self.assertEqual(resultDict['username'], testEmp.username)
 
         # Check if there is a duplicate username and should be there.
         isDuplicate = controllers._checkForDuplicateEmployee(testEmp)
