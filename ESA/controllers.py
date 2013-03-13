@@ -29,9 +29,9 @@ def registerEmployee(employeeDict, db):
         db.session.commit()
         result = True
     if(result is True):
-        resultjson = employee.username
+        resultjson = '{"username":"'+employee.username+'"}'
     else:
-        resultjson = None
+        resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
     return resultjson
 
 

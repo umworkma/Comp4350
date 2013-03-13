@@ -130,15 +130,17 @@ def submit_employee_form():
     if request.method == 'POST' and is_request_json():
         result = controllers.registerEmployee(request.json,db)
         if(result is not None):
-            username = result
-            #Successfully saved so authenticate user !
-            authUser = controllers.getPersonByUsername(username, db)
-            login_user(authUser, remember=True)
-            resultjson = '{"result": "EmpTrue"}'
-            return resultjson
-        else:
-            resultjson = '{"result": "EmpFalse"}'
-            return resultjson
+            user_dict = json.loads(result)
+            if user_dict.has_key('username'):
+                username = user_dict['username']
+                #Successfully saved so authenticate user !
+                authUser = controllers.getPersonByUsername(username, db)
+                login_user(authUser, remember=True)
+                resultjson = '{"result": "EmpTrue"}'
+                return resultjson
+        
+        resultjson = '{"result": "EmpFalse"}'
+        return resultjson
        
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
