@@ -38,19 +38,119 @@
 	<td>css=div.controls &gt; button.btn</td>
 	<td></td>
 </tr>
-<!--Join first org-->
+<!--Go to browse orgs page-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Organizations</td>
+	<td></td>
+</tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Organizations</td>
 	<td></td>
 </tr>
+<!--Check page loaded correctly-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Employment Scheduling Application</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=ESA</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[1]/div/div/div/ul/li[1]/h5</td>
+	<td>Chris</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Organizations</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Events</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Schedule</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Create Organization</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTable</td>
+	<td>//table.0.0</td>
+	<td>Organization Listing</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Browse Organizations</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Select an organization from the list below to see more information about a specific organization.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTable</td>
+	<td>//table.0.0</td>
+	<td>Organization Listing</td>
+</tr>
+<tr>
+	<td>verifyTable</td>
+	<td>//table.1.0</td>
+	<td>Ai-Kon</td>
+</tr>
+<tr>
+	<td>verifyTable</td>
+	<td>//table.1.1</td>
+	<td>Join this Organization!</td>
+</tr>
+<tr>
+	<td>verifyTable</td>
+	<td>//table.2.0</td>
+	<td>University of Manitoba</td>
+</tr>
+<tr>
+	<td>verifyTable</td>
+	<td>//table.2.1</td>
+	<td>Join this Organization!</td>
+</tr>
+<!--Check buttons work properly-->
 <tr>
 	<td>click</td>
 	<td>id=org_1</td>
 	<td></td>
 </tr>
-<!--Check button goes to loading state??-->
-<!--Check button disabled on response??-->
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Joined!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=org_2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Joined!</td>
+	<td></td>
+</tr>
 <!--Log out to finish-->
 <tr>
 	<td>clickAndWait</td>
