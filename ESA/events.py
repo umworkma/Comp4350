@@ -31,3 +31,34 @@ def extractEventFromDict(eventDict):
             newEvent.organizationFK = eventValue
 
     return newEvent
+
+def eventToJSON(event):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.EVENT_PK_KEY, val=event.pk if event.pk != None else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.EVENT_NAME_KEY, val=event.name)
+    jsonString += '"{key}":"{val}",'.format(key=models.EVENT_DESC_KEY, val=event.description)
+    jsonString += '"{key}":"{val}",'.format(key=models.EVENT_START_KEY, val=event.startdate)
+    jsonString += '"{key}":"{val}",'.format(key=models.EVENT_END_KEY, val=event.enddate)
+    jsonString += '"{key}":"{val}",'.format(key=models.EVENT_ORGFK_KEY, val=event.organizationFK)
+    jsonString += '}'
+    return jsonString
+
+def getEventById(pk, db):
+    return models.Event.query.get(eventId)
+
+def getAllOrgsEvents(orgId, db):
+    results = models.Event.query.filter_by(organizationFK=orgId)
+
+def insertEvent(name, description, startdate, enddate, organizationFK):
+    controller = models.Event()
+    result = controller.insert(name, description, startdate, enddate, organizationFK);
+    print result
+
+def updateEvent(pk, name, description, startdate, enddate, organizationFK):
+    controller = models.Event()
+    result = controller.update(pk, name, description, startdate, enddate, organizationFK);
+    print result
+
+def removeEvent(pk):
+    return
+
+
