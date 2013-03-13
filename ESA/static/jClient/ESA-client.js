@@ -297,6 +297,38 @@ function createJsonObjectForEmployee() {
 
 }
 
+function join_org(button, org_id) {
+    url = '/_member',
+
+    data = {
+        org_id: org_id
+    },
+
+    //what needs to happen client-side on success (response)
+    success = function(data) {
+        // check for server return data.result
+        if(typeof data.result != 'undefined' ) {
+            // display the 2 type of alert box base of the result
+            if(data.result == 'True') {
+                ESA.display_alert('success', data.result);
+                setTimeout(function() { $(button).button('complete'); }, 500);
+                setTimeout(function() { $(button).attr('disabled', 'disabled').addClass('disabled'); }, 1000);
+            } else {
+                ESA.display_alert('block', data.result);
+                $(button).button('reset')
+            }
+        }
+    },
+
+    //disable button
+    $(button).button('loading')
+
+    ESA.ajaxJSON(url, data, success);
+
+    return false;
+}   
+
+
 
 
 // active carousel when DOM is fully loaded
