@@ -1,0 +1,27 @@
+{%if qunit is undefined %}{% extends "layout.html" %}{% endif %}
+{% block content %}
+<div class="container-fluid">
+        <h2>Browse Organizations</h2>
+	<p>Select an organization from the list below to see more information about a specific
+	organization.</p>
+	<table class="table table-striped table-hover table-bordered">
+	<thead>
+	<tr><th>Organization Listing</th></tr>
+	</thead>
+	<tbody>
+        	{% for org in data.OrgNames %}
+		<tr>
+			<td>
+				<a href="/organization/{{org.org_entityfk}}">{{org.org_name}}</a>
+			</td>
+			<td>
+				<button type="button" id="org_{{org.org_entityfk}}" onclick="join_org(this,{{org.org_entityfk}})" class="btn" data-loading-text="Joining..." data-complete-text="Joined!">
+					Join this Organization!
+				</button>
+			</td>
+		</tr>
+  		{% endfor %}
+	</tbody>
+	</table>
+</div>
+{% endblock %}

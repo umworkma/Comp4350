@@ -29,7 +29,7 @@ def registerEmployee(employeeDict, db):
         db.session.commit()
         result = True
     if(result is True):
-        resultjson = '{"result": "True"}'
+        resultjson = '{"username":"'+employee.username+'"}'
     else:
         resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
     return resultjson
@@ -53,7 +53,7 @@ def checkForDuplicateEmployeeUserName(employeeUserNameDict):
    
     if(employeeUserNameDict is not None and employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY] is not None):
         employeeUserName = employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY]
-        employee = models.Employee()
+        employee = models.Person()
         employee.username = employeeUserName
         result = _checkForDuplicateEmployee(employee)
 
@@ -76,7 +76,7 @@ def employeeToJSON(emp):
 
 # Organizations
 def getAllOrganizations(db):
-    results = models.Organization.query.all()
+    results = models.Organization.query.order_by(models.Organization.name).all()
     return results
 
 def getAllOrganizationsJSON(db):
@@ -92,6 +92,20 @@ def getAllOrganizationsJSON(db):
     jsonString += ']}'
     return jsonString
 
+def getAllOrgNamesJSON(db):
+    allOrgs = getAllOrganizations(db)
+    isFirst = True
+    jsonString = '{"OrgNames":['
+    for org in allOrgs:
+        if (isFirst == False):
+            jsonString += ','
+        else:
+            isFirst = False
+        jsonString += '{' + '"{key}":{val},'.format(key=models.ORGANIZATION_ENTITYFK_KEY,val=org.entityFK if (org.entityFK is not None) else '"None"')
+        jsonString += '"{key}":"{val}"'.format(key=models.ORGANIZATION_NAME_KEY,val=org.name)
+        jsonString += '}'
+    jsonString += ']}'
+    return jsonString
 
 def registerOrganization(orgDict, db):
     result = False
@@ -158,10 +172,14 @@ def updateOrganization(entityid, name, description):
     result = controller.update(entityid, name, description);
     print result
 
-def getOrganizationByID(entityid):
+def getOrganizationByIDJSON(entityid):
     controller = models.Organization()
-    results = controller.getByID(entityid)
-    jsonified = [org.serialize for org in results]
+    results = controller.query.filter_by(entityFK=entityid).first()
+
+    if results == None:
+        return None
+    
+    jsonified = organizationToJSON(results)
     return jsonified
 
 def removeOrganization():
@@ -515,3 +533,34 @@ def _revokePrivilegeForPerson(db, privilegeKey,personKey,organizationKey=None):
             returnValue = True
 
     return returnValue
+
+# Members
+
+""" Associate person with organization. """
+def putPersonInOrganization(member, db, personid):
+    result = False
+    failCause = 'Unknown'
+
+    ''' Parse the given JSON data and create our basic member. '''
+    newMember = models.Member()
+    for key,value in member.iteritems():
+        if(key == models.ORGANIZATION_ENTITYFK_KEY and value != 'None'):
+            newMember.organizationentityFK = int(value) #Note to self: do we have the FK at this point?
+        else:
+            print "******the key is: ", key
+
+    person = models.Person.query.filter_by(entityFK=personid).first()
+    if person is not None:
+        newMember.personentityFK = int(personid)
+        db.session.add(newMember)
+        db.session.commit()
+        result = True
+    else:
+        result = False
+        failCause = 'person not found'
+
+    if(result is True):
+        resultJson = '{"result": "True"}'
+    else:
+        resultJson = '{' + '"result": "{val}"'.format(val=failCause) + '}'
+    return resultJson
