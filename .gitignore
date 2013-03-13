@@ -4,3 +4,4 @@ venv/
 .idea
 iOS_client/DerivedData/
 iOS_client/build/
+iOS_client/Frank/frankified_build

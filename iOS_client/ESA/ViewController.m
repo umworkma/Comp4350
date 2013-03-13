@@ -27,7 +27,7 @@
 }
 
 -(void) alertStatus:(NSString *)msg :(NSString *)title {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     [alertView show];
     
 }

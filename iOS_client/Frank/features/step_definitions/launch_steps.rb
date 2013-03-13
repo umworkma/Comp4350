@@ -4,7 +4,9 @@ end
 
 Given /^I launch the app$/ do
   # latest sdk and iphone by default
-  launch_app app_path
+  sdk = ENV['FRANK_SDK']
+  idiom = ENV['FRANK_IDIOM'] || 'ipad'
+  launch_app( app_path, sdk, idiom )
 end
 
 Given /^I launch the app using iOS (\d\.\d)$/ do |sdk|
