@@ -123,6 +123,27 @@ def submit_org_form():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
+#No Login Required
+@app.route('/organization')
+def browse_orgs():
+    data = controllers.getAllOrgNamesJSON(db)
+    if request.method == 'GET' and is_request_json():
+        return data
+    else:
+        return render_template('browse_orgs.html', data=json.loads(data))
+
+#No Login Required
+@app.route('/organization/<entityid>')
+def org_info(entityid):
+    data = controllers.getOrganizationByIDJSON(entityid)
+    if data == None:
+        data = entityid
+        return render_template('org_404.html', data=data)
+    if request.method == 'GET' and is_request_json():
+        return data
+    else:
+        session.logged_in = True
+        return render_template('org_info.html', org=json.loads(data))
 
 # No login required URL
 @app.route('/_submit_employee_form', methods=['GET', 'POST'])

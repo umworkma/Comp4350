@@ -1,0 +1,12 @@
+{%if qunit is undefined %}{% extends "layout.html" %}{% endif %}
+{% block content %}
+<div class="container-fluid">
+  <div class="hero-unit">
+    <h3>Organization Not Found</h3>
+    <p>The organization you were trying to access (ID: {{data}}) could not be found.<br />
+	Please check the URL you entered and try again.<br />
+	<a class="btn btn-primary" href="/">Home</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

@@ -75,7 +75,7 @@ def employeeToJSON(emp):
 
 # Organizations
 def getAllOrganizations(db):
-    results = models.Organization.query.all()
+    results = models.Organization.query.order_by(models.Organization.name).all()
     return results
 
 def getAllOrganizationsJSON(db):
@@ -91,6 +91,20 @@ def getAllOrganizationsJSON(db):
     jsonString += ']}'
     return jsonString
 
+def getAllOrgNamesJSON(db):
+    allOrgs = getAllOrganizations(db)
+    isFirst = True
+    jsonString = '{"OrgNames":['
+    for org in allOrgs:
+        if (isFirst == False):
+            jsonString += ','
+        else:
+            isFirst = False
+        jsonString += '{' + '"{key}":{val},'.format(key=models.ORGANIZATION_ENTITYFK_KEY,val=org.entityFK if (org.entityFK is not None) else '"None"')
+        jsonString += '"{key}":"{val}"'.format(key=models.ORGANIZATION_NAME_KEY,val=org.name)
+        jsonString += '}'
+    jsonString += ']}'
+    return jsonString
 
 def registerOrganization(orgDict, db):
     result = False
@@ -157,10 +171,14 @@ def updateOrganization(entityid, name, description):
     result = controller.update(entityid, name, description);
     print result
 
-def getOrganizationByID(entityid):
+def getOrganizationByIDJSON(entityid):
     controller = models.Organization()
-    results = controller.getByID(entityid)
-    jsonified = [org.serialize for org in results]
+    results = controller.query.filter_by(entityFK=entityid).first()
+
+    if results == None:
+        return None
+    
+    jsonified = organizationToJSON(results)
     return jsonified
 
 def removeOrganization():

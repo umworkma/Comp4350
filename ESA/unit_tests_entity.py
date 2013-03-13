@@ -53,7 +53,7 @@ class EntityTestCase(TestCase):
         # Define prerequisite data.
         entityKey = 1
         # Retrieve the target object directly.
-        directList = models.Address.query.filter_by(entityFK=entityKey)
+        directList = models.Address.query.filter_by(entityFK=entityKey).order_by(models.Address.isprimary)
         self.assertIsNotNone(directList)
         # Retrieve the containing object.
         host = models.Entity.query.filter_by(pk=entityKey).first()
@@ -73,7 +73,7 @@ class EntityTestCase(TestCase):
         # Define prerequisite data.
         entityKey = 2
         # Retrieve the target object directly.
-        directList = models.Address.query.filter_by(entityFK=entityKey)
+        directList = models.Address.query.filter_by(entityFK=entityKey).order_by(models.Address.isprimary)
         self.assertIsNotNone(directList)
         # Retrieve the containing object.
         host = models.Entity.query.filter_by(pk=entityKey).first()
@@ -95,7 +95,7 @@ class EntityTestCase(TestCase):
         # Define prerequisite data.
         entityKey = 3
         # Retrieve the target object directly.
-        directList = models.Contact.query.filter_by(entityFK=entityKey)
+        directList = models.Contact.query.filter_by(entityFK=entityKey).order_by(models.Contact.isprimary, models.Contact.type)
         self.assertIsNotNone(directList)
         # Retrieve the containing object.
         host = models.Entity.query.filter_by(pk=entityKey).first()
