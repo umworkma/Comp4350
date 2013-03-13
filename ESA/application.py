@@ -154,6 +154,10 @@ def submit_employee_form():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
+#No Login Required
+@app.route('/createEvent')
+def load_create_event_form():
+    return render_template('create_event.html')
 
 @app.teardown_request
 def shutdown_session(exception=None):

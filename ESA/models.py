@@ -245,7 +245,7 @@ class Event(db.Model):
     enddate = db.Column(db.DateTime, default=datetime.now)
     organizationFK = db.Column(db.Integer, db.ForeignKey(Organization.entityFK, ondelete='cascade'))
 
-    def __init__(self, name=None, description=None, startdate=None, enddate=None, organizationFK=None, eventcol=None, eventcol1=None):
+    def __init__(self, name=None, description=None, startdate=None, enddate=None, organizationFK=None):
         self.name = name
         self.description = description
         self.startdate = startdate

@@ -43,7 +43,7 @@ def eventToJSON(event):
     return jsonString
 
 def getEventById(pk, db):
-    return models.Event.query.get(eventId)
+    return models.Event.query.get(pk)
 
 def getAllOrgsEvents(orgId, db):
     results = models.Event.query.filter_by(organizationFK=orgId)
