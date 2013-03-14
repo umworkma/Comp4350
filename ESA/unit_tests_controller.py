@@ -9,6 +9,7 @@ import fixtures
 import models
 import controllers
 import events
+import datetime
 
 
 class ControllerTestCase(TestCase):
@@ -984,21 +985,19 @@ class ControllerTestCase(TestCase):
 
     '''Test functionality to get Event by ID'''
     def test_getEventById(self):
-        event = events.getEventById(0, self.db)
+        event = events.getEventById(1, self.db)
         self.assertIsNotNone(event)
         self.assertEqual(event.name, 'My Event')
         self.assertEqual(event.description, 'This is my event')
-        self.assertEqual(event.startdate, datetime(2013, 7, 12, 12, 0))
-        self.assertEqual(event.enddate, datetime(2013, 7, 14, 16, 0))
         self.assertEqual(event.organizationFK, 1)
 
-        event = events.getEventById(1, self.db)
+        event = events.getEventById(2, self.db)
         self.assertIsNotNone(event)
         self.assertEqual(event.name, 'Your Event')
         self.assertEqual(event.description, 'This is your event')
         self.assertEqual(event.organizationFK, 2)
 
-        event = events.getEventById(2, self.db)
+        event = events.getEventById(3, self.db)
         self.assertIsNone(event)
 
         self.resetDB
