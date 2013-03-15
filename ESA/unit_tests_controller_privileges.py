@@ -104,6 +104,9 @@ class ControllerPrivilegesTestCase(TestCase):
     def test_getOrgsWithPrivilegesForPersonJSON(self):
         # Define prerequisite data.
         personKey = 4
+        org1 = models.Organization.query.filter_by(entityFK=1).first()
+        org2 = models.Organization.query.filter_by(entityFK=2).first()
+
         # Get the result of the tested method.
         jsonString = controller_privileges.getOrgsWithPrivilegesForPersonJSON(personKey)
         # Validate the result.
@@ -114,7 +117,8 @@ class ControllerPrivilegesTestCase(TestCase):
             self.assertEqual(key, "OrganizationKeys")
             for value in values:
                 count += 1
-                self.assertTrue(value is 1 or value is 2)
+                self.assertTrue(value['org_id'] is org1.entityFK or value['org_id'] is org2.entityFK)
+                self.assertTrue(value['org_name'] == org1.name or value['org_name'] == org2.name)
         self.assertEqual(count, 2)
 
 

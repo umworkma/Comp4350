@@ -113,7 +113,13 @@ def getOrgsWithPrivilegesForPersonJSON(personKey):
             if count > 0:
                 jsonString += ','
             count += 1
-            jsonString += str(key)  # convert key to string for concatenation, python restriction
+            orgObj = models.Organization.query.filter_by(entityFK=key).first()
+            jsonString += '{"org_id": ' + str(key)  # convert key to string for concatenation, python restriction
+            if orgObj is not None:
+
+                jsonString += ', "org_name": "' + orgObj.name + '"'
+            jsonString += '}'
+
         jsonString += ']'
     else:
         jsonString += '"None"'
