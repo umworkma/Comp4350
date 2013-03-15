@@ -1,0 +1,7 @@
+INSTALL_PATH = /./
+HEADER_SEARCH_PATHS = $(inherited) $(FRANK_HEADER_SEARCH_PATHS) "$(BUILT_PRODUCTS_DIR)/../../Headers" "$(BUILT_PRODUCTS_DIR)/../Headers" "$(BUILT_PRODUCTS_DIR)/../Products/Debug-iphonesimulator/include"
+
+FRANK_LDFLAGS = -all_load -ObjC -framework CFNetwork -framework Security -lShelley -lFrank -lShelley -lCocoaAsyncSocket -lCocoaLumberjack -lCocoaHTTPServer -lFrank
+FRANK_MAC_LDFLAGS = -all_load -ObjC -framework CFNetwork -framework Security -lShelleyMac -lFrankMac -lCocoaAsyncSocketMac -lCocoaLumberjackMac -lCocoaHTTPServerMac -lFrankMac
+
+GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = FRANKIFIED

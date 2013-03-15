@@ -40,7 +40,23 @@ def login():
     if request.method == 'POST':
         remember = False
 
-        if request.form.has_key('username') and request.form.has_key('password'):
+        # Json login request. ie from iOS
+        if is_request_json():
+            if request.json is not None and request.json.has_key('username') and request.json.has_key('password'):
+                username = request.json['username']
+                user = controllers.getPersonByUsername(username, db)
+
+                if user is not None:
+                    if user.password == request.json['password']:
+                        login_user(user, remember=True)
+                        return jsonify(success=True, msg='Login success', firstname=user.firstname)
+
+                return jsonify(success=False, msg='Please check user name and password')
+            return jsonify(success=False, msg='Please provide user name and password')    
+
+
+        # else regular HTML request only
+        elif request.form.has_key('username') and request.form.has_key('password'):
             username = request.form['username']
             user = controllers.getPersonByUsername(username, db)
 
@@ -150,6 +166,27 @@ def org_info(entityid):
 def submit_employee_form():
     if request.method == 'POST' and is_request_json():
         result = controllers.registerEmployee(request.json,db)
+        if(result is not None):
+            user_dict = json.loads(result)
+            if user_dict.has_key('username'):
+                username = user_dict['username']
+                #Successfully saved so authenticate user !
+                authUser = controllers.getPersonByUsername(username, db)
+                login_user(authUser, remember=True)
+                resultjson = '{"result": "EmpTrue"}'
+                return resultjson
+        
+        resultjson = '{"result": "EmpFalse"}'
+        return resultjson
+       
+    else:
+        return jsonify(msg='Other request method[%s]' % request.method)
+
+@app.route('/_member', methods=['POST'])
+@login_required
+def join_org():
+    if request.method == 'POST' and is_request_json():
+        result = controllers.putPersonInOrganization(request.json, db, current_user.get_id())
         return result
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
