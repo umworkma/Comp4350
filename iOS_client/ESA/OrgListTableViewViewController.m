@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 SE2. All rights reserved.
 //
 
+#import <RestKit/RestKit.h>
+
 #import "OrgListTableViewViewController.h"
 #import "OrgListTableViewCell.h"
 #import "OrgNameEntry.h"
@@ -33,9 +35,32 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     // Configure the datasource
-    self.orgNames = [[NSMutableArray alloc] init];
-    [self.orgNames addObject:[[OrgNameEntry alloc] initWithEntityFK:1 OrgName:@"Ai-Kon"]];
-    [self.orgNames addObject:[[OrgNameEntry alloc] initWithEntityFK:2 OrgName:@"University of Manitoba"]];
+  //  self.orgNames = [[NSMutableArray alloc] init];
+  //  [self.orgNames addObject:[[OrgNameEntry alloc] initWithEntityFK:1 OrgName:@"Ai-Kon"]];
+  //  [self.orgNames addObject:[[OrgNameEntry alloc] initWithEntityFK:2 OrgName:@"University of Manitoba"]]
+    
+    // Obtain data from server
+    RKObjectMapping *orgnameMapping = [RKObjectMapping mappingForClass:[OrgNameEntry class]];
+    [orgnameMapping addAttributeMappingsFromDictionary:@{@"org_name":@"orgName", @"org_entityfk":@"orgEntityFK"}];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:orgnameMapping pathPattern:nil keyPath:@"OrgNames" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    
+    NSURL *url = [NSURL URLWithString:@"http://ec2-54-241-44-165.us-west-1.compute.amazonaws.com/organization"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"accept_mimetypes"];
+    
+    RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
+    [objectRequestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        RKLogInfo(@"Load collection of organizations: %@", mappingResult.array);
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        RKLogInfo(@"Operation failed with error: %@", error);
+    }];
+    
+    [objectRequestOperation start];
+    self.orgNames = objectRequestOperation.mappingResult.array;
 }
 
 - (void)didReceiveMemoryWarning

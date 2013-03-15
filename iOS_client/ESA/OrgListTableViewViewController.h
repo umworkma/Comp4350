@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface OrgListTableViewViewController : UITableViewController
-@property (nonatomic, strong) NSMutableArray *orgNames;
+@property (nonatomic, strong) NSArray *orgNames;
 
 @end
