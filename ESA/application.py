@@ -76,10 +76,17 @@ def logout():
     return redirect(url_for('home'))
 
 # qunit - Javascript unit testing
-@app.route('/_test')
+@app.route('/_test', methods=['GET', 'POST'])
 def qunit_test():
     # List of html pages that use the Javascript function, as might needed for testing 
     pages = ['index.html', 'register_organization.html']
+
+    if is_request_json():
+        # if request.method == 'GET':
+        print "I am here"
+        return jsonify(request=request.method, success=True, msg='testing')
+        # elif request.method == 'POST':
+
     return render_template('unit_test.html', qunit=True, testPage=pages)
 
 @app.route('/register_organization/')

@@ -93,10 +93,69 @@ function test_createJsonObject() {
 
 };
 
+function test_ESA_ajaxJSON() {
+    module("Test ESA POST ajax module");
+
+    // asynchronous unit testing expect 3 testing result
+    fn_ESA_ajaxJSON = function() {
+        url     = '/_test',
+        data    = {test: 'Testing'},
+        success = function(response) {
+            ok(response.success);
+            equal(response.request, 'POST');
+            notEqual(response.request, 'GET');
+            equal(response.msg, 'testing');
+
+        },
+
+        expect(4) // number of assertions to be expect
+        // asynchronous set test time out
+        setTimeout(function() {
+            ESA.ajaxJSON(url, data, success);
+            start();
+
+        }, 1000);
+    };
+
+    // asynchronous test test function
+    asyncTest("Asynchronous Test", fn_ESA_ajaxJSON)
+
+};
+
+function test_ESA_ajaxGetJSON() {
+    module("Test ESA GET ajax module");
+
+    // asynchronous unit testing expect 3 testing result
+    fn_ESA_ajaxGetJSON = function() {
+        url     = '/_test',
+        data    = {test: 'Testing'},
+        success = function(response) {
+            ok(response.success);
+            equal(response.request, 'GET');
+            notEqual(response.request, 'POST');
+            equal(response.msg, 'testing');
+
+        },
+
+        expect(4) // number of assertions to be expect
+        // asynchronous set test time out
+        setTimeout(function() {
+            ESA.ajaxGetJSON(url, data, success);
+            start();
+
+        }, 1000);
+    };
+
+    // asynchronous test test function
+    asyncTest("Asynchronous Test", fn_ESA_ajaxGetJSON)
+
+};
+
 
 window.onload = function() {
-    test_createJsonObject();
-
+    // test_createJsonObject();
+    test_ESA_ajaxJSON();
+    test_ESA_ajaxGetJSON();
 };
 
 

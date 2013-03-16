@@ -12,6 +12,19 @@ function ESA() {
         });
     }
 
+    // POST ajax call to send json object to server
+    this.ajaxGetJSON = function(url, data, success) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            success: success,
+
+        });
+    }
+
     // display an alert box
     this.display_alert = function (alertType, htmlMsg) {
         type = 'alert alert-' + alertType;
