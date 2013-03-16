@@ -161,13 +161,23 @@ def submit_employee_form():
 def privilege():
     user_id = current_user.entityFK
 
-    org_json = controller_privileges.getOrgsWithPrivilegesForPersonJSON(user_id)
-    org_dict = json.loads(org_json)
+    if request.method == 'GET':
+        org_json = controller_privileges.getOrgsWithPrivilegesForPersonJSON(user_id)
+        privilege_json = controller_privileges.getAllPrivilegesJSON()
 
-    privilege_json = controller_privileges.getAllPrivilegesJSON()
-    privilege_dict = json.loads(privilege_json)
+        if is_request_json():
+            return jsonify(privilege_data=org_json + privilege_json)
 
-    return render_template('privilege.html', orgs=org_dict, privileges=privilege_dict)
+        else:
+            org_dict = json.loads(org_json)
+            privilege_dict = json.loads(privilege_json)
+            return render_template('privilege.html', orgs=org_dict, privileges=privilege_dict)
+
+    return abort(403)
+
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('403.html'), 403
 
 @app.teardown_request
 def shutdown_session(exception=None):
