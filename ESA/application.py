@@ -5,6 +5,7 @@ from flask.ext.testing import TestCase
 import config
 import models
 import controllers
+import controller_privileges
 
 app.config.from_object(config)
 
@@ -158,8 +159,15 @@ def submit_employee_form():
 @app.route('/privilege/')
 @login_required
 def privilege():
+    user_id = current_user.entityFK
 
-    return render_template('privilege.html')
+    org_json = controller_privileges.getOrgsWithPrivilegesForPersonJSON(user_id)
+    org_dict = json.loads(org_json)
+
+    privilege_json = controller_privileges.getAllPrivilegesJSON()
+    privilege_dict = json.loads(privilege_json)
+
+    return render_template('privilege.html', orgs=org_dict, privileges=privilege_dict)
 
 @app.teardown_request
 def shutdown_session(exception=None):

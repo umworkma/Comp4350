@@ -114,7 +114,7 @@ class ControllerPrivilegesTestCase(TestCase):
         dict = json.loads(jsonString)
         count = 0
         for key,values in dict.iteritems():
-            self.assertEqual(key, "OrganizationKeys")
+            self.assertEqual(key, "Organizations")
             for value in values:
                 count += 1
                 self.assertTrue(value['org_id'] is org1.entityFK or value['org_id'] is org2.entityFK)

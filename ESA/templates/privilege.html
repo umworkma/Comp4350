@@ -11,8 +11,10 @@
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href='#'>Org 1</a></li>
-                        <li><a href='#'>Org 2</a></li>
+                        <!-- template render generated organization drop down menu list -->
+                        {% for org in orgs['Organizations'] %}
+                        <li><a id="pp_org_id_{{ org['org_id'] }}" href='#'> {{ org['org_name'] }}</a></li>
+                        {% endfor %}
                     </ul>
                 </li>
             </ul>
@@ -41,11 +43,14 @@
 
                     <table class="table table-hover">
                         <caption>Permission List</caption>
-
-                        <tr class="success"><td>Normal Action</td></tr>
+                        <!-- template render generated privilege list -->
+                        {% for privilege in privileges['Privileges'] %}
+                        {# <tr class="success"><td>Normal Action</td></tr>
                         <tr class="error"><td>Delete Action</td></tr>
                         <tr class="warning"><td>Update Action</td></tr>
-                        <tr class="info"><td>Code Blue</td></tr>
+                        <tr class="info"><td>Code Blue</td></tr> #}
+                        <tr class="info" id="pp_privilege_id_{{ privilege['privilege_pk'] }}"><td>{{ privilege['privilege'] }}</td></tr>
+                        {% endfor %}
 
                     </table>
                 </div>

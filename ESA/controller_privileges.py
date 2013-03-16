@@ -105,7 +105,7 @@ def _getOrgsWithPrivilegesForPerson(personKey):
 # Format: {"OrganizationKeys":[#,#,#,#,...]}
 def getOrgsWithPrivilegesForPersonJSON(personKey):
     orgKeys = _getOrgsWithPrivilegesForPerson(personKey)
-    jsonString = '{"OrganizationKeys":'
+    jsonString = '{"Organizations":'
     if len(orgKeys) > 0:
         jsonString += '['
         count = 0
