@@ -79,6 +79,7 @@ function ESA() {
 
     };
 
+    this.privilege = new PrivilegePortal();
 };
 // Active the singleton of ESA in Global object
 ESA = new ESA();

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify, json, flash
+from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify, json, flash, Response
 from ESA import app, login_manager, login_required, login_user, current_user, logout_user
 from flask.ext.testing import TestCase
 
@@ -79,7 +79,7 @@ def logout():
 @app.route('/_test', methods=['GET', 'POST'])
 def qunit_test():
     # List of html pages that use the Javascript function, as might needed for testing 
-    pages = ['index.html', 'register_organization.html']
+    pages = ['index.html', 'register_organization.html', 'privilege.html']
 
     if is_request_json():
         # if request.method == 'GET':
@@ -163,28 +163,54 @@ def submit_employee_form():
         return jsonify(msg='Other request method[%s]' % request.method)
 
 
-@app.route('/privilege/')
+# privilege portal main handle function. If request is not support it will return error 403
+@app.route('/privilege', methods=['GET', 'POST'])
 @login_required
 def privilege():
-    user_id = current_user.entityFK
+    try:
+        user_id = current_user.entityFK
 
-    if request.method == 'GET':
-        org_json = controller_privileges.getOrgsWithPrivilegesForPersonJSON(user_id)
-        privilege_json = controller_privileges.getAllPrivilegesJSON()
+        if request.method == 'GET':
+            org_json        = controller_privileges.getOrgsWithPrivilegesForPersonJSON(user_id)
+            privilege_json  = controller_privileges.getAllPrivilegesJSON()
 
-        if is_request_json():
-            return jsonify(privilege_data=org_json + privilege_json)
+            if is_request_json():
+                return jsonify(privilege_data=org_json + privilege_json)
 
-        else:
-            org_dict = json.loads(org_json)
-            privilege_dict = json.loads(privilege_json)
-            return render_template('privilege.html', orgs=org_dict, privileges=privilege_dict)
+            else:
+                org_dict = json.loads(org_json)
+                privilege_dict = json.loads(privilege_json)
+                return render_template('privilege.html', orgs=org_dict, privileges=privilege_dict)
+    except Exception, e:
+        return abort(404)
 
     return abort(403)
 
+# privilege portal get and post handle function. If request is not support it will return error 403
+@app.route('/privilege/<org_id>', methods=['GET', 'POST'])
+@login_required
+def privilege_org(org_id):
+    try:
+        user_id = current_user.entityFK
+
+        if request.method == 'GET':
+            persons = controllers.getPeopleInOrganizationJSON(org_id)
+            if is_request_json():
+                return Response(response=persons, mimetype='application/json')
+            
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
+        
 @app.errorhandler(403)
 def page_not_found(e):
     return render_template('403.html'), 403
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 @app.teardown_request
 def shutdown_session(exception=None):

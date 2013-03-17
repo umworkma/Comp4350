@@ -12,6 +12,7 @@ from flask_assets import Bundle
 # Add our custom JavaScript files in this bundle below. It will be share to both 
 # common_js and qunit_js bundle.
 ESA_js = Bundle(
+    'jClient/privilege.js',
     'jClient/ESA-client.js',
 
 )
@@ -19,6 +20,7 @@ ESA_js = Bundle(
 
 # Add unit testing JavaScript files in this bundle below.
 unit_test_js = Bundle(
+    'unit_test/test_ESA-privilege.js',
     'unit_test/test_ESA-client.js',
 
 )

@@ -156,6 +156,7 @@ window.onload = function() {
     // test_createJsonObject();
     test_ESA_ajaxJSON();
     test_ESA_ajaxGetJSON();
+    test_ESA_privilege();
 };
 
 
