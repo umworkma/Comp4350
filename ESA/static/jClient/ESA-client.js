@@ -19,7 +19,7 @@ function ESA() {
             url: url,
             contentType: 'application/json',
             dataType: 'json',
-            data: JSON.stringify(data),
+            data: data,
             success: success,
 
         });
