@@ -2,7 +2,7 @@
 //  OrgListTableViewViewController.m
 //  ESA
 //
-//  Created by ShiKage on 2013-03-13.
+//  Created by Chris Workman on 2013-03-13.
 //  Copyright (c) 2013 SE2. All rights reserved.
 //
 
@@ -45,12 +45,15 @@
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:orgnameMapping pathPattern:nil keyPath:@"OrgNames" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
-    NSURL *url = [NSURL URLWithString:@"http://ec2-54-241-44-165.us-west-1.compute.amazonaws.com/organization"];
+    NSString *baseURLString = @"http://ec2-54-242-137-121.compute-1.amazonaws.com";
+    //NSString *baseURLString = @"http://aws.billiam.ca";
+    NSURL *baseURL = [NSURL URLWithString:baseURLString];
+    NSURL *url = [NSURL URLWithString:@"/organization" relativeToURL:baseURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"GET"];
+//    [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"accept_mimetypes"];
+//    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+//    [request setValue:@"application/json" forHTTPHeaderField:@"accept_mimetypes"];
     
     RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
     [objectRequestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {

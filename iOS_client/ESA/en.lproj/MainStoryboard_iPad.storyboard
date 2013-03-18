@@ -19,6 +19,44 @@
             </objects>
             <point key="canvasLocation" x="23" y="448"/>
         </scene>
+        <!--Org Details View Controller-->
+        <scene sceneID="q1B-fe-UtO">
+            <objects>
+                <viewController id="pyL-VH-J3o" customClass="OrgDetailsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6Vv-6H-c05">
+                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSX-Lg-b4v">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tXV-PU-HlR">
+                                <items>
+                                    <barButtonItem title="Login" id="lzQ-1r-MYr">
+                                        <connections>
+                                            <segue destination="d8S-XZ-QzF" kind="push" id="Gsl-ZK-RUm"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="tXV-PU-HlR" firstAttribute="bottom" secondItem="6Vv-6H-c05" secondAttribute="bottom" type="default" id="DhB-am-KeB"/>
+                            <constraint firstItem="CSX-Lg-b4v" firstAttribute="top" secondItem="6Vv-6H-c05" secondAttribute="top" constant="27" id="QVq-9O-xvR"/>
+                            <constraint firstItem="CSX-Lg-b4v" firstAttribute="leading" secondItem="6Vv-6H-c05" secondAttribute="leading" constant="25" id="g9B-8t-1RT"/>
+                            <constraint firstItem="tXV-PU-HlR" firstAttribute="leading" secondItem="6Vv-6H-c05" secondAttribute="leading" type="default" id="nBI-9A-FEi"/>
+                            <constraint firstItem="tXV-PU-HlR" firstAttribute="trailing" secondItem="6Vv-6H-c05" secondAttribute="trailing" type="default" id="qky-Z4-h2u"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Eju-Tx-ZCb"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n4K-WM-6MW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1494" y="-741"/>
+        </scene>
         <!--Org List Table View View Controller - Browse Organizations-->
         <scene sceneID="LPQ-DN-z3V">
             <objects>
@@ -56,6 +94,7 @@
                                 </view>
                                 <connections>
                                     <outlet property="orgName" destination="0Mn-tD-AP2" id="f9o-P3-CdR"/>
+                                    <segue destination="pyL-VH-J3o" kind="push" identifier="orgDetailsSegue" id="JvX-rm-5mg"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -230,6 +269,9 @@
         <class className="NSLayoutConstraint" superclassName="NSObject">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
+        <class className="OrgDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgDetailsViewController.h"/>
+        </class>
         <class className="OrgListTableViewCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgListTableViewCell.h"/>
             <relationships>
@@ -248,4 +290,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="Gsl-ZK-RUm"/>
+    </inferredMetricsTieBreakers>
 </document>

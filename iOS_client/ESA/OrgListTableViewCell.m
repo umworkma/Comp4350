@@ -2,7 +2,7 @@
 //  OrgListTableViewCell.m
 //  ESA
 //
-//  Created by ShiKage on 2013-03-13.
+//  Created by Chris Workman on 2013-03-13.
 //  Copyright (c) 2013 SE2. All rights reserved.
 //
 
