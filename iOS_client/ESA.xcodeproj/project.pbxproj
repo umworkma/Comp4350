@@ -34,7 +34,6 @@
 		2AC56EE616EBD357000052D1 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC56EE516EBD357000052D1 /* LoginViewController.m */; };
 		DA8DFE1616F8C8CE00E1EB79 /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8DFE1516F8C8CE00E1EB79 /* Address.m */; };
 		DA8DFE1F16F8CAEE00E1EB79 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8DFE1E16F8CAEE00E1EB79 /* Contact.m */; };
-		DAC8D15116F63BA700EC01D7 /* OrgDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8D15016F63BA700EC01D7 /* OrgDetailsViewController.m */; };
 		DAC8D15416F63BF500EC01D7 /* Organization.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8D15316F63BF500EC01D7 /* Organization.m */; };
 		DAD516B616F0CC8B004096E0 /* OrgListTableViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD516B516F0CC8B004096E0 /* OrgListTableViewViewController.m */; };
 		DAD516BC16F0D3CB004096E0 /* OrgListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD516BB16F0D3CB004096E0 /* OrgListTableViewCell.m */; };
@@ -159,8 +158,6 @@
 		DA8DFE1D16F8CAEE00E1EB79 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		DA8DFE1E16F8CAEE00E1EB79 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		DA8DFE2016F8CC8500E1EB79 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
-		DAC8D14F16F63BA700EC01D7 /* OrgDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrgDetailsViewController.h; sourceTree = "<group>"; };
-		DAC8D15016F63BA700EC01D7 /* OrgDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrgDetailsViewController.m; sourceTree = "<group>"; };
 		DAC8D15216F63BF500EC01D7 /* Organization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Organization.h; sourceTree = "<group>"; };
 		DAC8D15316F63BF500EC01D7 /* Organization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Organization.m; sourceTree = "<group>"; };
 		DAD516B416F0CC8B004096E0 /* OrgListTableViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrgListTableViewViewController.h; sourceTree = "<group>"; };
@@ -247,8 +244,6 @@
 				DAC8D15316F63BF500EC01D7 /* Organization.m */,
 				2A9CBBA116EAA66400041DF2 /* AppDelegate.m */,
 				2A9CBBA916EAA66400041DF2 /* MainStoryboard_iPhone.storyboard */,
-				DAC8D14F16F63BA700EC01D7 /* OrgDetailsViewController.h */,
-				DAC8D15016F63BA700EC01D7 /* OrgDetailsViewController.m */,
 				2A9CBBAC16EAA66400041DF2 /* MainStoryboard_iPad.storyboard */,
 				DAD516BD16F0D913004096E0 /* OrgNameEntry.h */,
 				DAD516BE16F0D913004096E0 /* OrgNameEntry.m */,
@@ -514,7 +509,6 @@
 				DAD516B616F0CC8B004096E0 /* OrgListTableViewViewController.m in Sources */,
 				DAD516BC16F0D3CB004096E0 /* OrgListTableViewCell.m in Sources */,
 				DAD516BF16F0D913004096E0 /* OrgNameEntry.m in Sources */,
-				DAC8D15116F63BA700EC01D7 /* OrgDetailsViewController.m in Sources */,
 				DAC8D15416F63BF500EC01D7 /* Organization.m in Sources */,
 				DA8DFE1616F8C8CE00E1EB79 /* Address.m in Sources */,
 				DA8DFE1F16F8CAEE00E1EB79 /* Contact.m in Sources */,
