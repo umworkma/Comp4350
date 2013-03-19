@@ -13,6 +13,7 @@
 #import "OrgListTableViewViewController.h"
 #import "OrgListTableViewCell.h"
 #import "OrgNameEntry.h"
+#import "OrgDetailsViewController.h"
 
 @implementation OrgListTableViewViewController
 @synthesize orgNames = _orgNames;
@@ -36,26 +37,16 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    // Configure the datasource
-  //  self.orgNames = [[NSMutableArray alloc] init];
-  //  [self.orgNames addObject:[[OrgNameEntry alloc] initWithEntityFK:1 OrgName:@"Ai-Kon"]];
-  //  [self.orgNames addObject:[[OrgNameEntry alloc] initWithEntityFK:2 OrgName:@"University of Manitoba"]]
-    
     // Obtain data from server
     RKObjectMapping *orgnameMapping = [RKObjectMapping mappingForClass:[OrgNameEntry class]];
     [orgnameMapping addAttributeMappingsFromDictionary:@{@"org_name":@"orgName", @"org_entityfk":@"orgEntityFK"}];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:orgnameMapping pathPattern:nil keyPath:@"OrgNames" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-    
-    //NSString *baseURLString = @"http://ec2-54-242-137-121.compute-1.amazonaws.com";
-    //NSString *baseURLString = @"http://aws.billiam.ca";
+
     NSURL *baseURL = [NSURL URLWithString:BASE_URL];
     NSURL *url = [NSURL URLWithString:@"/organization" relativeToURL:baseURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
-//    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-//    [request setValue:@"application/json" forHTTPHeaderField:@"accept_mimetypes"];
     
     RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
     [objectRequestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -156,6 +147,15 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+
+// Pass data to orgDetails when performing a segue
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"orgListDetailsSegue"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        OrgDetailsViewController *destView = segue.destinationViewController;
+        destView.orgName = [_orgNames objectAtIndex:indexPath.row];
+    }
 }
 
 @end
