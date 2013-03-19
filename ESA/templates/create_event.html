@@ -26,13 +26,66 @@
                         <div class="controls">
                             <textarea id="event_desc" rows="3"></textarea>
                         </div>
-                        <label class="control-label" for="event_start">Event Start Date</label>
+                        <label class="control-label" for="event_start_date">Event Start Date</label>
                         <div class="controls">
-                            <input type="text" required name="event_start" id="datepicker">
+                            <input type="text" required name="event_start_date" id="datepicker">
                         </div>
-                        <label class="control-label" for="event_end">Event End Date</label>
+                        <label class="control-label" for="event_start_time">Start Time</label>
+                        <div class="controls">
+                            <select>
+                                <option value="7">7 AM</option>
+                                <option value="8">8 AM</option>
+                                <option value="9">9 AM</option>
+                                <option value="10">10 AM</option>
+                                <option value="11">11 AM</option>
+                                <option value="12">12 PM</option>
+                                <option value="13">1 PM</option>
+                                <option value="14">2 PM</option>
+                                <option value="15">3 PM</option>
+                                <option value="16">4 PM</option>
+                                <option value="17">5 PM</option>
+                                <option value="18">6 PM</option>
+                                <option value="19">7 PM</option>
+                                <option value="20">8 PM</option>
+                                <option value="21">9 PM</option>
+                                <option value="22">10 PM</option>
+                            </select>
+                        </div>
+                        <label class="control-label" for="event_end_date">Event End Date</label>
                         <div class="controls">
                             <input type="datetime-local" required name="event_end">
+                        </div>
+                        <label class="control-label" for="event_end_time">End Time</label>
+                        <div class="controls">
+                            <select>
+                                <option value="7">7 AM</option>
+                                <option value="8">8 AM</option>
+                                <option value="9">9 AM</option>
+                                <option value="10">10 AM</option>
+                                <option value="11">11 AM</option>
+                                <option value="12">12 PM</option>
+                                <option value="13">1 PM</option>
+                                <option value="14">2 PM</option>
+                                <option value="15">3 PM</option>
+                                <option value="16">4 PM</option>
+                                <option value="17">5 PM</option>
+                                <option value="18">6 PM</option>
+                                <option value="19">7 PM</option>
+                                <option value="20">8 PM</option>
+                                <option value="21">9 PM</option>
+                                <option value="22">10 PM</option>
+                            </select>
+                        </div>
+                        <label class="control-label" for="event_shift_length">Shifts Length</label>
+                        <div class="controls">
+                            <select>
+                                <option value="30">30 min</option>
+                                <option value="60">1 hour</option>
+                                <option value="90">1.5 hours</option>
+                                <option value="120">2 hours</option>
+                                <option value="180">2.5 hours</option>
+                                <option value="240">3 hours</option>
+                            </select>
                         </div>
                     </fieldset>
                     <div class="form-actions">
