@@ -24,7 +24,7 @@
             <objects>
                 <viewController id="pyL-VH-J3o" customClass="OrgDetailsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6Vv-6H-c05">
-                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSX-Lg-b4v">
@@ -94,7 +94,6 @@
                                 </view>
                                 <connections>
                                     <outlet property="orgName" destination="0Mn-tD-AP2" id="f9o-P3-CdR"/>
-                                    <segue destination="pyL-VH-J3o" kind="push" identifier="orgDetailsSegue" id="JvX-rm-5mg"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -114,7 +113,7 @@
             <objects>
                 <viewController title="ESA - Login" id="d8S-XZ-QzF" customClass="LoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ozh-sM-ltr">
-                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Welcome to ESA Service" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Nj-XS-j19">
@@ -235,7 +234,7 @@
             <objects>
                 <viewController id="eSp-Zh-iYj" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ja2-wk-ygE">
-                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Place holder for Sign up form" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F9r-w5-chN">

@@ -8,6 +8,8 @@
 
 #import <RestKit/RestKit.h>
 
+#import "Settings.h"
+
 #import "OrgListTableViewViewController.h"
 #import "OrgListTableViewCell.h"
 #import "OrgNameEntry.h"
@@ -45,9 +47,9 @@
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:orgnameMapping pathPattern:nil keyPath:@"OrgNames" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
-    NSString *baseURLString = @"http://ec2-54-242-137-121.compute-1.amazonaws.com";
+    //NSString *baseURLString = @"http://ec2-54-242-137-121.compute-1.amazonaws.com";
     //NSString *baseURLString = @"http://aws.billiam.ca";
-    NSURL *baseURL = [NSURL URLWithString:baseURLString];
+    NSURL *baseURL = [NSURL URLWithString:BASE_URL];
     NSURL *url = [NSURL URLWithString:@"/organization" relativeToURL:baseURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
 //    [request setHTTPMethod:@"GET"];

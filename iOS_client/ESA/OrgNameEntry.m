@@ -12,13 +12,5 @@
 @synthesize orgName = _orgName;
 @synthesize orgEntityFK = _orgEntityFK;
 
-- (id)initWithEntityFK:(NSInteger)entityFK OrgName:(NSString *)name
-{
-    self = [super init];
-    self.orgEntityFK = entityFK;
-    self.orgName = name;
-    
-    return self;
-}
 @end
 

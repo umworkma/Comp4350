@@ -12,6 +12,4 @@
 @property NSString *orgName;
 @property NSInteger orgEntityFK;
 
-- (id)initWithEntityFK:(NSInteger)entityFK OrgName:(NSString *)name;
-
 @end
