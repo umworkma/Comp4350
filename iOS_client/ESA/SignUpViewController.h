@@ -10,9 +10,14 @@
 #import <RestKit/RestKit.h>
 @interface SignUpViewController : ViewController <UITextFieldDelegate>
 
-@property (copy, nonatomic) NSString *username;
-@property (copy, nonatomic) NSString *password1;
-@property (copy, nonatomic) NSString *password2;
+@property (weak, nonatomic) IBOutlet UITextField *textUsername;
+@property (weak, nonatomic) IBOutlet UITextField *textPassword1;
+@property (weak, nonatomic) IBOutlet UITextField *textPassword2;
+
+- (IBAction)register:(id)sender;
+//@property (copy, nonatomic) NSString *username;
+//@property (copy, nonatomic) NSString *password1;
+//@property (copy, nonatomic) NSString *password2;
 
 
 @end
