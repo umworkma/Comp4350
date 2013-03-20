@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Address.h"
+#import "Contact.h"
 
 @interface Entity : NSObject
 @property NSInteger pk;

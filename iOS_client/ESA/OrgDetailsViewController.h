@@ -14,7 +14,6 @@
 @interface OrgDetailsViewController : UIViewController
 @property OrgNameEntry *orgName;
 @property Organization *org;
-@property IBOutlet UILabel *nameLabel;
-@property IBOutlet UILabel *descLabel;
+@property IBOutlet UIWebView *text;
 
 @end

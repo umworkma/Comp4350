@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C60" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="yIv-X2-uTX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="yIv-X2-uTX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -36,32 +36,27 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8QC-Md-caV">
-                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ov2-3c-vKv">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sca-3e-cV7">
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="916" id="BGq-jd-4E6"/>
+                                </constraints>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" address="YES"/>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="sca-3e-cV7" firstAttribute="trailing" secondItem="QWL-3X-Piv" secondAttribute="trailing" type="default" id="1c0-MQ-TUJ"/>
                             <constraint firstItem="dTH-Uf-3hq" firstAttribute="leading" secondItem="QWL-3X-Piv" secondAttribute="leading" type="default" id="1cj-Fm-vhd"/>
-                            <constraint firstItem="8QC-Md-caV" firstAttribute="leading" secondItem="QWL-3X-Piv" secondAttribute="leading" constant="52" id="GCJ-Bi-OAs"/>
+                            <constraint firstItem="sca-3e-cV7" firstAttribute="leading" secondItem="QWL-3X-Piv" secondAttribute="leading" type="default" id="9VU-Pc-V3X"/>
                             <constraint firstItem="dTH-Uf-3hq" firstAttribute="trailing" secondItem="QWL-3X-Piv" secondAttribute="trailing" type="default" id="T6s-TM-GyD"/>
-                            <constraint firstItem="ov2-3c-vKv" firstAttribute="leading" secondItem="8QC-Md-caV" secondAttribute="leading" type="default" id="YOu-G0-fZx"/>
-                            <constraint firstItem="8QC-Md-caV" firstAttribute="top" secondItem="QWL-3X-Piv" secondAttribute="top" constant="30" id="aDv-5b-5Ch"/>
                             <constraint firstItem="dTH-Uf-3hq" firstAttribute="bottom" secondItem="QWL-3X-Piv" secondAttribute="bottom" type="default" id="cVD-gW-MPA"/>
-                            <constraint firstItem="ov2-3c-vKv" firstAttribute="top" secondItem="8QC-Md-caV" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="x0j-eT-Sm9"/>
+                            <constraint firstItem="sca-3e-cV7" firstAttribute="top" secondItem="QWL-3X-Piv" secondAttribute="top" constant="-7" id="fn8-0C-GEw"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="KAx-Co-Y2j"/>
                     <connections>
-                        <outlet property="descLabel" destination="ov2-3c-vKv" id="TDo-WN-bLA"/>
-                        <outlet property="nameLabel" destination="8QC-Md-caV" id="kY3-jM-nNM"/>
+                        <outlet property="text" destination="sca-3e-cV7" id="fjp-gX-wVW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Um-i4-FIn" userLabel="First Responder" sceneMemberID="firstResponder"/>
