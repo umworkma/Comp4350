@@ -41,7 +41,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="916" id="BGq-jd-4E6"/>
                                 </constraints>
-                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" address="YES"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -263,6 +262,37 @@
             <point key="canvasLocation" x="2817" y="1783"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="LoginViewController" superclassName="ViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="login_btn_touch:"/>
+                <relationship kind="outlet" name="txt_password" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="txt_username" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="OrgDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="text" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="OrgListTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgListTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="orgName" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="OrgListTableViewViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgListTableViewViewController.h"/>
+        </class>
+        <class className="ViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
