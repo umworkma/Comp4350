@@ -48,12 +48,31 @@ def getEventById(pk, db):
 def getAllOrgsEvents(orgId, db):
     results = models.Event.query.filter_by(organizationFK=orgId)
 
+def _isDuplicateEvent(event, db):
+    result = True
+    target = models.Events.query.filter_by(models.Event.name=event.name, models.Event.startdate=event.startdate, models.event.enddate=event.enddate, models.event.organizationFK=event.organizationFK).first()
+    if(target == None):
+        result = False
+    return result
+
+def _insertEvent(event, db):
+    result = 'False'
+    isDup = _isDuplicateEvent(event, db)
+    if(isDup == False):
+        db.session.add(event)
+        db.session.commit()
+        if(event.pk > 0):
+            result = 'True'
+    else:
+        result = 'Duplicate'
+    return result
+
 def insertEvent(eventDict, db):
     event = extractEventFromDict(eventDict)
-    db.session.add(event)
-    db.session.commit()
-    resultjson = "?????"
-    return resultjson
+    result = _insertEvent(event, db)
+    resultJSON = '{' + '"result":"{val}",'.format(val=result)
+    resultJSON += '"{key}":{val}}'.format(key=models.EVENT_PK_KEY, val=event.pk)
+    return resultJSON
 
 def updateEvent(pk, name, description, startdate, enddate, organizationFK):
     controller = models.Event()

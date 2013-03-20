@@ -118,6 +118,15 @@ class EventTestCase(TestCase):
         self.assertEqual(control.enddate, target.enddate)
         self.assertEqual(control.organizationFK, target.organizationFK)
 
+    def test__isDuplicateEvent_true(self):
+        event1 = models.Event.query.first()
+        event2 = models.Event()
+        event2.name = event1.name
+        event2.startdate = event1.startdate
+        event2.enddate = event1.enddate
+        event2.organizationFK = event1.organizationFK
+        self.assertTrue(False)
+
 def suite():
     # Define the container for this module's tests.
     suite = unittest.TestSuite()

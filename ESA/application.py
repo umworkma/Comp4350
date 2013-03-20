@@ -197,7 +197,7 @@ def join_org():
 def create_event():
     return render_template('create_event.html')
 
-@app.route('/<org_id>/createEvent', methods=['POST'])
+@app.route('/organization/<org_id>/events', methods=['POST'])
 @login_required
 def event_org(org_id):
     if request.method=='POST' and is_request_json():
