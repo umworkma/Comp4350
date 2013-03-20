@@ -61,7 +61,7 @@
         {
             // declare url to connect
             NSURL *baseURL = [NSURL URLWithString:@"http://ec2-184-73-25-114.compute-1.amazonaws.com"];
-            NSURL *url = [NSURL URLWithString:@"/signup" relativeToURL: baseURL];
+            NSURL *url = [NSURL URLWithString:@"/_submit_employee_form" relativeToURL: baseURL];
            
             NSString *user = [textUsername text];
             NSString *pwd = [textPassword1 text];
@@ -72,7 +72,7 @@
                                @"\"username\":\"%@\",\"password\": \"%@\",\"firstname\": \"a\",\"lastname\": \"a\", \"Entity\":{ \"entity_type\": \"1\", \"addresses\""
                                @":[{\"address1\":\"a\", \"address2\":\"a2\", \"address3\":\"a3\", \"city\":\"city\", \"province\":\"pro\", \"country\":\"c\","
                                @"\"postalcode\":\"a\", \"isprimary\":\"True\"}], \"contacts\": [{\"type\": \"1\","
-                               @"\value\":\"1\", \"isPrimary\":\"True\"}, {\"type\":\"2\", \"value\": \"a\", \"isprimary\":\"False\"}]}}", [textUsername text], [textPassword1 text]];
+                               @"\"value\":\"1\", \"isPrimary\":\"True\"}, {\"type\":\"2\", \"value\": \"a\", \"isprimary\":\"False\"}]}}",user,pwd];
             
             
             NSData *pData = [input dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion: YES];
@@ -98,25 +98,26 @@
                 SBJsonParser *jsonParser = [SBJsonParser new];
                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData];
                 
-                NSInteger success = [(NSNumber *) [jsonData objectForKey:@"success"] integerValue];
-                if(success == 1)
+            
+                NSString *res = (NSString *)[jsonData objectForKey:@"result"];
+                
+                if([res isEqualToString:@"EmpTrue"])
                 {
-                    NSString *msg0 = (NSString *)[jsonData objectForKey:@"msg"];
-                    NSString *msg1 = (NSString *)[jsonData objectForKey:@"firstname"];
-                    NSString *msg2 = (NSString *)[[NSString alloc] initWithFormat:@"%@\nHi %@", msg0, msg1];
                     
+                    NSString *msg = (NSString *)[[NSString alloc] initWithFormat:@"\nHi %@", user];
+                    [self alertStatus:msg :@"Signup Successful"];
                 }
                 else
                 {
                     NSString *msg = (NSString *)[jsonData objectForKey:@"msg"];
-                    [self alertStatus:msg :@"Login Failed"];
+                    [self alertStatus:msg :@"Signup Failed"];
                 }
                 
             }
             else
             {
                 if(msg) NSLog(@"Error: %@", msg);
-                [self alertStatus:@"Connection Failed" :@"Login Failed"];
+                [self alertStatus:@"Connection Failed" :@"Signup Failed"];
                 
             }
             
