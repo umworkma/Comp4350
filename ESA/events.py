@@ -48,10 +48,12 @@ def getEventById(pk, db):
 def getAllOrgsEvents(orgId, db):
     results = models.Event.query.filter_by(organizationFK=orgId)
 
-def insertEvent(name, description, startdate, enddate, organizationFK):
-    controller = models.Event()
-    result = controller.insert(name, description, startdate, enddate, organizationFK);
-    print result
+def insertEvent(eventDict, db):
+    event = extractEventFromDict(eventDict)
+    db.session.add(event)
+    db.session.commit()
+    resultjson = "?????"
+    return resultjson
 
 def updateEvent(pk, name, description, startdate, enddate, organizationFK):
     controller = models.Event()

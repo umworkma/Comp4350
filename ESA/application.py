@@ -5,6 +5,7 @@ from flask.ext.testing import TestCase
 import config
 import models
 import controllers
+import events
 
 app.config.from_object(config)
 
@@ -191,10 +192,20 @@ def join_org():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
-#No Login Required
 @app.route('/createEvent')
-def load_create_event_form():
+@login_required
+def create_event():
     return render_template('create_event.html')
+
+@app.route('/<org_id>/createEvent', methods=['POST'])
+@login_required
+def event_org(org_id):
+    if request.method=='POST' and is_request_json():
+        result = events.insertEvent(request.json, db)
+        return result
+    else:
+        return jsonify(msg='Other request method[%s]' % request.method)
+        
 
 @app.teardown_request
 def shutdown_session(exception=None):
