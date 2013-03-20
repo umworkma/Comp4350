@@ -6,9 +6,10 @@
         <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
         {% endassets %}
 {% assets "common_js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}">
+        <script>
             $(function() {
                     $("#datepicker").datepicker();
+                    $("#datepicker2").datepicker();
                 });
         </script>
 {% endassets %}
@@ -53,7 +54,7 @@
                         </div>
                         <label class="control-label" for="event_end_date">Event End Date</label>
                         <div class="controls">
-                            <input type="datetime-local" required name="event_end">
+                            <input type="text" required name="event_end_date" id="datepicker2">
                         </div>
                         <label class="control-label" for="event_end_time">End Time</label>
                         <div class="controls">
