@@ -35,13 +35,13 @@
                         <label>Password</label>
                     </div>
                     <div>
-                        <input name="pwd1" type="password" class="input-xlarge">
+                        <input id="pwd1" required="required" name="pwd1" type="password" class="input-xlarge">
                     </div>
                     <div>
                         <label>Re-Enter Password</label>
                     </div>
                     <div>
-                        <input name="pwd2" type="password" class="input-xlarge">
+                        <input id="pwd2" onkeyup="checkPassword();" required="required" name="pwd2" type="password" class="input-xlarge"> <label class="pwdMsg"></label>
                     </div>
                 </fieldset>
                 <fieldset>
@@ -99,7 +99,8 @@
                 <br />
 
                 <div>
-                    <input class="btn btn-primary" type="submit" />
+                    <input id="sub_btn" class="btn btn-primary" type="submit" />
+					<label class="pwdMsg2"></label>
                 </div>
             </form>
         </div>
