@@ -25,9 +25,9 @@ def extractEventFromDict(eventDict):
         if(eventKey == models.EVENT_DESC_KEY):
             newEvent.description = eventValue
         if(eventKey == models.EVENT_START_KEY):
-            newEvent.startdate = datetime.strptime(eventValue, '%Y-%m-%dT%H:%M:%S.%f')
+            newEvent.startdate = datetime.strptime(eventValue, '%Y-%m-%d %H:%M:%S')
         if(eventKey == models.EVENT_END_KEY):
-            newEvent.enddate = datetime.strptime(eventValue, '%Y-%m-%dT%H:%M:%S.%f')
+            newEvent.enddate = datetime.strptime(eventValue, '%Y-%m-%d %H:%M:%S')
         if(eventKey == models.EVENT_ORGFK_KEY):
             newEvent.organizationFK = eventValue
 
@@ -39,7 +39,7 @@ def eventToJSON(event):
     jsonString += '"{key}":"{val}",'.format(key=models.EVENT_DESC_KEY, val=event.description)
     jsonString += '"{key}":"{val}",'.format(key=models.EVENT_START_KEY, val=event.startdate)
     jsonString += '"{key}":"{val}",'.format(key=models.EVENT_END_KEY, val=event.enddate)
-    jsonString += '"{key}":"{val}",'.format(key=models.EVENT_ORGFK_KEY, val=event.organizationFK)
+    jsonString += '"{key}":"{val}"'.format(key=models.EVENT_ORGFK_KEY, val=event.organizationFK)
     jsonString += '}'
     return jsonString
 

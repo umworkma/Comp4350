@@ -1075,7 +1075,7 @@ class ControllerTestCase(TestCase):
     ''' Test method in events.py '''
     def test_extractEventFromDict(self):
         control = models.Event.query.first()
-        stringJSON = '{"event_pk":1, "event_name":"My Event", "event_desc":"This is my event", "event_start":"2013-07-12T12:00:00.0", "event_end":"2013-07-14T16:00:00.0", "event_orgfk":1}'
+        stringJSON = '{"event_pk":1, "event_name":"My Event", "event_desc":"This is my event", "event_start":"2013-07-12 12:00:00", "event_end":"2013-07-14 16:00:00", "event_orgfk":1}'
         data = json.loads(stringJSON)
         target = events.extractEventFromDict(data)
 
@@ -1201,20 +1201,15 @@ class ControllerTestCase(TestCase):
         event2.startdate = start
         event2.enddate = end
         eventJSON = events.eventToJSON(event2)
-        
-        #eventJSON = '{' + '"name":"{val}",'.format(val=name)
-        #eventJSON += '"description":"{val}",'.format(val=desc)
-        #eventJSON += '"startdate":"{val}",'.format(val=start)
-        #eventJSON += '"enddate":"{val}"'.format(val=end)
-        #eventJSON += '}'
         eventDict = json.loads(eventJSON)
         
-        resultDict = json.loads(events.insertEvent(orgFK, eventDict, self.db))
+        result = events.insertEvent(orgFK, eventDict, self.db)
+        resultDict = json.loads(result)
         for key,value in resultDict.iteritems():
             if key == 'result':
                 self.assertEqual(value, 'Duplicate')
             elif key == 'event_pk':
-                self.assertIsNone(value)
+                self.assertEqual(value, 'None')
         
     ''' Test method from events.py '''    
     def test_insertEvent_badorg(self):
@@ -1232,7 +1227,6 @@ class ControllerTestCase(TestCase):
         eventDict = json.loads(eventJSON)
         
         result = events.insertEvent(orgFK, eventDict, self.db)
-        print result
         resultDict = json.loads(result)
         for key,value in resultDict.iteritems():
             if key == 'result':
@@ -1285,7 +1279,7 @@ def suite():
     suite.addTest(ControllerTestCase('test__insertEvent_duplicate'))
     suite.addTest(ControllerTestCase('test__insertEvent_badorg'))
     suite.addTest(ControllerTestCase('test_insertEvent_true'))
-    #suite.addTest(ControllerTestCase('test_insertEvent_duplicate'))
+    suite.addTest(ControllerTestCase('test_insertEvent_duplicate'))
     suite.addTest(ControllerTestCase('test_insertEvent_badorg'))
     
     return suite
