@@ -537,27 +537,32 @@ def _revokePrivilegeForPerson(db, privilegeKey,personKey,organizationKey=None):
 # Members
 
 """ Associate person with organization. """
-def putPersonInOrganization(member, db, personid):
+def putPersonInOrganization(orgid, db, personid):
+    print "********************** {0}".format( orgid)
     result = False
     failCause = 'Unknown'
 
     ''' Parse the given JSON data and create our basic member. '''
     newMember = models.Member()
-    for key,value in member.iteritems():
-        if(key == models.ORGANIZATION_ENTITYFK_KEY and value != 'None'):
-            newMember.organizationentityFK = int(value) #Note to self: do we have the FK at this point?
-        else:
-            print "******the key is: ", key
+    # for key,value in member.iteritems():
+    #     if(key == models.ORGANIZATION_ENTITYFK_KEY and value != 'None'):
+    #         newMember.organizationentityFK = int(value)
 
+    org = models.Organization.query.filter_by(entityFK=orgid).first()
     person = models.Person.query.filter_by(entityFK=personid).first()
-    if person is not None:
-        newMember.personentityFK = int(personid)
-        db.session.add(newMember)
-        db.session.commit()
-        result = True
+    if org is not None:
+        newMember.organizationentityFK = int(orgid)
+        if person is not None:
+            newMember.personentityFK = int(personid)
+            db.session.add(newMember)
+            db.session.commit()
+            result = True
+        else:
+            result = False
+            failCause = 'person not found'
     else:
         result = False
-        failCause = 'person not found'
+        failCause = 'organization not found'
 
     if(result is True):
         resultJson = '{"result": "True"}'

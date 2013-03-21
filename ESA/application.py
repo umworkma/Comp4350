@@ -182,11 +182,11 @@ def submit_employee_form():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
-@app.route('/_member', methods=['POST'])
+@app.route('/organization/<org_id>/members', methods=['POST'])
 @login_required
-def join_org():
+def join_org(org_id):
     if request.method == 'POST' and is_request_json():
-        result = controllers.putPersonInOrganization(request.json, db, current_user.get_id())
+        result = controllers.putPersonInOrganization(org_id, db, current_user.get_id())
         return result
     else:
         return jsonify(msg='Other request method[%s]' % request.method)

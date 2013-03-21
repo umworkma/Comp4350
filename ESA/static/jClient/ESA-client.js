@@ -298,11 +298,9 @@ function createJsonObjectForEmployee() {
 }
 
 function join_org(button, org_id) {
-    url = '/_member',
+    url = '/organization/' + org_id + '/members',
 
-    data = {
-        org_id: org_id
-    },
+    data = {},
 
     //what needs to happen client-side on success (response)
     success = function(data) {
@@ -310,7 +308,7 @@ function join_org(button, org_id) {
         if(typeof data.result != 'undefined' ) {
             // display the 2 type of alert box base of the result
             if(data.result == 'True') {
-                ESA.display_alert('success', data.result);
+                ESA.display_alert('success', 'Added you to to organization');
                 setTimeout(function() { $(button).button('complete'); }, 500);
                 setTimeout(function() { $(button).attr('disabled', 'disabled').addClass('disabled'); }, 1000);
             } else {
