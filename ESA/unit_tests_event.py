@@ -105,27 +105,6 @@ class EventTestCase(TestCase):
         eventCountAfter = models.Event.query.count()
         self.assertTrue(eventCountAfter == eventCount + 1)
 
-    def test_extractEventFromDict(self):
-        control = models.Event.query.first()
-        stringJSON = '{"event_pk":1, "event_name":"My Event", "event_desc":"This is my event", "event_start":"2013-07-12T12:00:00.0", "event_end":"2013-07-14T16:00:00.0", "event_orgfk":1}'
-        data = json.loads(stringJSON)
-        target = events.extractEventFromDict(data)
-
-        self.assertEqual(control.pk, target.pk)
-        self.assertEqual(control.name, target.name)
-        self.assertEqual(control.description, target.description)
-        self.assertEqual(control.startdate, target.startdate)
-        self.assertEqual(control.enddate, target.enddate)
-        self.assertEqual(control.organizationFK, target.organizationFK)
-
-    def test__isDuplicateEvent_true(self):
-        event1 = models.Event.query.first()
-        event2 = models.Event()
-        event2.name = event1.name
-        event2.startdate = event1.startdate
-        event2.enddate = event1.enddate
-        event2.organizationFK = event1.organizationFK
-        self.assertTrue(False)
 
 def suite():
     # Define the container for this module's tests.
@@ -135,7 +114,6 @@ def suite():
     suite.addTest(EventTestCase('test_event_model'))
     suite.addTest(EventTestCase('test_event_organization_relationship'))
     suite.addTest(EventTestCase('test_event_add'))
-    suite.addTest(EventTestCase('test_extractEventFromDict'))
     
     return suite
     

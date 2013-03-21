@@ -50,7 +50,7 @@ def getAllOrgsEvents(orgId, db):
 
 def _isDuplicateEvent(event, db):
     result = True
-    target = models.Events.query.filter_by(models.Event.name=event.name, models.Event.startdate=event.startdate, models.event.enddate=event.enddate, models.event.organizationFK=event.organizationFK).first()
+    target = models.Event.query.filter_by(name=event.name, startdate=event.startdate, enddate=event.enddate, organizationFK=event.organizationFK).first()
     if(target == None):
         result = False
     return result

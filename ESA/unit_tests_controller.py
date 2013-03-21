@@ -729,7 +729,7 @@ class ControllerTestCase(TestCase):
 
         self.resetDB()
         
-    ########################################		
+    ########################################        
     # Tests For Employee_Registration_Form #
     ########################################
 
@@ -982,75 +982,16 @@ class ControllerTestCase(TestCase):
         ''' Attempt an invalid organization '''
         org = controllers.getOrganizationByIDJSON(3)
         self.assertIsNone(org)
-
-    '''Test functionality to get Event by ID'''
-    def test_getEventById(self):
-        event = events.getEventById(1, self.db)
-        self.assertIsNotNone(event)
-        self.assertEqual(event.name, 'My Event')
-        self.assertEqual(event.description, 'This is my event')
-        self.assertEqual(event.organizationFK, 1)
-
-        event = events.getEventById(2, self.db)
-        self.assertIsNotNone(event)
-        self.assertEqual(event.name, 'Your Event')
-        self.assertEqual(event.description, 'This is your event')
-        self.assertEqual(event.organizationFK, 2)
-
-        event = events.getEventById(3, self.db)
-        self.assertIsNone(event)
-
-        self.resetDB
-
-
-
-def suite():
-    # Define the container for this module's tests.
-    suite = unittest.TestSuite()
-
-    # Add tests to suite.
-    suite.addTest(ControllerTestCase('test_getAllOrganizations'))
-    suite.addTest(ControllerTestCase('test_getAllOrganizationsJSON'))
-    suite.addTest(ControllerTestCase('test_getAllOrgNamesJSON'))
-    suite.addTest(ControllerTestCase('test_registerDuplicateOrganization'))
-    suite.addTest(ControllerTestCase('test_registerOrganization'))
-    suite.addTest(ControllerTestCase('test_organizationToJSON'))
-    suite.addTest(ControllerTestCase('test_entityToJSON'))
-    suite.addTest(ControllerTestCase('test_addressToJSON'))
-    suite.addTest(ControllerTestCase('test_contactToJSON'))
-    suite.addTest(ControllerTestCase('test_extractOrganizationFromDict'))
-    suite.addTest(ControllerTestCase('test_extractEntityFromDict'))
-    suite.addTest(ControllerTestCase('test_extractAddressFromDict'))
-    suite.addTest(ControllerTestCase('test_extractContactFromDict'))
-    suite.addTest(ControllerTestCase('test__checkForDuplicateOrganization'))
-    suite.addTest(ControllerTestCase('test_checkForDuplicateOrganizationName'))
-    suite.addTest(ControllerTestCase('test__getPrivilegesForPerson'))
-    suite.addTest(ControllerTestCase('test__getOrgsWithPrivilegesForPerson'))
-    suite.addTest(ControllerTestCase('test__getGlobalPrivilegesForPerson'))
-    suite.addTest(ControllerTestCase('test__getOrgsWithPersonPrivilege'))
-    suite.addTest(ControllerTestCase('test__getPeopleInOrganization'))
-    suite.addTest(ControllerTestCase('test__grantPrivilegeToPerson_Global'))
-    suite.addTest(ControllerTestCase('test__grantPrivilegeToPerson_Person'))
-    suite.addTest(ControllerTestCase('test__revokePrivilegeForPerson_Global'))
-    suite.addTest(ControllerTestCase('test__revokePrivilegeForPerson_Person'))
-    suite.addTest(ControllerTestCase('test__checkForDuplicateEmployee'))
-    suite.addTest(ControllerTestCase('test_registerEmployee'))
-    suite.addTest(ControllerTestCase('test_getPersonById'))
-    suite.addTest(ControllerTestCase('test_getPersonByUsername'))
-    suite.addTest(ControllerTestCase('test_getOrganizationByIDJSON'))
-    suite.addTest(ControllerTestCase('test_getEventById'))
-
-    return suite
-
+        
+        
     ##Joining a person to an organization##
-
     def test_putPersonInOrganization(self):
         self.resetDB()
 
         # Sub-Test 1: Invalid person key.
         # Define prerequisite data.
         personKey = 9999
-        request = {org_id: 1}
+        request = '{"org_id": 1}'
         # Get the result of the tested method.
         result = controllers.putPersonInOrganization(request, self.db, personKey)
         # Validate the result.
@@ -1092,6 +1033,111 @@ def suite():
         self.assertTrue(result)
 
         self.resetDB()
+        
+
+    ''' Test functionality to get Event by ID in events.py '''
+    def test_getEventById(self):
+        event = events.getEventById(1, self.db)
+        self.assertIsNotNone(event)
+        self.assertEqual(event.name, 'My Event')
+        self.assertEqual(event.description, 'This is my event')
+        self.assertEqual(event.organizationFK, 1)
+
+        event = events.getEventById(2, self.db)
+        self.assertIsNotNone(event)
+        self.assertEqual(event.name, 'Your Event')
+        self.assertEqual(event.description, 'This is your event')
+        self.assertEqual(event.organizationFK, 2)
+
+        event = events.getEventById(3, self.db)
+        self.assertIsNone(event)
+        
+    
+    ''' Test method in events.py '''
+    def test_extractEventFromDict(self):
+        control = models.Event.query.first()
+        stringJSON = '{"event_pk":1, "event_name":"My Event", "event_desc":"This is my event", "event_start":"2013-07-12T12:00:00.0", "event_end":"2013-07-14T16:00:00.0", "event_orgfk":1}'
+        data = json.loads(stringJSON)
+        target = events.extractEventFromDict(data)
+
+        self.assertEqual(control.pk, target.pk)
+        self.assertEqual(control.name, target.name)
+        self.assertEqual(control.description, target.description)
+        self.assertEqual(control.startdate, target.startdate)
+        self.assertEqual(control.enddate, target.enddate)
+        self.assertEqual(control.organizationFK, target.organizationFK)
+    
+    ''' Test method from events.py '''
+    def test__isDuplicateEvent_true(self):
+        event1 = models.Event.query.first()
+        
+        event2 = models.Event()
+        event2.name = event1.name
+        event2.startdate = event1.startdate
+        event2.enddate = event1.enddate
+        event2.organizationFK = event1.organizationFK
+        
+        result = events._isDuplicateEvent(event2, self.db)
+        self.assertTrue(result)
+        
+        
+    ''' Test method from events.py '''
+    def test__isDuplicateEvent_false(self):
+        event1 = models.Event.query.first()
+
+        event2 = models.Event()
+        event2.name = event1.name + 'differenttext'
+        event2.startdate = event1.startdate
+        event2.enddate = event1.enddate
+        event2.organizationFK = event1.organizationFK
+
+        result = events._isDuplicateEvent(event2, self.db)
+        self.assertFalse(result)
+
+
+
+def suite():
+    # Define the container for this module's tests.
+    suite = unittest.TestSuite()
+
+    # Add tests to suite.
+    suite.addTest(ControllerTestCase('test_getAllOrganizations'))
+    suite.addTest(ControllerTestCase('test_getAllOrganizationsJSON'))
+    suite.addTest(ControllerTestCase('test_getAllOrgNamesJSON'))
+    suite.addTest(ControllerTestCase('test_registerDuplicateOrganization'))
+    suite.addTest(ControllerTestCase('test_registerOrganization'))
+    suite.addTest(ControllerTestCase('test_organizationToJSON'))
+    suite.addTest(ControllerTestCase('test_entityToJSON'))
+    suite.addTest(ControllerTestCase('test_addressToJSON'))
+    suite.addTest(ControllerTestCase('test_contactToJSON'))
+    suite.addTest(ControllerTestCase('test_extractOrganizationFromDict'))
+    suite.addTest(ControllerTestCase('test_extractEntityFromDict'))
+    suite.addTest(ControllerTestCase('test_extractAddressFromDict'))
+    suite.addTest(ControllerTestCase('test_extractContactFromDict'))
+    suite.addTest(ControllerTestCase('test__checkForDuplicateOrganization'))
+    suite.addTest(ControllerTestCase('test_checkForDuplicateOrganizationName'))
+    suite.addTest(ControllerTestCase('test__getPrivilegesForPerson'))
+    suite.addTest(ControllerTestCase('test__getOrgsWithPrivilegesForPerson'))
+    suite.addTest(ControllerTestCase('test__getGlobalPrivilegesForPerson'))
+    suite.addTest(ControllerTestCase('test__getOrgsWithPersonPrivilege'))
+    suite.addTest(ControllerTestCase('test__getPeopleInOrganization'))
+    suite.addTest(ControllerTestCase('test__grantPrivilegeToPerson_Global'))
+    suite.addTest(ControllerTestCase('test__grantPrivilegeToPerson_Person'))
+    suite.addTest(ControllerTestCase('test__revokePrivilegeForPerson_Global'))
+    suite.addTest(ControllerTestCase('test__revokePrivilegeForPerson_Person'))
+    suite.addTest(ControllerTestCase('test__checkForDuplicateEmployee'))
+    suite.addTest(ControllerTestCase('test_registerEmployee'))
+    suite.addTest(ControllerTestCase('test_getPersonById'))
+    suite.addTest(ControllerTestCase('test_getPersonByUsername'))
+    suite.addTest(ControllerTestCase('test_getOrganizationByIDJSON'))
+    suite.addTest(ControllerTestCase('test_getEventById'))
+    suite.addTest(ControllerTestCase('test_extractEventFromDict'))
+    suite.addTest(ControllerTestCase('test__isDuplicateEvent_true'))
+    suite.addTest(ControllerTestCase('test__isDuplicateEvent_false'))
+
+    return suite
+
+
 
 if __name__ == "__main__":
     unittest.main()
