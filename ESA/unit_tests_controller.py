@@ -1129,7 +1129,15 @@ class ControllerTestCase(TestCase):
         event.organizationFK = orgFK
         
         result = events._insertEvent(event, self.db)
-        self.assertTrue(result)
+        self.assertTrue(result > 0)
+        
+        newEvent = models.Event.query.filter_by(pk=result).first()
+        self.assertEqual(newEvent.pk, result)
+        self.assertEqual(newEvent.name, name)
+        self.assertEqual(newEvent.description, desc)
+        self.assertEqual(newEvent.startdate, start)
+        self.assertEqual(newEvent.enddate, end)
+        self.assertEqual(newEvent.organizationFK, orgFK)
         
         
     ''' Test method from events.py '''
@@ -1176,15 +1184,32 @@ class ControllerTestCase(TestCase):
         end=datetime.datetime(2013, 7, 14, 16, 0)
         orgFK=1
         
-        eventJSON = '{' + '"name":"{val}",'.format(val=name)
-        eventJSON += '"description":"{val}",'.format(val=desc)
-        eventJSON += '"startdate":"{val}",'.format(val=start)
-        eventJSON += '"enddate":"{val}"'.format(val=end)
+        eventJSON = '{' + '"{key}":"{val}",'.format(key=models.EVENT_NAME_KEY, val=name)
+        eventJSON += '"{key}":"{val}",'.format(key=models.EVENT_DESC_KEY, val=desc)
+        eventJSON += '"{key}":"{val}",'.format(key=models.EVENT_START_KEY, val=start)
+        eventJSON += '"{key}":"{val}"'.format(key=models.EVENT_END_KEY, val=end)
         eventJSON += '}'
         eventDict = json.loads(eventJSON)
         
         result = events.insertEvent(orgFK, eventDict, self.db)
-        self.assertTrue(result)
+        self.assertIsNotNone(result)
+        newKey = 0
+        resultDict = json.loads(result)
+        for key,value in resultDict.iteritems():
+            if key == 'result':
+                self.assertEqual(value, 'True')
+            if key == models.EVENT_PK_KEY:
+                self.assertTrue(value > 0)
+                newKey = value
+        
+        newEvent = models.Event.query.filter_by(pk=newKey).first()
+        self.assertEqual(newEvent.pk, newKey)
+        self.assertEqual(newEvent.name, name)
+        self.assertEqual(newEvent.description, desc)
+        self.assertEqual(newEvent.startdate, start)
+        self.assertEqual(newEvent.enddate, end)
+        self.assertEqual(newEvent.organizationFK, orgFK)
+        
         
     ''' Test method from events.py '''    
     def test_insertEvent_duplicate(self):
@@ -1219,10 +1244,10 @@ class ControllerTestCase(TestCase):
         end=datetime.datetime(2013, 7, 14, 16, 0)
         orgFK=99999
         
-        eventJSON = '{' + '"name":"{val}",'.format(val=name)
-        eventJSON += '"description":"{val}",'.format(val=desc)
-        eventJSON += '"startdate":"{val}",'.format(val=start)
-        eventJSON += '"enddate":"{val}"'.format(val=end)
+        eventJSON = '{' + '"{key}":"{val}",'.format(key=models.EVENT_NAME_KEY, val=name)
+        eventJSON += '"{key}":"{val}",'.format(key=models.EVENT_DESC_KEY, val=desc)
+        eventJSON += '"{key}":"{val}",'.format(key=models.EVENT_START_KEY, val=start)
+        eventJSON += '"{key}":"{val}"'.format(key=models.EVENT_END_KEY, val=end)
         eventJSON += '}'
         eventDict = json.loads(eventJSON)
         
@@ -1232,7 +1257,8 @@ class ControllerTestCase(TestCase):
             if key == 'result':
                 self.assertEqual(value, 'BadOrg')
             elif key == 'event_pk':
-                self.assertEqual(value, 'None')
+                self.assertEqual(value, 'None')        
+        
 
 
 

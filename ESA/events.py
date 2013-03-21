@@ -58,7 +58,7 @@ def _isDuplicateEvent(event, db):
 
 # Return values: BadOrg = couldn't find org matching event.organizationFK
 #                Duplicate = found an existing event with same name/start/end/org
-#                True = event successfully added
+#                event.pk = new pk of event successfully added
 def _insertEvent(event, db):
     result = 'Unknown'
     isDup = _isDuplicateEvent(event, db)
@@ -69,7 +69,7 @@ def _insertEvent(event, db):
         db.session.add(event)
         db.session.commit()
         if(event.pk > 0):
-            result = 'True'
+            result = event.pk
     if(result == 'Unknown'):
         result = 'Duplicate'
     return result
@@ -77,10 +77,12 @@ def _insertEvent(event, db):
 def insertEvent(orgFK, eventDict, db):
     event = extractEventFromDict(eventDict)
     event.organizationFK = orgFK
-    #print event.__repr__()
-    #print eventDict
     result = _insertEvent(event, db)
-    resultJSON = '{' + '"result":"{val}",'.format(val=result)
+    if result != 'BadOrg' and result != 'Duplicate':
+        resultJSON = '{"result":"True",'
+    else:
+        resultJSON = '{' + '"result":"{val}",'.format(val=result)
+    
     if event.pk is not None:
         resultJSON += '"{key}":{val}'.format(key=models.EVENT_PK_KEY, val=event.pk)
     else:
