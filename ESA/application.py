@@ -195,7 +195,7 @@ def join_org():
 @app.route('/createEvent/<org_id>', methods=['GET'])
 @login_required
 def create_event(org_id):
-    return render_template('create_event.html')
+    return render_template('create_event.html', org_id = org_id)
 
 @app.route('/organization/<org_id>/events', methods=['POST'])
 @login_required
