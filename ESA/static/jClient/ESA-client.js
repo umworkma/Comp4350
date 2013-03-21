@@ -298,7 +298,7 @@ function createJsonObjectForEmployee() {
 
 }
 
-function eventOnSubmit() {
+function eventOnSubmit(org_id) {
 
     url = '/organization/'+ org_id + '/events',
     data = {
