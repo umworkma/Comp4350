@@ -32,6 +32,8 @@
 		2A9CBBFB16EAABE800041DF2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9CBBF616EAABE800041DF2 /* SystemConfiguration.framework */; };
 		2A9CBBFE16EAAD0400041DF2 /* libsbjson-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9CBBDD16EAAA3400041DF2 /* libsbjson-ios.a */; };
 		2AC56EE616EBD357000052D1 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC56EE516EBD357000052D1 /* LoginViewController.m */; };
+		DA8BE29C16F8D3F500A26FBA /* OrgDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8BE29B16F8D3F500A26FBA /* OrgDetailsViewController.m */; };
+		DA8BE2A516F8D8F200A26FBA /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8BE2A416F8D8F200A26FBA /* Entity.m */; };
 		DA8DFE1616F8C8CE00E1EB79 /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8DFE1516F8C8CE00E1EB79 /* Address.m */; };
 		DA8DFE1F16F8CAEE00E1EB79 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8DFE1E16F8CAEE00E1EB79 /* Contact.m */; };
 		DAC8D15416F63BF500EC01D7 /* Organization.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8D15316F63BF500EC01D7 /* Organization.m */; };
@@ -153,6 +155,10 @@
 		2A9CBBF616EAABE800041DF2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2AC56EE416EBD357000052D1 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		2AC56EE516EBD357000052D1 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		DA8BE29A16F8D3F500A26FBA /* OrgDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrgDetailsViewController.h; sourceTree = "<group>"; };
+		DA8BE29B16F8D3F500A26FBA /* OrgDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrgDetailsViewController.m; sourceTree = "<group>"; };
+		DA8BE2A316F8D8F200A26FBA /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
+		DA8BE2A416F8D8F200A26FBA /* Entity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Entity.m; sourceTree = "<group>"; };
 		DA8DFE1416F8C8CE00E1EB79 /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
 		DA8DFE1516F8C8CE00E1EB79 /* Address.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Address.m; sourceTree = "<group>"; };
 		DA8DFE1D16F8CAEE00E1EB79 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
@@ -261,6 +267,10 @@
 				DA8DFE1D16F8CAEE00E1EB79 /* Contact.h */,
 				DA8DFE1E16F8CAEE00E1EB79 /* Contact.m */,
 				DA8DFE2016F8CC8500E1EB79 /* Settings.h */,
+				DA8BE29A16F8D3F500A26FBA /* OrgDetailsViewController.h */,
+				DA8BE29B16F8D3F500A26FBA /* OrgDetailsViewController.m */,
+				DA8BE2A316F8D8F200A26FBA /* Entity.h */,
+				DA8BE2A416F8D8F200A26FBA /* Entity.m */,
 			);
 			path = ESA;
 			sourceTree = "<group>";
@@ -512,6 +522,8 @@
 				DAC8D15416F63BF500EC01D7 /* Organization.m in Sources */,
 				DA8DFE1616F8C8CE00E1EB79 /* Address.m in Sources */,
 				DA8DFE1F16F8CAEE00E1EB79 /* Contact.m in Sources */,
+				DA8BE29C16F8D3F500A26FBA /* OrgDetailsViewController.m in Sources */,
+				DA8BE2A516F8D8F200A26FBA /* Entity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

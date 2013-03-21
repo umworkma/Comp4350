@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Organization : NSObject
+#import "Entity.h"
 
+@interface Organization : NSObject
+@property NSInteger entityFK;
+@property NSString *name;
+@property NSString *description;
+@property Entity *entity;
 @end
