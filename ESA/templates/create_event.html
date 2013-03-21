@@ -8,8 +8,10 @@
 {% assets "common_js" %}
         <script>
             $(function() {
-                    $("#datepicker").datepicker();
-                    $("#datepicker2").datepicker();
+                    //$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+                    $('#datepicker').datetimepicker({ language: 'en' });
+                    //$("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });
+                    $('#datepicker2').datetimepicker({ language: 'en' });
                 });
         </script>
 {% endassets %}
@@ -25,15 +27,23 @@
                         </div>
                         <label class="control-label" for="event_desc">Description</label>
                         <div class="controls">
-                            <textarea id="event_desc" rows="3"></textarea>
+                            <textarea id="event_desc" name="event_desc" rows="3"></textarea>
                         </div>
                         <label class="control-label" for="event_start">Event Start Date</label>
                         <div class="controls">
                             <input type="text" required name="event_start" id="datepicker">
                         </div>
+                        <div class="well">
+							<div id="datepicker" class="input-append date">
+						  		<input data-format="yyyy-MM-dd hh:mm" type="text"></input>
+						    	<span class="add-on">
+						      		<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+								</span>
+							</div>
+						</div>
                         <label class="control-label" for="event_start_time">Start Time</label>
                         <div class="controls">
-                            <select>
+                            <select id="event_start_time">
                                 <option value="7">7 AM</option>
                                 <option value="8">8 AM</option>
                                 <option value="9">9 AM</option>
@@ -58,7 +68,7 @@
                         </div>
                         <label class="control-label" for="event_end_time">End Time</label>
                         <div class="controls">
-                            <select>
+                            <select id="event_end_time">
                                 <option value="7">7 AM</option>
                                 <option value="8">8 AM</option>
                                 <option value="9">9 AM</option>

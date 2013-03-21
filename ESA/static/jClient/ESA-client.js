@@ -13,7 +13,7 @@ function ESA() {
 
         });
     }
-	
+
     // display an alert box
     this.display_alert = function (type, htmlMsg) {
 		if(htmlMsg == "EmpTrue")
@@ -67,7 +67,7 @@ function ESA() {
 
 			// adding the alert box into the message area
 			$('.msg_area').append(alert);
-			
+
 			// set timeout to dismiss alert message
 			window.setTimeout(function() {
 				alert.alert('close')
@@ -276,7 +276,7 @@ function createJsonObjectForEmployee() {
 			]
 		}
     },
-    
+
     success = function(data) {
         // check for server return data.result
         if(typeof data.result != 'undefined' ) {
@@ -300,15 +300,21 @@ function createJsonObjectForEmployee() {
 
 function eventOnSubmit(org_id) {
 
+	eventStartDateTime = input[name="event_start"].val() + ' ' + input[id="event_start_time"].val();
+	eventEndDateTime = input[name="event_end"].val() + ' ' + input[id="event_end_time"].val();
+
+
     url = '/organization/'+ org_id + '/events',
     data = {
-        name: $('input[name="event_name"]').val(),
-        description: $('input[name="event_desc"]').val(),
-        startdate: $('input[name="event_start"]').val(),
-        enddate: $('input[name="event_end"]').val(),
-        organizationFK: org_id
+        event_name: $('input[name="event_name"]').val(),
+        event_desc: $('input[id="event_desc"]').val(),
+        //event_start: $('input[name="event_start"]').val(),
+        //event_end: $('input[name="event_end"]').val(),
+        event_start: eventStartDateTime,
+        event_end: eventEndDateTime,
+        event_orgfk: org_id
     },
-    
+
     success = function(data) {
         // check for server return data.result
         if(typeof data.result != 'undefined' ) {
@@ -359,7 +365,7 @@ function join_org(button, org_id) {
     ESA.ajaxJSON(url, data, success);
 
     return false;
-}   
+}
 
 
 

@@ -1085,6 +1085,30 @@ class ControllerTestCase(TestCase):
         self.assertEqual(control.startdate, target.startdate)
         self.assertEqual(control.enddate, target.enddate)
         self.assertEqual(control.organizationFK, target.organizationFK)
+        
+    ''' Test method in events.py '''
+    def test_extractEventFromDict_incomplete(self):
+        control = models.Event()
+        #control.name = "test_extractEventFromDict_incomplete event"
+        #control.description = "test_extractEventFromDict_incomplete description is indescribable"
+        #control.startdate = datetime.datetime(2013, 3, 28, 17, 30)
+        #control.enddate = datetime.datetime(2013, 3, 28, 20, 0)
+        control.name = "D Event 3"
+        control.startdate = datetime.datetime(2013, 3, 22)
+        control.enddate = datetime.datetime(2013, 3, 22)
+        control.organizationFK = 4
+        
+        #stringJSON = '{"event_name":"test_extractEventFromDict_incomplete event", "event_desc":"test_extractEventFromDict_incomplete description is indescribable", "event_start":"2013-03-28 17:30:00", "event_end":"2013-03-28 20:00:00"}'
+        stringJSON = '{"event_name":"D Event 3","event_start":"03/22/2013","event_end":"03/22/2013","event_orgfk":4}'
+        data = json.loads(stringJSON)
+        target = events.extractEventFromDict(data)
+
+        self.assertEqual(control.pk, target.pk)
+        self.assertEqual(control.name, target.name)
+        self.assertEqual(control.description, target.description)
+        self.assertEqual(control.startdate, target.startdate)
+        self.assertEqual(control.enddate, target.enddate)
+        self.assertEqual(control.organizationFK, target.organizationFK)
     
     ''' Test method from events.py '''
     def test__isDuplicateEvent_true(self):
@@ -1299,6 +1323,7 @@ def suite():
     suite.addTest(ControllerTestCase('test_getOrganizationByIDJSON'))
     suite.addTest(ControllerTestCase('test_getEventById'))
     suite.addTest(ControllerTestCase('test_extractEventFromDict'))
+    suite.addTest(ControllerTestCase('test_extractEventFromDict_incomplete'))
     suite.addTest(ControllerTestCase('test__isDuplicateEvent_true'))
     suite.addTest(ControllerTestCase('test__isDuplicateEvent_false'))
     suite.addTest(ControllerTestCase('test__insertEvent_true'))
@@ -1307,6 +1332,7 @@ def suite():
     suite.addTest(ControllerTestCase('test_insertEvent_true'))
     suite.addTest(ControllerTestCase('test_insertEvent_duplicate'))
     suite.addTest(ControllerTestCase('test_insertEvent_badorg'))
+    
     
     return suite
 
