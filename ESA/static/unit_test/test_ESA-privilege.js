@@ -34,8 +34,12 @@ function test_privilege_createMemberTable() {
     };
 
     fn_privilege_createMemberTable_real_member_data = function() {
-        const member_table = '#pp_org_member_table';
-        members = {"People":[
+        member_table = '#pp_org_member_table';
+        members = {
+            "Organization": {
+                "org_name": "Ai-Kon", "org_entityfk": 1, "org_desc": "Ai-Kon Anime Convention"
+            },
+            "People":[
             {"emp_entityfk":3,"firstname":"Chris","lastname":"Workman"},
             {"emp_entityfk":4,"firstname":"Ryoji","lastname":"Betchaku"}
         ]};
@@ -53,12 +57,13 @@ function test_privilege_createMemberTable() {
         ok($(target_area + ' table').hasClass('table'))
         ok($(target_area + ' table').hasClass('table-striped'))
         ok($(target_area + ' table').hasClass('table-hover'))
-        equal($(target_area + ' table').attr('id'), 'pp_org_member_table')
+        equal($(target_area + ' table').attr('id'), 'pp_org_member_table_' + members.Organization.org_entityfk)
+        member_table = '#pp_org_member_table_' + members.Organization.org_entityfk;
         equal($(member_table).size(), 1);
 
         // Table Caption
         equal($(member_table + ' caption').size(), 1);
-        equal($(member_table + ' caption').text(), 'List of user')
+        equal($(member_table + ' caption').text(), members.Organization.org_name + ' - List of user')
 
         // Table Header
         equal($(member_table + ' thead').size(), 1);

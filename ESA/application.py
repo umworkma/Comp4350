@@ -194,10 +194,34 @@ def privilege_org(org_id):
         user_id = current_user.entityFK
 
         if request.method == 'GET':
-            persons = controllers.getPeopleInOrganizationJSON(org_id)
+            persons      = controllers.getPeopleInOrganizationJSON(org_id)
+            persons_dict = json.loads(persons);
+            org          = controllers.getOrganizationByIDJSON(org_id)
+            org_dict     = json.loads(org);
+
             if is_request_json():
-                return Response(response=persons, mimetype='application/json')
+                return jsonify(persons_dict, Organization=org_dict)
+                # return Response(response=persons, mimetype='application/json')
             
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
+
+# privilege portal get and post member privileges function. If request is not support it will return error 403
+@app.route('/privilege/<org_id>/<person_id>', methods=['GET', 'POST'])
+@login_required
+def privilege_org_member(org_id, person_id):
+    try:
+        user_id = current_user.entityFK;
+
+        if request.method == 'GET':
+            privileges = controller_privileges.getPrivilegesForPersonJSON(person_id, org_id)
+
+            if is_request_json():
+                return Response(response=privileges, mimetype='application/json')
+
     except Exception, e:
         return abort(404)
 
