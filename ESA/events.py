@@ -5,6 +5,7 @@
 
 from flask import *
 import models
+import controllers
 from datetime import datetime
 
 #####################################
@@ -55,15 +56,21 @@ def _isDuplicateEvent(event, db):
         result = False
     return result
 
+# Return values: BadOrg = couldn't find org matching event.organizationFK
+#                Duplicate = found an existing event with same name/start/end/org
+#                True = event successfully added
 def _insertEvent(event, db):
-    result = 'False'
+    result = 'Unknown'
     isDup = _isDuplicateEvent(event, db)
-    if(isDup == False):
+    org = controllers._getOrganizationByID(event.organizationFK)
+    if org is None:
+        result = 'BadOrg'
+    if(isDup == False and result == 'Unknown'):
         db.session.add(event)
         db.session.commit()
         if(event.pk > 0):
             result = 'True'
-    else:
+    if(result == 'Unknown'):
         result = 'Duplicate'
     return result
 

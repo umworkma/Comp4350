@@ -41,7 +41,7 @@ def registerEmployee(employeeDict, db):
 def _checkForDuplicateEmployee(employee):
     result = False
     if(employee is not None and employee.username is not None):
-        existing = models.Person.query.filter_by(username = employee.username).first()		
+        existing = models.Person.query.filter_by(username = employee.username).first()      
         if(existing is not None):
             result = True
     return result
@@ -172,9 +172,15 @@ def updateOrganization(entityid, name, description):
     result = controller.update(entityid, name, description);
     print result
 
-def getOrganizationByIDJSON(entityid):
+def _getOrganizationByID(entityid):
     controller = models.Organization()
     results = controller.query.filter_by(entityFK=entityid).first()
+    return results
+
+def getOrganizationByIDJSON(entityid):
+    #controller = models.Organization()
+    #results = controller.query.filter_by(entityFK=entityid).first()
+    results = _getOrganizationByID(entityid)
 
     if results == None:
         return None

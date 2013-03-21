@@ -936,6 +936,25 @@ class ControllerTestCase(TestCase):
         self.assertEqual(result.password, person.password)
 
         self.resetDB
+        
+    def test__getOrganizationByID(self):
+        org = controllers._getOrganizationByID(1)
+        self.assertIsNotNone(org)
+        self.assertEqual(org.entityFK, 1)
+        self.assertEquals(org.name, 'Ai-Kon')
+        self.assertEquals(org.description, 'Ai-Kon Anime Convention')
+        self.assertEquals(org.entity.type, models.TYPE_ORGANIZATION)
+        self.assertEquals(org.entity.addresses[0].address1, '123 Vroom Street')
+        self.assertEquals(org.entity.addresses[0].address2, None)
+        self.assertEquals(org.entity.addresses[0].address3, None)
+        self.assertEquals(org.entity.addresses[0].city, 'Winnipeg')
+        self.assertEquals(org.entity.addresses[0].province, 'Manitoba')
+        self.assertEquals(org.entity.addresses[0].country, 'Canada')
+        self.assertEquals(org.entity.addresses[0].postalcode, 'A1A1A1')
+        self.assertEquals(org.entity.addresses[0].isprimary, True)
+        self.assertEquals(org.entity.contacts[0].type, models.TYPE_EMAIL)
+        self.assertEquals(org.entity.contacts[0].value, 'info@ai-kon.org')
+        self.assertEquals(org.entity.contacts[0].isprimary, True)
 
     def test_getOrganizationByIDJSON(self):
         ''' Test getOrganizationByID method '''
@@ -1093,6 +1112,61 @@ class ControllerTestCase(TestCase):
 
         result = events._isDuplicateEvent(event2, self.db)
         self.assertFalse(result)
+        
+    ''' Test method from events.py '''
+    def test__insertEvent_true(self):
+        event = models.Event()
+        name = 'test__insertEvent_true event'
+        desc = 'description of test__insertEvent_true event is indescribable'
+        start = datetime.datetime(2013, 3, 20, 1, 0)
+        end = datetime.datetime(2013, 3, 20, 2, 0)
+        orgFK = 1
+        
+        event.name = name
+        event.description = desc
+        event.startdate = start
+        event.enddate = end
+        event.organizationFK = orgFK
+        
+        result = events._insertEvent(event, self.db)
+        self.assertTrue(result)
+        
+        
+    ''' Test method from events.py '''
+    def test__insertEvent_duplicate(self):
+        event = models.Event()
+        name='My Event'
+        desc='This is my event'
+        start=datetime.datetime(2013, 7, 12, 12, 0)
+        end=datetime.datetime(2013, 7, 14, 16, 0)
+        orgFK=1
+
+        event.name = name
+        event.description = desc
+        event.startdate = start
+        event.enddate = end
+        event.organizationFK = orgFK
+
+        result = events._insertEvent(event, self.db)
+        self.assertEqual(result, 'Duplicate')
+        
+    ''' Test method from events.py '''
+    def test__insertEvent_badorg(self):
+        event = models.Event()
+        name='My Event'
+        desc='This is my event'
+        start=datetime.datetime(2013, 7, 12, 12, 0)
+        end=datetime.datetime(2013, 7, 14, 16, 0)
+        orgFK=0
+
+        event.name = name
+        event.description = desc
+        event.startdate = start
+        event.enddate = end
+        event.organizationFK = orgFK
+
+        result = events._insertEvent(event, self.db)
+        self.assertEqual(result, 'BadOrg')
 
 
 
@@ -1129,15 +1203,18 @@ def suite():
     suite.addTest(ControllerTestCase('test_registerEmployee'))
     suite.addTest(ControllerTestCase('test_getPersonById'))
     suite.addTest(ControllerTestCase('test_getPersonByUsername'))
+    suite.addTest(ControllerTestCase('test__getOrganizationByID'))
     suite.addTest(ControllerTestCase('test_getOrganizationByIDJSON'))
     suite.addTest(ControllerTestCase('test_getEventById'))
     suite.addTest(ControllerTestCase('test_extractEventFromDict'))
     suite.addTest(ControllerTestCase('test__isDuplicateEvent_true'))
     suite.addTest(ControllerTestCase('test__isDuplicateEvent_false'))
-
+    suite.addTest(ControllerTestCase('test__insertEvent_true'))
+    suite.addTest(ControllerTestCase('test__insertEvent_duplicate'))
+    suite.addTest(ControllerTestCase('test__insertEvent_badorg'))
+    
     return suite
 
 
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.TextTestRunner().run(suite())
