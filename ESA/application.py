@@ -118,8 +118,8 @@ def check_dup_employee_user_name():
         return result
     else :
         return jsonify(msg='Asses define')
-    	
-	
+        
+    
 
 @app.route('/_check_dup_org_name', methods=['GET', 'POST'])
 @login_required
@@ -192,9 +192,9 @@ def join_org():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
-@app.route('/createEvent/<org_id>')
+@app.route('/createEvent/<org_id>', methods=['GET'])
 @login_required
-def create_event():
+def create_event(org_id):
     return render_template('create_event.html')
 
 @app.route('/organization/<org_id>/events', methods=['POST'])
