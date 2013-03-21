@@ -106,6 +106,8 @@ function test_privilege_createMemberTable() {
 };
 
 function test_ESA_privilege() {
-    test_privilege_createMemberTable();
+    // TODO: ESA.privilege.getOrganizationSuccessFn no longer draw table.
+    // This test will either be rewrite or replace by selenium test. 
+    // test_privilege_createMemberTable();
     
 }
