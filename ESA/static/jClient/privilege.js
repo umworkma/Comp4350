@@ -10,7 +10,7 @@ function PrivilegePortal() {
         });
     };
 
-    // take response data and draw accordion of members and member's permission in DOM
+    // take response data and draw accordion of members and member's privilege in DOM
     this.getOrganizationSuccessFn = function(response) {
         target_area = $('#pp_org_member');
         target_area.empty();
@@ -19,6 +19,10 @@ function PrivilegePortal() {
         if( typeof response != 'undefined' && typeof response.People != 'undefined' &&
             typeof response.Organization != 'undefined') {
             ESA.privilege.org_id = response.Organization.org_entityfk;
+
+            org_title = $('<h3>');
+            org_title.text(response.Organization.org_name);
+            target_area.append(org_title);
 
             member_div = $('<div>');
             member_div.attr('id', 'pp_accordion');
@@ -30,12 +34,12 @@ function PrivilegePortal() {
 
                 member_div_row_div = $('<div>');
                 member_div_row_div.attr('id', 'pp_org_member_privilege_' + response.People[i].emp_entityfk);
-                member_div_row_div.text('This user has no privilege.');
+                member_div_row_div.text('This user has no privileges.');
 
                 member_div.append(member_div_row);
                 member_div.append(member_div_row_div);
 
-                // get this user permissions
+                // get this user privileges
                 ESA.privilege.getMemberPrivilege(response.People[i].emp_entityfk);
 
             }
@@ -81,7 +85,7 @@ function PrivilegePortal() {
     //
     // Show Member Privilege 
     // 
-    // take response data and draw table of member's permission in DOM
+    // take response data and draw table of member's privileges in DOM
     this.getMemberPrivilegeSuccessFn = function(response) {
         console.debug(response);
 
@@ -98,13 +102,13 @@ function PrivilegePortal() {
 
             // table caption
             member_privilege_caption = $('<caption>');
-            member_privilege_caption.text('Available Permission');
+            member_privilege_caption.text('Available Privileges');
             member_privilege_table.append(member_privilege_caption);
 
             // table header
             member_privilege_head = $('<thead>');
             member_privilege_head_row = $('<tr>');
-            member_privilege_head_row.html('<td>Permission</td><td></td>')
+            member_privilege_head_row.html('<td>Privilege List</td><td></td>')
             member_privilege_head.append(member_privilege_head_row);
             member_privilege_table.append(member_privilege_head);
 
