@@ -74,11 +74,18 @@ def _insertEvent(event, db):
         result = 'Duplicate'
     return result
 
-def insertEvent(eventDict, db):
+def insertEvent(orgFK, eventDict, db):
     event = extractEventFromDict(eventDict)
+    event.organizationFK = orgFK
+    #print event.__repr__()
+    #print eventDict
     result = _insertEvent(event, db)
     resultJSON = '{' + '"result":"{val}",'.format(val=result)
-    resultJSON += '"{key}":{val}}'.format(key=models.EVENT_PK_KEY, val=event.pk)
+    if event.pk is not None:
+        resultJSON += '"{key}":{val}'.format(key=models.EVENT_PK_KEY, val=event.pk)
+    else:
+        resultJSON += '"{key}":"None"'.format(key=models.EVENT_PK_KEY)
+    resultJSON += '}'
     return resultJSON
 
 def updateEvent(pk, name, description, startdate, enddate, organizationFK):

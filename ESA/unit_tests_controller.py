@@ -1167,6 +1167,78 @@ class ControllerTestCase(TestCase):
 
         result = events._insertEvent(event, self.db)
         self.assertEqual(result, 'BadOrg')
+        
+    ''' Test method from events.py '''    
+    def test_insertEvent_true(self):
+        name='test_insertEvent_true event'
+        desc='description of test_insertEvent_true event is indescribable'
+        start=datetime.datetime(2013, 7, 12, 12, 0)
+        end=datetime.datetime(2013, 7, 14, 16, 0)
+        orgFK=1
+        
+        eventJSON = '{' + '"name":"{val}",'.format(val=name)
+        eventJSON += '"description":"{val}",'.format(val=desc)
+        eventJSON += '"startdate":"{val}",'.format(val=start)
+        eventJSON += '"enddate":"{val}"'.format(val=end)
+        eventJSON += '}'
+        eventDict = json.loads(eventJSON)
+        
+        result = events.insertEvent(orgFK, eventDict, self.db)
+        self.assertTrue(result)
+        
+    ''' Test method from events.py '''    
+    def test_insertEvent_duplicate(self):
+        event1 = models.Event.query.first()
+        name=event1.name
+        desc=event1.description
+        start=event1.startdate
+        end=event1.enddate
+        orgFK=event1.organizationFK
+        
+        event2 = models.Event()
+        event2.name = name
+        event2.description = desc
+        event2.startdate = start
+        event2.enddate = end
+        eventJSON = events.eventToJSON(event2)
+        
+        #eventJSON = '{' + '"name":"{val}",'.format(val=name)
+        #eventJSON += '"description":"{val}",'.format(val=desc)
+        #eventJSON += '"startdate":"{val}",'.format(val=start)
+        #eventJSON += '"enddate":"{val}"'.format(val=end)
+        #eventJSON += '}'
+        eventDict = json.loads(eventJSON)
+        
+        resultDict = json.loads(events.insertEvent(orgFK, eventDict, self.db))
+        for key,value in resultDict.iteritems():
+            if key == 'result':
+                self.assertEqual(value, 'Duplicate')
+            elif key == 'event_pk':
+                self.assertIsNone(value)
+        
+    ''' Test method from events.py '''    
+    def test_insertEvent_badorg(self):
+        name='test_insertEvent_badorg event'
+        desc='description of test_insertEvent_badorg event is indescribable'
+        start=datetime.datetime(2013, 7, 12, 12, 0)
+        end=datetime.datetime(2013, 7, 14, 16, 0)
+        orgFK=99999
+        
+        eventJSON = '{' + '"name":"{val}",'.format(val=name)
+        eventJSON += '"description":"{val}",'.format(val=desc)
+        eventJSON += '"startdate":"{val}",'.format(val=start)
+        eventJSON += '"enddate":"{val}"'.format(val=end)
+        eventJSON += '}'
+        eventDict = json.loads(eventJSON)
+        
+        result = events.insertEvent(orgFK, eventDict, self.db)
+        print result
+        resultDict = json.loads(result)
+        for key,value in resultDict.iteritems():
+            if key == 'result':
+                self.assertEqual(value, 'BadOrg')
+            elif key == 'event_pk':
+                self.assertEqual(value, 'None')
 
 
 
@@ -1212,6 +1284,9 @@ def suite():
     suite.addTest(ControllerTestCase('test__insertEvent_true'))
     suite.addTest(ControllerTestCase('test__insertEvent_duplicate'))
     suite.addTest(ControllerTestCase('test__insertEvent_badorg'))
+    suite.addTest(ControllerTestCase('test_insertEvent_true'))
+    #suite.addTest(ControllerTestCase('test_insertEvent_duplicate'))
+    suite.addTest(ControllerTestCase('test_insertEvent_badorg'))
     
     return suite
 
