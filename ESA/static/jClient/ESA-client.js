@@ -1,3 +1,5 @@
+
+
 function ESA() {
     // POST ajax call to send json object to server
     this.ajaxJSON = function(url, data, success) {
@@ -291,6 +293,38 @@ function createJsonObjectForEmployee() {
 
     // ajax post request
 	ESA.ajaxJSON(url, data, success);
+
+    return false;
+
+}
+
+function eventOnSubmit() {
+
+    url = '/organization/'+ org_id + '/events',
+    data = {
+        name: $('input[name="event_name"]').val(),
+        description: $('input[name="event_desc"]').val(),
+        startdate: $('input[name="event_start"]').val(),
+        enddate: $('input[name="event_end"]').val(),
+        organizationFK: org_id
+    },
+    
+    success = function(data) {
+        // check for server return data.result
+        if(typeof data.result != 'undefined' ) {
+            // display the 2 type of alert box base of the result
+            if(data.result == 'EmpTrue') {
+                ESA.display_alert('success', data.result);
+
+            } else {
+                ESA.display_alert('block', data.result);
+
+            }
+        }
+    },
+
+    // ajax post request
+    ESA.ajaxJSON(url, data, success);
 
     return false;
 

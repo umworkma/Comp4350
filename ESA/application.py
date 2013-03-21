@@ -192,7 +192,7 @@ def join_org():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
-@app.route('/createEvent')
+@app.route('/createEvent/<org_id>')
 @login_required
 def create_event():
     return render_template('create_event.html')
