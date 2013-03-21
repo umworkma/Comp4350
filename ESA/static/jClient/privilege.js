@@ -10,6 +10,33 @@ function PrivilegePortal() {
         });
     };
 
+
+    // Active Draggable Permission item
+    this.activeDragPermission = function() {
+        num_permission = $('#pp_permission_list table tbody tr').size();
+
+        for(i=0; i<num_permission; i++) {
+            permission_id = '#' + $('#pp_permission_list table tr')[i].id;
+
+            $(permission_id).draggable({
+                helper: "clone"
+
+            });
+        }
+    };
+
+    this.activeMemberDrappable = function() {
+        $('#pp_org_member div#pp_accordion').children().each(function(){
+            $(this).droppable({
+                drop: function(event, ui) {
+                    console.debug(this.id);
+                    console.debug(ui.draggable.context.id);
+
+                }
+            });
+        })
+    };
+
     // take response data and draw accordion of members and member's privilege in DOM
     this.getOrganizationSuccessFn = function(response) {
         target_area = $('#pp_org_member');
@@ -42,11 +69,14 @@ function PrivilegePortal() {
                 // get this user privileges
                 ESA.privilege.getMemberPrivilege(response.People[i].emp_entityfk);
 
+
             }
 
             target_area.append(member_div);
             // activate accordion
             ESA.privilege.activeAccordion();
+            ESA.privilege.activeDragPermission();
+            ESA.privilege.activeMemberDrappable();
 
         } else {
             target_area.append('<p>Response did not contain any member</p>');
@@ -87,8 +117,6 @@ function PrivilegePortal() {
     // 
     // take response data and draw table of member's privileges in DOM
     this.getMemberPrivilegeSuccessFn = function(response) {
-        console.debug(response);
-
         // incoming data object
         if( typeof response != 'undefined' && typeof response.PersonPrivileges != 'undefined' && 
             typeof response.emp_entityfk != 'undefined' && 
