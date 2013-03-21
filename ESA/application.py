@@ -201,7 +201,7 @@ def create_event(org_id):
 @login_required
 def event_org(org_id):
     if request.method=='POST' and is_request_json():
-        result = events.insertEvent(request.json, db)
+        result = events.insertEvent(org_id, request.json, db)
         return result
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
