@@ -49,6 +49,7 @@ def getEventById(pk, db):
 def getAllOrgsEvents(orgId, db):
     results = models.Event.query.filter_by(organizationFK=orgId)
 
+# Returns True or False
 def _isDuplicateEvent(event, db):
     result = True
     target = models.Event.query.filter_by(name=event.name, startdate=event.startdate, enddate=event.enddate, organizationFK=event.organizationFK).first()
@@ -95,7 +96,23 @@ def updateEvent(pk, name, description, startdate, enddate, organizationFK):
     result = controller.update(pk, name, description, startdate, enddate, organizationFK);
     print result
 
-def removeEvent(pk):
-    return
 
+# Returns True on success or False on failure (couldn't find the event).
+def _removeEvent(pk, db):
+    event = models.Event.query.filter_by(pk=pk).first()
+    result = False
+    if event is not None:
+        db.session.delete(event)
+        db.session.commit()
+        result = True
+    return result
+    
+
+# Returns JSON: {"result":["True" | "False"],"event_pk":<pk>}
+def removeEvent(pk, db):
+    result = _removeEvent(pk, db)
+    resultJSON = '{'+ '"result":"{result}",'
+    resultJSON += '"{key}":{val}'.format(result=result, key=models.EVENT_PK_KEY, val=pk)
+    resultJSON += '}'
+    return resultJSON
 

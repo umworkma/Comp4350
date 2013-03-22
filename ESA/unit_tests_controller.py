@@ -1282,6 +1282,118 @@ class ControllerTestCase(TestCase):
                 self.assertEqual(value, 'BadOrg')
             elif key == 'event_pk':
                 self.assertEqual(value, 'None')        
+
+                
+    ''' Test method in events.py '''
+    def test__removeEvent_true(self):
+        # Define the values we're going to have to add for the test.
+        newEvent = models.Event()
+        name = 'test__removeEvent_true event'
+        desc = 'description of test__removeEvent_true event is indescribable'
+        start = datetime.datetime(2013, 3, 20, 1, 0)
+        end = datetime.datetime(2013, 3, 20, 2, 0)
+        orgFK = 1
+        newEvent.name = name
+        newEvent.description = desc
+        newEvent.startdate = start
+        newEvent.enddate = end
+        newEvent.organizationFK = orgFK
+        
+        # Ensure it's not already in db.
+        result = events._isDuplicateEvent(newEvent, self.db)
+        self.assertFalse(result)
+        
+        # Add it to db
+        newEventPK = events._insertEvent(newEvent, self.db)
+        self.assertTrue(newEventPK > 0)
+        
+        # Ensure it's in db.
+        result = events._isDuplicateEvent(newEvent, self.db)
+        self.assertTrue(result)
+        
+        # Now that we added it, lets delete it.
+        result = events._removeEvent(newEventPK, self.db)
+        self.assertTrue(result)
+        
+        # Ensure it's not in db.
+        result = events._isDuplicateEvent(newEvent, self.db)
+        self.assertFalse(result)
+        
+    ''' Test method in events.py '''
+    def test__removeEvent_invalid(self):
+        # Define the values we're going to have to add for the test.
+        newEvent = models.Event()
+        name = 'test__removeEvent_invalid event'
+        desc = 'description of test__removeEvent_invalid event is indescribable'
+        start = datetime.datetime(2013, 3, 20, 1, 0)
+        end = datetime.datetime(2013, 3, 20, 2, 0)
+        orgFK = 1
+        newEvent.name = name
+        newEvent.description = desc
+        newEvent.startdate = start
+        newEvent.enddate = end
+        newEvent.organizationFK = orgFK
+        
+        # Ensure it's not already in db.
+        result = events._isDuplicateEvent(newEvent, self.db)
+        self.assertFalse(result)
+        
+        # Try to delete it even though we know it's not there
+        result = events._removeEvent(newEvent.pk, self.db)
+        self.assertFalse(result)
+        
+        
+    ''' Test method in events.py '''
+    def test__removeEvent_false(self):
+        # Try to delete a record that's not there
+        result = events._removeEvent(9999999, self.db)
+        self.assertFalse(result)
+        
+        
+    ''' Test method in events.py '''
+    def test_removeEvent_true(self):
+        # Define the values we're going to have to add for the test.
+        newEvent = models.Event()
+        name = 'test_removeEvent_true event'
+        desc = 'description of test_removeEvent_true event is indescribable'
+        start = datetime.datetime(2013, 3, 20, 1, 0)
+        end = datetime.datetime(2013, 3, 20, 2, 0)
+        orgFK = 2
+        newEvent.name = name
+        newEvent.description = desc
+        newEvent.startdate = start
+        newEvent.enddate = end
+        newEvent.organizationFK = orgFK
+
+        # Ensure it's not already in db.
+        result = events._isDuplicateEvent(newEvent, self.db)
+        self.assertFalse(result)
+
+        # Add it to db
+        newEventPK = events._insertEvent(newEvent, self.db)
+        self.assertTrue(newEventPK > 0)
+
+        # Ensure it's in db.
+        result = events._isDuplicateEvent(newEvent, self.db)
+        self.assertTrue(result)
+
+        # Now that we added it, lets delete it.
+        result = events.removeEvent(newEventPK, self.db)
+        self.assertIsNotNone(result)
+        resultDict = json.loads(result)
+        for key,value in resultDict.iteritems():
+            if key == 'result':
+                self.assertTrue(value)
+            if key == models.EVENT_PK_KEY:
+                self.assertEqual(value, newEventPK)
+
+        # Ensure it's not in db.
+        result = events._isDuplicateEvent(newEvent, self.db)
+        self.assertFalse(result)
+        
+        
+        
+        
         
 
 
@@ -1332,6 +1444,10 @@ def suite():
     suite.addTest(ControllerTestCase('test_insertEvent_true'))
     suite.addTest(ControllerTestCase('test_insertEvent_duplicate'))
     suite.addTest(ControllerTestCase('test_insertEvent_badorg'))
+    suite.addTest(ControllerTestCase('test__removeEvent_true'))
+    suite.addTest(ControllerTestCase('test__removeEvent_invalid'))
+    suite.addTest(ControllerTestCase('test__removeEvent_false'))
+    suite.addTest(ControllerTestCase('test_removeEvent_true'))
     
     
     return suite
