@@ -182,6 +182,105 @@ def submit_employee_form():
        
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
+        
+        
+# Events: Display event browse page for the given organization
+@app.route('/organization/<org_id>/events', methods=['GET'])
+@login_required
+def getEventsByOrg(org_id):
+    try:
+        eventListJSON = events.getEventsByOrgJSON(org_id)
+        if is_request_json():
+            return eventListJSON
+        else:
+            eventDict = json.loads(eventListJSON)
+            return render_template('events.html', events=eventDict)
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+    
+    
+# Events: Create an event for the given organization
+@app.route('/organization/<org_id>/events', methods=['POST'])
+@login_required
+def createEventForOrg(org_id):
+    try:
+        eventDict = request.json['eventData']
+        result = events.insertEvent(org_id, eventDict, db)
+        return Response(response=result, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+    
+
+# privilege portal get and post handle function. If request is not support it will return error 403
+@app.route('/privilege/<org_id>', methods=['GET', 'POST'])
+@login_required
+def privilege_org(org_id):
+    try:
+        user_id = current_user.entityFK
+
+        if request.method == 'GET':
+            persons      = controllers.getPeopleInOrganizationJSON(org_id)
+            persons_dict = json.loads(persons);
+            org          = controllers.getOrganizationByIDJSON(org_id)
+            org_dict     = json.loads(org);
+
+            if is_request_json():
+                return jsonify(persons_dict, Organization=org_dict)
+            
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
+
+# privilege portal get and post member privileges function. If request is not support it will return error 403
+@app.route('/privilege/<org_id>/<person_id>', methods=['GET', 'POST'])
+@login_required
+def privilege_org_member(org_id, person_id):
+    try:
+        user_id = current_user.entityFK;
+
+        if request.method == 'GET':
+            privileges = controller_privileges.getPrivilegesForPersonJSON(person_id, org_id)
+
+            if is_request_json():
+                return Response(response=privileges, mimetype='application/json')
+
+        elif request.method == 'POST':
+
+            if is_request_json():
+                result = controller_privileges.grantPrivilegeToPersonJSON(db, request.json['privilege_id'], person_id, org_id)
+                return Response(response=result, mimetype='application/json')
+
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
+
+# privilege portal delete member privileges function. If request is not support it will return error 403
+# known issue: request.json does not parse delete request json body data to dict.
+@app.route('/privilege/<org_id>/<person_id>/<privilege_id>', methods=['DELETE'])
+@login_required
+def privilege_org_member_remove_privilege(org_id, person_id, privilege_id):
+    try:
+        user_id = current_user.entityFK;
+
+        if request.method == 'DELETE':
+
+            if is_request_json():
+                result = controller_privileges.revokePrivilegeForPersonJSON(db, privilege_id, person_id, org_id)
+                return Response(response=result, mimetype='application/json')
+
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+    
 
 @app.route('/_member', methods=['POST'])
 @login_required

@@ -37,13 +37,13 @@ def shiftToJSON(shift):
     jsonString += '}'
     return jsonString
 
-def _getShiftsByEvent(eventFK, db):
+def _getShiftsByEvent(eventFK):
     results = models.Shift.query.filter_by(eventFK=eventFK)
     return results
     
 
 # Returns True or False
-def _isDuplicateShift(shift, db):
+def _isDuplicateShift(shift):
     result = True
     target = models.Shift.query.filter_by(eventFK=shift.eventFK, startdatetime=shift.startdatetime, enddatetime=shift.enddatetime, location=shift.location).first()
     if(target == None):
@@ -55,8 +55,8 @@ def _isDuplicateShift(shift, db):
 #                shift.pk = new pk of shift successfully added
 def _insertShift(shift, db):
     result = 'Unknown'
-    isDup = _isDuplicateShift(shift, db)
-    event = events._getEventByID(shift.eventFK, db)
+    isDup = _isDuplicateShift(shift)
+    event = events._getEventByID(shift.eventFK)
     if event is None:
         result = 'BadEvent'
     if(isDup == False and result == 'Unknown'):

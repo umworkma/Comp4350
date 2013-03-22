@@ -69,7 +69,7 @@ class ShiftControllerTestCase(TestCase):
         
     def test__getShiftByEvent_true(self):
         key = 1
-        shiftList = shifts_controller._getShiftsByEvent(key, self.db)
+        shiftList = shifts_controller._getShiftsByEvent(key)
         self.assertIsNotNone(shiftList)
         self.assertEqual(shiftList.count(), 4)
         counter = 0
@@ -82,7 +82,7 @@ class ShiftControllerTestCase(TestCase):
         
     def test__getShiftByEvent_false(self):
         key = 9999
-        shiftList = shifts_controller._getShiftsByEvent(key, self.db)
+        shiftList = shifts_controller._getShiftsByEvent(key)
         self.assertEqual(shiftList.count(), 0)
         
     
@@ -95,7 +95,7 @@ class ShiftControllerTestCase(TestCase):
         shift2.enddatetime = shift1.enddatetime
         shift2.location = shift1.location
         
-        result = shifts_controller._isDuplicateShift(shift2, self.db)
+        result = shifts_controller._isDuplicateShift(shift2)
         self.assertTrue(result)
         
     def test__isDuplicateShift_false(self):
@@ -107,7 +107,7 @@ class ShiftControllerTestCase(TestCase):
         shift2.enddatetime = shift1.enddatetime
         shift2.location = shift1.location + 'difference'
 
-        result = shifts_controller._isDuplicateShift(shift2, self.db)
+        result = shifts_controller._isDuplicateShift(shift2)
         self.assertFalse(result)
         
         
@@ -270,7 +270,7 @@ class ShiftControllerTestCase(TestCase):
         newShift.maxWorkers = 42
         
         # Ensure it's not already in db.
-        result = shifts_controller._isDuplicateShift(newShift, self.db)
+        result = shifts_controller._isDuplicateShift(newShift)
         self.assertFalse(result)
         
         # Add it to db
@@ -278,7 +278,7 @@ class ShiftControllerTestCase(TestCase):
         self.assertTrue(newShiftPK > 0)
         
         # Ensure it's in db.
-        result = shifts_controller._isDuplicateShift(newShift, self.db)
+        result = shifts_controller._isDuplicateShift(newShift)
         self.assertTrue(result)
         
         # Now that we added it, lets delete it.
@@ -286,7 +286,7 @@ class ShiftControllerTestCase(TestCase):
         self.assertTrue(result)
         
         # Ensure it's not in db.
-        result = shifts_controller._isDuplicateShift(newShift, self.db)
+        result = shifts_controller._isDuplicateShift(newShift)
         self.assertFalse(result)
         
     def test__removeShift_invalid(self):
@@ -300,7 +300,7 @@ class ShiftControllerTestCase(TestCase):
         newShift.maxWorkers = 42
         
         # Ensure it's not already in db.
-        result = shifts_controller._isDuplicateShift(newShift, self.db)
+        result = shifts_controller._isDuplicateShift(newShift)
         self.assertFalse(result)
         
         # Try to delete it even though we know it's not there
@@ -324,7 +324,7 @@ class ShiftControllerTestCase(TestCase):
         newShift.maxWorkers = 42
         
         # Ensure it's not already in db.
-        result = shifts_controller._isDuplicateShift(newShift, self.db)
+        result = shifts_controller._isDuplicateShift(newShift)
         self.assertFalse(result)
         
         # Add it to db
@@ -332,7 +332,7 @@ class ShiftControllerTestCase(TestCase):
         self.assertTrue(newShiftPK > 0)
         
         # Ensure it's in db.
-        result = shifts_controller._isDuplicateShift(newShift, self.db)
+        result = shifts_controller._isDuplicateShift(newShift)
         self.assertTrue(result)
         
         # Now that we added it, lets delete it.
@@ -346,7 +346,7 @@ class ShiftControllerTestCase(TestCase):
                 self.assertEqual(value, newShiftPK)
         
         # Ensure it's not in db.
-        result = shifts_controller._isDuplicateShift(newShift, self.db)
+        result = shifts_controller._isDuplicateShift(newShift)
         self.assertFalse(result)
         
         

@@ -39,18 +39,37 @@ def eventToJSON(event):
     jsonString += '"{key}":"{val}",'.format(key=models.EVENT_DESC_KEY, val=event.description)
     jsonString += '"{key}":"{val}",'.format(key=models.EVENT_START_KEY, val=event.startdate)
     jsonString += '"{key}":"{val}",'.format(key=models.EVENT_END_KEY, val=event.enddate)
-    jsonString += '"{key}":"{val}"'.format(key=models.EVENT_ORGFK_KEY, val=event.organizationFK)
+    jsonString += '"{key}":{val}'.format(key=models.EVENT_ORGFK_KEY, val=event.organizationFK if event.organizationFK != None else '"None"')
     jsonString += '}'
     return jsonString
 
-def _getEventByID(pk, db):
+def _getEventByID(pk):
     return models.Event.query.get(pk)
 
-def getAllOrgsEvents(orgId, db):
-    results = models.Event.query.filter_by(organizationFK=orgId)
+def _getEventsByOrg(orgID):
+    results = models.Event.query.filter_by(organizationFK=orgID)
+    return results
+    
+def getEventsByOrgJSON(orgID):
+    eventList = _getEventsByOrg(orgID)
+    resultJSON = '{"Events":'
+    counter = 0
+    if eventList.count() > 0:
+        resultJSON += '['
+        for event in eventList:
+            eventJSON = eventToJSON(event)
+            if counter > 0:
+                resultJSON += ','
+            resultJSON += eventJSON
+        resultJSON += ']'
+    else:
+        resultJSON += '"None"'
+    resultJSON += '}'
+    return resultJSON
+    
 
 # Returns True or False
-def _isDuplicateEvent(event, db):
+def _isDuplicateEvent(event):
     result = True
     target = models.Event.query.filter_by(name=event.name, startdate=event.startdate, enddate=event.enddate, organizationFK=event.organizationFK).first()
     if(target == None):
@@ -62,7 +81,7 @@ def _isDuplicateEvent(event, db):
 #                event.pk = new pk of event successfully added
 def _insertEvent(event, db):
     result = 'Unknown'
-    isDup = _isDuplicateEvent(event, db)
+    isDup = _isDuplicateEvent(event)
     org = controllers._getOrganizationByID(event.organizationFK)
     if org is None:
         result = 'BadOrg'
