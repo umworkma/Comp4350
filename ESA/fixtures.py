@@ -26,6 +26,9 @@ class EntityData(DataSet):
     class entity05:
         type = 2
 
+    class entity06:
+        type = 2
+
 class OrganizationData(DataSet):
     class organization01:
         entityFK = 1
@@ -58,6 +61,13 @@ class PersonData(DataSet):
         lastname = 'Nelson'
         username = 'meat_lol'
         password = 'password2'
+
+    class person05:
+        entityFK = 6
+        firstname = 'Cookie'
+        lastname = 'Monster'
+        username = 'cookie'
+        password = 'cookie'
 
 class AddressData(DataSet):
     class address01:
@@ -112,6 +122,15 @@ class AddressData(DataSet):
         country = 'Canada'
         postalcode = '1V1 F2F'
         entityFK = 5
+        isprimary = 1
+
+    class address07:
+        address1 = '123 Sesame Street'
+        city = 'New York'
+        province = 'Manitoba'
+        country = 'United States'
+        postalcode = '10023'
+        entityFK = 6
         isprimary = 1
 
 class ContactData(DataSet):
@@ -200,6 +219,10 @@ class MemberData(DataSet):
     class member04:
         personentityFK = 5
         organizationentityFK = 2
+
+    class member05:
+        personentityFK = 6
+        organizationentityFK = 1
         
 
 class PrivilegePersonAssignmentData(DataSet):

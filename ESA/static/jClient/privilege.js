@@ -162,20 +162,29 @@ function PrivilegePortal() {
             member_privilege_head.append(member_privilege_head_row);
             member_privilege_table.append(member_privilege_head);
 
-            for(i = 0; i < response.PersonPrivileges.length; i++) {
+            if(response.PersonPrivileges != 'None') {
+                for(i = 0; i < response.PersonPrivileges.length; i++) {
+                    member_privilege_table_body_row = $('<tr>');
+
+                    member_privilege_table_body_row_cell_privilege = $('<td>');
+                    member_privilege_table_body_row_cell_privilege.text(response.PersonPrivileges[i].privilege);
+                    member_privilege_table_body_row.append(member_privilege_table_body_row_cell_privilege);
+
+                    member_privilege_table_body_row_cell_delete = $('<td>');
+                    member_privilege_table_body_row_cell_delete_button = $('<button>');
+                    member_privilege_table_body_row_cell_delete_button.attr('class', 'btn btn-danger');
+                    member_privilege_table_body_row_cell_delete_button.attr('onclick', 'ESA.privilege.removeMemberPrivilege('+response.emp_entityfk+', '+response.PersonPrivileges[i].privilege_pk+')');
+                    member_privilege_table_body_row_cell_delete_button.text('remove');
+                    member_privilege_table_body_row_cell_delete.append(member_privilege_table_body_row_cell_delete_button);
+                    member_privilege_table_body_row.append(member_privilege_table_body_row_cell_delete);
+
+                    member_privilege_table.append(member_privilege_table_body_row);
+                }
+            } else {
                 member_privilege_table_body_row = $('<tr>');
-
                 member_privilege_table_body_row_cell_privilege = $('<td>');
-                member_privilege_table_body_row_cell_privilege.text(response.PersonPrivileges[i].privilege);
+                member_privilege_table_body_row_cell_privilege.text('This user has no privileges.');
                 member_privilege_table_body_row.append(member_privilege_table_body_row_cell_privilege);
-
-                member_privilege_table_body_row_cell_delete = $('<td>');
-                member_privilege_table_body_row_cell_delete_button = $('<button>');
-                member_privilege_table_body_row_cell_delete_button.attr('class', 'btn btn-danger');
-                member_privilege_table_body_row_cell_delete_button.attr('onclick', 'ESA.privilege.removeMemberPrivilege('+response.emp_entityfk+', '+response.PersonPrivileges[i].privilege_pk+')');
-                member_privilege_table_body_row_cell_delete_button.text('remove');
-                member_privilege_table_body_row_cell_delete.append(member_privilege_table_body_row_cell_delete_button);
-                member_privilege_table_body_row.append(member_privilege_table_body_row_cell_delete);
 
                 member_privilege_table.append(member_privilege_table_body_row);
 

@@ -488,10 +488,10 @@ class ControllerTestCase(TestCase):
         count = 0
         for person in personList:
             count += 1
-            self.assertTrue(person.entityFK == 3 or person.entityFK == 4)
-            self.assertTrue(person.firstname == 'Chris' or person.firstname == 'Ryoji')
-            self.assertTrue(person.lastname == 'Workman' or person.lastname == 'Betchaku')
-        self.assertEqual(count, 2)
+            self.assertTrue(person.entityFK == 3 or person.entityFK == 4 or person.entityFK == 6)
+            self.assertTrue(person.firstname == 'Chris' or person.firstname == 'Ryoji' or person.firstname == 'Cookie')
+            self.assertTrue(person.lastname == 'Workman' or person.lastname == 'Betchaku' or person.lastname == 'Monster')
+        self.assertEqual(count, 3)
         
     def test_getPeopleInOrganizationJSON(self):
         # Define prerequisite data.
@@ -508,10 +508,10 @@ class ControllerTestCase(TestCase):
             for personDict in value:
                 count += 1
                 person = controllers.extractPersonFromDict(personDict)
-                self.assertTrue(person.entityFK == 3 or person.entityFK == 4)
-                self.assertTrue(person.firstname == 'Chris' or person.firstname == 'Ryoji')
-                self.assertTrue(person.lastname == 'Workman' or person.lastname == 'Betchaku')
-            self.assertEqual(count, 2)
+                self.assertTrue(person.entityFK == 3 or person.entityFK == 4 or person.entityFK == 6)
+                self.assertTrue(person.firstname == 'Chris' or person.firstname == 'Ryoji' or person.firstname == 'Cookie')
+                self.assertTrue(person.lastname == 'Workman' or person.lastname == 'Betchaku' or person.lastname == 'Monster')
+            self.assertEqual(count, 3)
 
 
         
