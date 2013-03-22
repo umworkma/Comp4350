@@ -10,7 +10,6 @@ function PrivilegePortal() {
         });
     };
 
-
     // Active Draggable Permission item
     this.activeDragPermission = function() {
         num_permission = $('#pp_permission_list table tbody tr').size();
@@ -19,24 +18,47 @@ function PrivilegePortal() {
             permission_id = '#' + $('#pp_permission_list table tr')[i].id;
 
             $(permission_id).draggable({
-                helper: "clone"
+                helper: "clone",
+                revert: "invalid"
 
             });
         }
     };
 
+    // Active Member Drappable for privilege assignment and drop handle function
     this.activeMemberDrappable = function() {
         $('#pp_org_member div#pp_accordion').children().each(function(){
             $(this).droppable({
                 drop: function(event, ui) {
+
                     console.debug(this.id);
                     console.debug(ui.draggable.context.id);
 
+                    if(/pp_org_member_privilege_\d/.test(this.id))
+                        member_id = this.id.replace(/pp_org_member_privilege_/, '');
+
+                    else if(/pp_org_member_\d/.test(this.id))
+                        member_id = this.id.replace(/pp_org_member_/, '');
+
+                    if(/pp_privilege_id_\d/.test(ui.draggable.context.id))
+                        privilege_id = ui.draggable.context.id.replace(/pp_privilege_id_/, '');
+
+                    if(typeof member_id != 'undefined' && typeof privilege_id != 'undefined') {
+                        console.debug('Member: ' + member_id + '\tPrivilege id: ' + privilege_id);
+                        ESA.privilege.setMemberPrivilege(member_id, privilege_id);
+
+                    } else {
+                        console.debug('PrivilegePortal: privilege id or member id is not found from html id');
+
+                    }
                 }
             });
         })
     };
 
+    //
+    // Get member in an Organization
+    //
     // take response data and draw accordion of members and member's privilege in DOM
     this.getOrganizationSuccessFn = function(response) {
         target_area = $('#pp_org_member');
@@ -174,16 +196,57 @@ function PrivilegePortal() {
     this.getMemberPrivilege = function(id) {
         if(this.org_id != 'undefined') {
             url = '/privilege/'+this.org_id+'/'+id;
-            // data = {'person_id': id};
             data={};
             success = this.getMemberPrivilegeSuccessFn;
 
             ESA.ajaxGetJSON(url, data, success);
-            // $('#pp_org_member_id_4').popover('show');
 
         } else {
             console.debug("PrivilegePortal: organization id has not been defined!");
 
         }
     };
+
+
+    //
+    // Assign Privilege to member
+    //
+    // set member privilege success function. On server response success, will call getMemberPrivilege
+    // to rebuild member privilege table else display server error.
+    this.setMemberPrivilegeSuccessFn = function(response) {
+        if( typeof response != 'undefined' && typeof response.success != 'undefined' &&
+            response.success == 'true') {
+            console.debug('Assign Privilege success');
+            if(/\/privilege\/\d\/\d/.test(this.url)) {
+                member_id = this.url.replace(/\/privilege\/\d\//,'');
+                ESA.privilege.getMemberPrivilege(member_id);
+            }
+
+
+        } else {
+            console.debug('Fail to assign privilege');
+            if(typeof response.success != 'undefined' && typeof response.msg != 'undefined')
+                ESA.display_alert('error', response.msg);
+            else 
+                ESA.display_alert('error', 'Fail to assign privilege');
+
+        }
+    };
+
+
+    // ajax POST caller, send person id, privilege id and org_id to server
+    this.setMemberPrivilege = function(person_id, privilege_id) {
+        if(this.org_id != 'undefined') {
+            url = '/privilege/'+this.org_id+'/'+person_id;
+            data = {'privilege_id': privilege_id};
+            success = this.setMemberPrivilegeSuccessFn;
+
+            ESA.ajaxJSON(url, data, success);
+
+        } else {
+            console.debug("PrivilegePortal: organization id has not been defined!");
+
+        }
+    };
+
 }; // end of PrivilegePortal

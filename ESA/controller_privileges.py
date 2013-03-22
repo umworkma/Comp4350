@@ -259,10 +259,10 @@ def _grantPrivilegeToPerson(db, privilegeKey,personKey,organizationKey=None):
 # Format: {"Result":"True"} or {"Result":"False"}
 def grantPrivilegeToPersonJSON(db, privilegeKey, personKey, organizationKey=None):
     result = _grantPrivilegeToPerson(db, privilegeKey,personKey,organizationKey)
-    resultString = "True"
+    resultString = "true"
     if result is False:
-        resultString = "False"
-    jsonString = '{"Result":' + '"{val}"'.format(val=resultString) + '}'
+        resultString = "false"
+    jsonString = '{"success":' + '"{val}"'.format(val=resultString) + '}'
     return jsonString
 
 

@@ -222,6 +222,12 @@ def privilege_org_member(org_id, person_id):
             if is_request_json():
                 return Response(response=privileges, mimetype='application/json')
 
+        elif request.method == 'POST':
+
+            if is_request_json():
+                result = controller_privileges.grantPrivilegeToPersonJSON(db, request.json['privilege_id'], person_id, org_id)
+                return Response(response=result, mimetype='application/json')
+
     except Exception, e:
         return abort(404)
 
