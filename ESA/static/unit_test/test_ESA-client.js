@@ -104,11 +104,12 @@ function test_ESA_ajaxJSON() {
             ok(response.success);
             equal(response.request, 'POST');
             notEqual(response.request, 'GET');
+            notEqual(response.request, 'DELETE');
             equal(response.msg, 'testing');
 
         },
 
-        expect(4) // number of assertions to be expect
+        expect(5) // number of assertions to be expect
         // asynchronous set test time out
         setTimeout(function() {
             ESA.ajaxJSON(url, data, success);
@@ -132,12 +133,13 @@ function test_ESA_ajaxGetJSON() {
         success = function(response) {
             ok(response.success);
             equal(response.request, 'GET');
-            notEqual(response.request, 'POST');
+            notEqual(response.request, 'POST');           
+             notEqual(response.request, 'DELETE');
             equal(response.msg, 'testing');
 
         },
 
-        expect(4) // number of assertions to be expect
+        expect(5) // number of assertions to be expect
         // asynchronous set test time out
         setTimeout(function() {
             ESA.ajaxGetJSON(url, data, success);
@@ -151,11 +153,42 @@ function test_ESA_ajaxGetJSON() {
 
 };
 
+function test_ESA_ajaxDeleteJSON() {
+    module("Test ESA DELETE ajax module");
+
+    // asynchronous unit testing expect 3 testing result
+    fn_ESA_ajaxDeleteJSON = function() {
+        url     = '/_test',
+        data    = {test: 'Testing'},
+        success = function(response) {
+            ok(response.success);
+            equal(response.request, 'DELETE');
+            notEqual(response.request, 'GET');
+            notEqual(response.request, 'POST');
+            equal(response.msg, 'testing');
+
+        },
+
+        expect(5) // number of assertions to be expect
+        // asynchronous set test time out
+        setTimeout(function() {
+            ESA.ajaxDeleteJSON(url, data, success);
+            start();
+
+        }, 1000);
+    };
+
+    // asynchronous test test function
+    asyncTest("Asynchronous Test", fn_ESA_ajaxDeleteJSON)
+
+};
+
 
 window.onload = function() {
     // test_createJsonObject();
     test_ESA_ajaxJSON();
     test_ESA_ajaxGetJSON();
+    test_ESA_ajaxDeleteJSON();
     test_ESA_privilege();
 };
 

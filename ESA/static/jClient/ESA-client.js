@@ -25,6 +25,19 @@ function ESA() {
         });
     }
 
+    // POST ajax call to send json object to server
+    this.ajaxDeleteJSON = function(url, data, success) {
+        $.ajax({
+            type: 'DELETE',
+            url: url,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: data,
+            success: success,
+
+        });
+    }
+
     // display an alert box
     this.display_alert = function (alertType, htmlMsg) {
         type = 'alert alert-' + alertType;
