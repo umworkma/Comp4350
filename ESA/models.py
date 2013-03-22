@@ -46,6 +46,13 @@ EVENT_START_KEY = 'event_start'
 EVENT_END_KEY = 'event_end'
 EVENT_ORGFK_KEY = 'event_orgfk'
 
+SHIFT_PK_KEY = 'shift_pk'
+SHIFT_START_KEY = 'shift_start'
+SHIFT_END_KEY = 'shift_end'
+SHIFT_LOCATION_KEY = 'shift_location'
+SHIFT_MINWORKERS_KEY = 'shift_minworkers'
+SHIFT_MAXWORKERS_KEY = 'shift_maxworkers'
+
 # DB Initialization
 db = SQLAlchemy()
 
