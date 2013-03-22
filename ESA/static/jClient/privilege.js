@@ -171,7 +171,8 @@ function PrivilegePortal() {
 
                 member_privilege_table_body_row_cell_delete = $('<td>');
                 member_privilege_table_body_row_cell_delete_button = $('<button>');
-                member_privilege_table_body_row_cell_delete_button.attr('class', 'btn btn-danger disabled');
+                member_privilege_table_body_row_cell_delete_button.attr('class', 'btn btn-danger');
+                member_privilege_table_body_row_cell_delete_button.attr('onclick', 'ESA.privilege.removeMemberPrivilege('+response.emp_entityfk+', '+response.PersonPrivileges[i].privilege_pk+')');
                 member_privilege_table_body_row_cell_delete_button.text('remove');
                 member_privilege_table_body_row_cell_delete.append(member_privilege_table_body_row_cell_delete_button);
                 member_privilege_table_body_row.append(member_privilege_table_body_row_cell_delete);
@@ -216,15 +217,12 @@ function PrivilegePortal() {
     this.setMemberPrivilegeSuccessFn = function(response) {
         if( typeof response != 'undefined' && typeof response.success != 'undefined' &&
             response.success == 'true') {
-            console.debug('Assign Privilege success');
             if(/\/privilege\/\d\/\d/.test(this.url)) {
                 member_id = this.url.replace(/\/privilege\/\d\//,'');
                 ESA.privilege.getMemberPrivilege(member_id);
+
             }
-
-
         } else {
-            console.debug('Fail to assign privilege');
             if(typeof response.success != 'undefined' && typeof response.msg != 'undefined')
                 ESA.display_alert('error', response.msg);
             else 
@@ -242,6 +240,47 @@ function PrivilegePortal() {
             success = this.setMemberPrivilegeSuccessFn;
 
             ESA.ajaxJSON(url, data, success);
+
+        } else {
+            console.debug("PrivilegePortal: organization id has not been defined!");
+
+        }
+    };
+
+
+    //
+    // remove member privilege
+    //
+    // remove member privilege success function. On server response success, will call getMemberPrivilege
+    // to rebuild member privilege table else display server error.
+    this.removeMemberPrivilegeSuccessFn = function(response) {
+        if( typeof response != 'undefined' && typeof response.success != 'undefined' &&
+            response.success == 'true') {
+            if(/\/privilege\/\d\/\d/.test(this.url)) {
+                member_id = this.url.replace(/\/privilege\/\d\//,'');
+                member_id = member_id.replace(/\/\d/, '')
+                ESA.privilege.getMemberPrivilege(member_id);
+
+            }
+        } else {
+            console.debug('Fail to assign privilege');
+            if(typeof response.success != 'undefined' && typeof response.msg != 'undefined')
+                ESA.display_alert('error', response.msg);
+            else 
+                ESA.display_alert('error', 'Fail to remove privilege');
+
+        }
+    };
+
+
+    // ajax POST caller, send person id, privilege id and org_id to server
+    this.removeMemberPrivilege = function(person_id, privilege_id) {
+        if(this.org_id != 'undefined') {
+            url = '/privilege/'+this.org_id+'/'+person_id+'/'+privilege_id;
+            data = {};
+            success = this.removeMemberPrivilegeSuccessFn;
+
+            ESA.ajaxDeleteJSON(url, data, success);
 
         } else {
             console.debug("PrivilegePortal: organization id has not been defined!");

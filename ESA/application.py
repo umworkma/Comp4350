@@ -6,6 +6,7 @@ import config
 import models
 import controllers
 import controller_privileges
+import re
 
 app.config.from_object(config)
 
@@ -201,7 +202,6 @@ def privilege_org(org_id):
 
             if is_request_json():
                 return jsonify(persons_dict, Organization=org_dict)
-                # return Response(response=persons, mimetype='application/json')
             
     except Exception, e:
         return abort(404)
@@ -226,6 +226,26 @@ def privilege_org_member(org_id, person_id):
 
             if is_request_json():
                 result = controller_privileges.grantPrivilegeToPersonJSON(db, request.json['privilege_id'], person_id, org_id)
+                return Response(response=result, mimetype='application/json')
+
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
+
+# privilege portal delete member privileges function. If request is not support it will return error 403
+# known issue: request.json does not parse delete request json body data to dict.
+@app.route('/privilege/<org_id>/<person_id>/<privilege_id>', methods=['DELETE'])
+@login_required
+def privilege_org_member_remove_privilege(org_id, person_id, privilege_id):
+    try:
+        user_id = current_user.entityFK;
+
+        if request.method == 'DELETE':
+
+            if is_request_json():
+                result = controller_privileges.revokePrivilegeForPersonJSON(db, privilege_id, person_id, org_id)
                 return Response(response=result, mimetype='application/json')
 
     except Exception, e:
