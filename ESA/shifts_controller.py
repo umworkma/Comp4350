@@ -6,111 +6,104 @@
 from flask import *
 import models
 import controllers
+import events
 from datetime import datetime
 
-def extractEventFromDict(eventDict):
-    newEvent = models.Event()
+def extractShiftFromDict(shiftDict):
+    target = models.Shift()
 
-    for eventKey, eventValue in eventDict.iteritems():
-        if(eventKey == models.EVENT_PK_KEY and eventValue != 'None'):
-            newEvent.pk = int(eventValue)
-        if(eventKey == models.EVENT_NAME_KEY):
-            newEvent.name = eventValue
-        if(eventKey == models.EVENT_DESC_KEY):
-            newEvent.description = eventValue
-        if(eventKey == models.EVENT_START_KEY):
-            newEvent.startdate = datetime.strptime(eventValue, '%Y-%m-%d %H:%M:%S')
-        if(eventKey == models.EVENT_END_KEY):
-            newEvent.enddate = datetime.strptime(eventValue, '%Y-%m-%d %H:%M:%S')
-        if(eventKey == models.EVENT_ORGFK_KEY):
-            newEvent.organizationFK = eventValue
-
-    return newEvent
+    for key, value in shiftDict.iteritems():
+        if(key == models.SHIFT_PK_KEY and value != 'None'):
+            target.pk = int(value)
+        if(key == models.SHIFT_START_KEY):
+            target.startdatetime = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+        if(key == models.SHIFT_END_KEY):
+            target.enddatetime = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+        if(key == models.SHIFT_LOCATION_KEY):
+            target.location = value
+        if(key == models.SHIFT_MINWORKERS_KEY):
+            target.minWorkers = int(value)
+        if(key == models.SHIFT_MAXWORKERS_KEY):
+            target.maxWorkers = int(value)
+    return target
 
 def shiftToJSON(shift):
-    jsonString = '{' + '"{key}":{val},'.format(key=models.SHIFT_PK_KEY, val=event.pk if event.pk != None else '"None"')
-    jsonString += '"{key}":"{val}",'.format(key=models.SHIFT_START_KEY, val=event.name)
-    jsonString += '"{key}":"{val}",'.format(key=models.EVENT_DESC_KEY, val=event.description)
-    jsonString += '"{key}":"{val}",'.format(key=models.EVENT_START_KEY, val=event.startdate)
-    jsonString += '"{key}":"{val}",'.format(key=models.EVENT_END_KEY, val=event.enddate)
-    jsonString += '"{key}":"{val}"'.format(key=models.EVENT_ORGFK_KEY, val=event.organizationFK)
+    jsonString = '{' + '"{key}":{val},'.format(key=models.SHIFT_PK_KEY, val=shift.pk if shift.pk != None else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.SHIFT_START_KEY, val=shift.startdatetime)
+    jsonString += '"{key}":"{val}",'.format(key=models.SHIFT_END_KEY, val=shift.enddatetime)
+    jsonString += '"{key}":"{val}",'.format(key=models.SHIFT_LOCATION_KEY, val=shift.location)
+    jsonString += '"{key}":{val},'.format(key=models.SHIFT_MINWORKERS_KEY, val=shift.minWorkers if shift.minWorkers is not None else 0)
+    jsonString += '"{key}":{val}'.format(key=models.SHIFT_MAXWORKERS_KEY, val=shift.maxWorkers if shift.maxWorkers is not None else 0)
     jsonString += '}'
     return jsonString
 
-def getEventById(pk, db):
-    return models.Event.query.get(pk)
-
-def getAllOrgsEvents(orgId, db):
-    results = models.Event.query.filter_by(organizationFK=orgId)
+def _getShiftsByEvent(eventFK, db):
+    results = models.Shift.query.filter_by(eventFK=eventFK)
+    return results
+    
 
 # Returns True or False
-def _isDuplicateEvent(event, db):
+def _isDuplicateShift(shift, db):
     result = True
-    target = models.Event.query.filter_by(name=event.name, startdate=event.startdate, enddate=event.enddate, organizationFK=event.organizationFK).first()
+    target = models.Shift.query.filter_by(eventFK=shift.eventFK, startdatetime=shift.startdatetime, enddatetime=shift.enddatetime, location=shift.location).first()
     if(target == None):
         result = False
     return result
 
-# Return values: BadOrg = couldn't find org matching event.organizationFK
-#                Duplicate = found an existing event with same name/start/end/org
-#                event.pk = new pk of event successfully added
-def _insertEvent(event, db):
+# Return values: BadEvent = couldn't find event matching shift.eventFK
+#                Duplicate = found an existing shift with same event/start/end/location
+#                shift.pk = new pk of shift successfully added
+def _insertShift(shift, db):
     result = 'Unknown'
-    isDup = _isDuplicateEvent(event, db)
-    org = controllers._getOrganizationByID(event.organizationFK)
-    if org is None:
-        result = 'BadOrg'
+    isDup = _isDuplicateShift(shift, db)
+    event = events._getEventByID(shift.eventFK, db)
+    if event is None:
+        result = 'BadEvent'
     if(isDup == False and result == 'Unknown'):
-        db.session.add(event)
+        db.session.add(shift)
         db.session.commit()
-        if(event.pk > 0):
-            result = event.pk
+        if(shift.pk > 0):
+            result = shift.pk
     if(result == 'Unknown'):
         result = 'Duplicate'
     return result
 
 
-# returns: {"result":"True", "event_pk":<pk>}
-#      or: {"result":["BadOrg" | "Duplicate"], "event_pk":"None"}
-def insertEvent(orgFK, eventDict, db):
-    event = extractEventFromDict(eventDict)
-    event.organizationFK = orgFK
-    result = _insertEvent(event, db)
-    if result != 'BadOrg' and result != 'Duplicate':
+# returns: {"result":"True", "shift_pk":<pk>}
+#      or: {"result":["BadEvent" | "Duplicate"], "event_pk":"None"}
+def insertShift(eventFK, shiftDict, db):
+    shift = extractShiftFromDict(shiftDict)
+    shift.eventFK = eventFK
+    result = _insertShift(shift, db)
+    if result != 'BadEvent' and result != 'Duplicate':
         resultJSON = '{"result":"True",'
     else:
         resultJSON = '{' + '"result":"{val}",'.format(val=result)
     
-    if event.pk is not None:
-        resultJSON += '"{key}":{val}'.format(key=models.EVENT_PK_KEY, val=event.pk)
+    if shift.pk is not None:
+        resultJSON += '"{key}":{val}'.format(key=models.SHIFT_PK_KEY, val=shift.pk)
     else:
-        resultJSON += '"{key}":"None"'.format(key=models.EVENT_PK_KEY)
+        resultJSON += '"{key}":"None"'.format(key=models.SHIFT_PK_KEY)
     resultJSON += '}'
     return resultJSON
 
 
-def updateEvent(pk, name, description, startdate, enddate, organizationFK):
-    controller = models.Event()
-    result = controller.update(pk, name, description, startdate, enddate, organizationFK);
-    print result
-
-
-# Returns True on success or False on failure (couldn't find the event).
-def _removeEvent(pk, db):
-    event = models.Event.query.filter_by(pk=pk).first()
+# Returns True on success or False on failure (couldn't find the shift).
+def _removeShift(pk, db):
+    shift = models.Shift.query.filter_by(pk=pk).first()
     result = False
-    if event is not None:
-        db.session.delete(event)
+    if shift is not None:
+        db.session.delete(shift)
         db.session.commit()
         result = True
     return result
     
 
-# Returns JSON: {"result":["True" | "False"],"event_pk":<pk>}
-def removeEvent(pk, db):
-    result = _removeEvent(pk, db)
+# Returns JSON: {"result":["True" | "False"],"shift_pk":<pk>}
+def removeShift(pk, db):
+    result = _removeShift(pk, db)
     resultJSON = '{'+ '"result":"{result}",'
-    resultJSON += '"{key}":{val}'.format(result=result, key=models.EVENT_PK_KEY, val=pk)
+    resultJSON += '"{key}":{val}'.format(result=result, key=models.SHIFT_PK_KEY, val=pk)
     resultJSON += '}'
     return resultJSON
 

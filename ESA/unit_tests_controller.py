@@ -1055,20 +1055,20 @@ class ControllerTestCase(TestCase):
         
 
     ''' Test functionality to get Event by ID in events.py '''
-    def test_getEventById(self):
-        event = events.getEventById(1, self.db)
+    def test__getEventByID(self):
+        event = events._getEventByID(1, self.db)
         self.assertIsNotNone(event)
         self.assertEqual(event.name, 'My Event')
         self.assertEqual(event.description, 'This is my event')
         self.assertEqual(event.organizationFK, 1)
 
-        event = events.getEventById(2, self.db)
+        event = events._getEventByID(2, self.db)
         self.assertIsNotNone(event)
         self.assertEqual(event.name, 'Your Event')
         self.assertEqual(event.description, 'This is your event')
         self.assertEqual(event.organizationFK, 2)
 
-        event = events.getEventById(3, self.db)
+        event = events._getEventByID(3, self.db)
         self.assertIsNone(event)
         
     
@@ -1433,7 +1433,7 @@ def suite():
     suite.addTest(ControllerTestCase('test_getPersonByUsername'))
     suite.addTest(ControllerTestCase('test__getOrganizationByID'))
     suite.addTest(ControllerTestCase('test_getOrganizationByIDJSON'))
-    suite.addTest(ControllerTestCase('test_getEventById'))
+    suite.addTest(ControllerTestCase('test__getEventByID'))
     suite.addTest(ControllerTestCase('test_extractEventFromDict'))
     suite.addTest(ControllerTestCase('test_extractEventFromDict_incomplete'))
     suite.addTest(ControllerTestCase('test__isDuplicateEvent_true'))

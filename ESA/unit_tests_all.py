@@ -13,6 +13,7 @@ import unit_tests_globalprivilegeassignment
 import unit_tests_event
 import unit_tests_shift
 import unit_tests_controller
+import unit_tests_shifts_controller
 
 
 def suite():
@@ -32,6 +33,7 @@ def suite():
     allUnitTests.addTest(unit_tests_event.suite())
     allUnitTests.addTest(unit_tests_shift.suite())
     allUnitTests.addTest(unit_tests_controller.suite())
+    allUnitTests.addTest(unit_tests_shifts_controller.suite())
 
     return allUnitTests
 
