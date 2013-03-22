@@ -269,6 +269,40 @@ class EventData(DataSet):
         name='Your Event'
         description='This is your event'
         organizationFK=2
+        
+class ShiftData(DataSet):
+    class shift01:
+        eventFK=1
+        startdatetime=datetime(2013, 7, 12, 12, 0)
+        enddatetime=datetime(2013, 7, 12, 13, 0)
+        location='Booth A'
+        minWorkers=2
+        maxWorkers=4
+        
+    class shift02:
+        eventFK=1
+        startdatetime=datetime(2013, 7, 12, 13, 0)
+        enddatetime=datetime(2013, 7, 12, 14, 0)
+        location='Booth A'
+        minWorkers=2
+        maxWorkers=4
+        
+    class shift03:
+        eventFK=1
+        startdatetime=datetime(2013, 7, 12, 14, 0)
+        enddatetime=datetime(2013, 7, 12, 15, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+        
+    class shift04:
+        eventFK=1
+        startdatetime=datetime(2013, 7, 12, 15, 0)
+        enddatetime=datetime(2013, 7, 12, 16, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+        
 
 all_data = (EntityData, PersonData, AddressData, OrganizationData, ContactData,
             PrivilegeData, MemberData, PrivilegePersonAssignmentData,
@@ -276,10 +310,11 @@ all_data = (EntityData, PersonData, AddressData, OrganizationData, ContactData,
 entity_test_data = (EntityData, AddressData, ContactData, OrganizationData, PersonData)
 address_test_data = (AddressData, EntityData)
 contact_test_data = (ContactData, EntityData)
-organization_test_data = (OrganizationData, EntityData, MemberData)
+organization_test_data = (OrganizationData, EntityData, MemberData, EventData)
 person_test_data = (PersonData, EntityData, MemberData, GlobalPrivilegeAssignmentData)
 member_test_data = (MemberData, PersonData, OrganizationData, PrivilegePersonAssignmentData)
 privilege_test_data = (PrivilegeData, PrivilegePersonAssignmentData, GlobalPrivilegeAssignmentData, MemberData)
 ppa_test_data = (PrivilegeData, PrivilegePersonAssignmentData, MemberData)
 gpa_test_data = (PrivilegeData, GlobalPrivilegeAssignmentData, MemberData, PersonData)
-event_test_data = (EventData, OrganizationData)
+event_test_data = (EventData, OrganizationData, ShiftData)
+shift_test_data = (ShiftData, EventData)

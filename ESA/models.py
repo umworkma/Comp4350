@@ -244,6 +244,7 @@ class Event(db.Model):
     startdate = db.Column(db.DateTime, default=datetime.now)
     enddate = db.Column(db.DateTime, default=datetime.now)
     organizationFK = db.Column(db.Integer, db.ForeignKey(Organization.entityFK, ondelete='cascade'))
+    shifts = db.relationship('Shift', cascade='all,delete-orphan', backref='event')
 
     def __init__(self, name=None, description=None, startdate=None, enddate=None, organizationFK=None):
         self.name = name
