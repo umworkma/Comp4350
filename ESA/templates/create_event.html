@@ -2,10 +2,7 @@
 {% if qunit is undefined %}{% extends "layout.html" %}{% endif %}
 
 {% block content %}
-{% assets "common_css" %}
-        <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
-        {% endassets %}
-{% assets "common_js" %}
+
         <script>
             $(function() {
                     //$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
@@ -14,7 +11,7 @@
                     // $('#datepicker2').datetimepicker({ language: 'en' });
                 });
         </script>
-{% endassets %}
+
         <div class="container">
             <h2>Create an Event</h2>
             <div class="well form-horizontal">
