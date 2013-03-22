@@ -92,6 +92,27 @@ class OrganizationTestCase(TestCase):
             count += 1
             self.assertEqual(di.__repr__(), ti.__repr__())
         self.assertEqual(count, 2)
+        
+        
+    """ Test that an event can be retrieved from an organization relationship. """
+    def test_organization_event_relationship_1(self):
+        # Define prerequisite data.
+        entityKey = 1
+        # Retrieve the target object directly.
+        directList = models.Event.query.filter_by(organizationFK=entityKey)
+        self.assertIsNotNone(directList)
+        # Retrieve the containing object.
+        host = models.Organization.query.filter_by(entityFK=entityKey).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.entityFK, entityKey)
+        # Retrieve the target object through the containing object.
+        targetList = host.events
+        self.assertIsNotNone(targetList)
+        count = 0
+        for di,ti in zip(directList,targetList):
+            count += 1
+            self.assertEqual(di.__repr__(), ti.__repr__())
+        self.assertEqual(count, 1)
     
 
     """ Test adding an Organization. """
@@ -209,6 +230,7 @@ def suite():
     suite.addTest(OrganizationTestCase('test_organization_model'))
     suite.addTest(OrganizationTestCase('test_organization_entity_relationship_1'))
     suite.addTest(OrganizationTestCase('test_organization_member_relationship_1'))
+    suite.addTest(OrganizationTestCase('test_organization_event_relationship_1'))
     suite.addTest(OrganizationTestCase('test_organization_add'))
     suite.addTest(OrganizationTestCase('test_organization_update'))
     suite.addTest(OrganizationTestCase('test_organization_delete'))
