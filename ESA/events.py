@@ -75,6 +75,9 @@ def _insertEvent(event, db):
         result = 'Duplicate'
     return result
 
+
+# returns: {"result":"True", "event_pk":<pk>}
+#      or: {"result":["BadOrg" | "Duplicate"], "event_pk":"None"}
 def insertEvent(orgFK, eventDict, db):
     event = extractEventFromDict(eventDict)
     event.organizationFK = orgFK
@@ -90,6 +93,7 @@ def insertEvent(orgFK, eventDict, db):
         resultJSON += '"{key}":"None"'.format(key=models.EVENT_PK_KEY)
     resultJSON += '}'
     return resultJSON
+
 
 def updateEvent(pk, name, description, startdate, enddate, organizationFK):
     controller = models.Event()
