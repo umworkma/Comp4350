@@ -9,9 +9,9 @@
         <script>
             $(function() {
                     //$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
-                    $('#datepicker').datetimepicker({ language: 'en' });
+                    $('#datepicker_start_date').datetimepicker({ language: 'en' });
                     //$("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });
-                    $('#datepicker2').datetimepicker({ language: 'en' });
+                    // $('#datepicker2').datetimepicker({ language: 'en' });
                 });
         </script>
 {% endassets %}
@@ -31,16 +31,14 @@
                         </div>
                         <label class="control-label" for="event_start">Event Start Date</label>
                         <div class="controls">
-                            <input type="text" required name="event_start" id="datepicker">
+                            <div id="datepicker_start_date" class="input-append date">
+                                <input data-format="yyyy-MM-dd hh:mm" type="text"></input>
+                                <span class="add-on">
+                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                </span>
+                            </div>
                         </div>
-                        <div class="well">
-							<div id="datepicker" class="input-append date">
-						  		<input data-format="yyyy-MM-dd hh:mm" type="text"></input>
-						    	<span class="add-on">
-						      		<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-								</span>
-							</div>
-						</div>
+
                         <label class="control-label" for="event_start_time">Start Time</label>
                         <div class="controls">
                             <select id="event_start_time">
