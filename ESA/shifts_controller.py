@@ -40,6 +40,10 @@ def shiftToJSON(shift):
     jsonString += '}'
     return jsonString
 
+def _getShiftByID(pk):
+    results = models.Shift.query.filter_by(pk=pk).first()
+    return results
+
 def _getShiftsByEvent(eventFK):
     results = models.Shift.query.filter_by(eventFK=eventFK)
     return results

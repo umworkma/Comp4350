@@ -67,8 +67,21 @@ class ShiftControllerTestCase(TestCase):
         self.assertEqual(control.minWorkers, target.minWorkers)
         self.assertEqual(control.maxWorkers, target.maxWorkers)
         
+
+    def test__getShiftByID_true(self):
+        key = 1
+        shift = shifts_controller._getShiftByID(key)
+        self.assertIsNotNone(shift)
+        control = models.Shift.query.filter_by(pk=shift.pk).first()
+        self.assertEqual(shift.__repr__(), control.__repr__())
         
-    def test__getShiftByEvent_true(self):
+    def test__getShiftByID_false(self):
+        key = 9999
+        shift = shifts_controller._getShiftByID(key)
+        self.assertIsNone(shift)
+        
+        
+    def test__getShiftsByEvent_true(self):
         key = 1
         shiftList = shifts_controller._getShiftsByEvent(key)
         self.assertIsNotNone(shiftList)
@@ -81,7 +94,7 @@ class ShiftControllerTestCase(TestCase):
             self.assertEqual(shift.__repr__(), control.__repr__())
         self.assertEqual(counter, 4)
         
-    def test__getShiftByEvent_false(self):
+    def test__getShiftsByEvent_false(self):
         key = 9999
         shiftList = shifts_controller._getShiftsByEvent(key)
         self.assertEqual(shiftList.count(), 0)
@@ -414,8 +427,10 @@ def suite():
     # Add tests to suite.
     suite.addTest(ShiftControllerTestCase('test_shiftToJSON'))
     suite.addTest(ShiftControllerTestCase('test_extractShiftFromDict'))
-    suite.addTest(ShiftControllerTestCase('test__getShiftByEvent_true'))
-    suite.addTest(ShiftControllerTestCase('test__getShiftByEvent_false'))
+    suite.addTest(ShiftControllerTestCase('test__getShiftByID_true'))
+    suite.addTest(ShiftControllerTestCase('test__getShiftByID_false'))
+    suite.addTest(ShiftControllerTestCase('test__getShiftsByEvent_true'))
+    suite.addTest(ShiftControllerTestCase('test__getShiftsByEvent_false'))
     suite.addTest(ShiftControllerTestCase('test_getShiftByEventJSON_true'))
     suite.addTest(ShiftControllerTestCase('test_getShiftByEventJSON_false'))
     suite.addTest(ShiftControllerTestCase('test__isDuplicateShift_true'))

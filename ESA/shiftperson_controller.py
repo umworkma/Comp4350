@@ -7,12 +7,13 @@ from flask import *
 import models
 import controllers
 import events
+import shifts_controller
 from datetime import datetime
 
 def extractShiftPersonFromDict(shiftPersonDict):
     target = models.Shift()
 
-    for key, value in shiftDict.iteritems():
+    for key, value in shiftPersonDict.iteritems():
         if(key == models.SHIFTPERSON_PK_KEY and value != 'None'):
             target.pk = int(value)
         if(key == models.SHIFTPERSON_SHIFT_KEY and value != 'None'):
@@ -38,7 +39,8 @@ def getPeopleByShiftJSON(shiftFK):
     counter = 0
     if list.count() > 0:
         resultJSON += '['
-        for person in list:
+        for shiftPerson in list:
+            person = models.Person.query.filter_by(entityFK=shiftPerson.personFK).first()
             personJSON = controllers.employeeToJSON(person)
             if counter > 0:
                 resultJSON += ','
@@ -60,7 +62,8 @@ def getShiftsByPersonJSON(personFK):
     counter = 0
     if list.count() > 0:
         resultJSON += '['
-        for shift in list:
+        for shiftPerson in list:
+            shift = shifts_controller._getShiftByID(shiftPerson.shiftFK)
             shiftJSON = shifts_controller.shiftToJSON(shift)
             if counter > 0:
                 resultJSON += ','
@@ -76,7 +79,7 @@ def getShiftsByPersonJSON(personFK):
 # Returns True or False
 def _isDuplicateAssignment(shiftPerson):
     result = True
-    target = models.ShiftPerson.query.filter_by(eventFK=shiftPerson.eventFK, shiftFK=shiftPerson.shiftFK).first()
+    target = models.ShiftPerson.query.filter_by(shiftFK=shiftPerson.shiftFK, personFK=shiftPerson.personFK).first()
     if(target == None):
         result = False
     return result
@@ -126,7 +129,7 @@ def insertShiftPerson(shiftFK, personFK, db):
 def _removeShiftPerson(pk, db):
     shiftPerson = models.ShiftPerson.query.filter_by(pk=pk).first()
     result = False
-    if shift is not None:
+    if shiftPerson is not None:
         db.session.delete(shiftPerson)
         db.session.commit()
         result = True
