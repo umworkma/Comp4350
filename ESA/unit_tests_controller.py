@@ -538,7 +538,7 @@ class ControllerTestCase(TestCase):
         resultDict = json.loads(testEmpJSON)
         result = controllers.registerEmployee(resultDict, self.db)
         resultDict = json.loads(result)
-        self.assertEqual(resultDict['result'], 'True')
+        self.assertEqual(resultDict['username'], testEmp.username)
 
         # Check if there is a duplicate username and should be there.
         isDuplicate = controllers._checkForDuplicateEmployee(testEmp)
@@ -800,6 +800,57 @@ def suite():
     suite.addTest(ControllerTestCase('test_getOrganizationByIDJSON'))
 
     return suite
+
+    ##Joining a person to an organization##
+
+    def test_putPersonInOrganization(self):
+        self.resetDB()
+
+        # Sub-Test 1: Invalid person key.
+        # Define prerequisite data.
+        personKey = 9999
+        request = {org_id: 1}
+        # Get the result of the tested method.
+        result = controllers.putPersonInOrganization(request, self.db, personKey)
+        # Validate the result.
+        self.assertFalse(result)
+
+        # Sub-Test 2: Invalid json.
+        # Define prerequisite data.
+        request = 'xxx'
+        personKey = 4
+        # Get the result of the tested method.
+        result = controllers.putPersonInOrganization(request, self.db, personKey)
+        # Validate the result.
+        self.assertFalse(result)
+
+        # Sub-Test 3: Invalid organization key.
+        # Define prerequisite data.
+        personKey = 4
+        request = {org_id: 9999}
+        # Get the result of the tested method.
+        result = controllers.putPersonInOrganization(request, self.db, personKey)
+        # Validate the result.
+        self.assertFalse(result)
+
+        # Sub-Test 4: Valid execution.
+        # Define prerequisite data.
+        personKey = 4
+        request = {org_id: 1}
+        # Get the result of the tested method.
+        result = controllers.putPersonInOrganization(request, self.db, personKey)
+        # Validate the result.
+        self.assertTrue(result)
+
+        # Sub-Test 5: Duplicate member.
+        # Define prerequisite data.
+        # use same data as before
+        # Get the result of the tested method.
+        result = controllers.putPersonInOrganization(request, self.db, personKey)
+        # Validate the result.
+        self.assertTrue(result)
+
+        self.resetDB()
 
 if __name__ == "__main__":
     unittest.TextTestRunner().run(suite())

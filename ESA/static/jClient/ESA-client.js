@@ -39,57 +39,64 @@ function ESA() {
     }
 
     // display an alert box
-    this.display_alert = function (alertType, htmlMsg) {
-        type = 'alert alert-' + alertType;
-        msg = '';
+    this.display_alert = function (type, htmlMsg) {
+		if(htmlMsg == "EmpTrue")
+		{
+			$("#employee-reg-response").empty();
+			$("#employee-reg-response").append("<p>Successfully Registered !!</p>");
+			$("#employee-reg-response").append("<p>Click <b><a href='/'>here</a></b> to continue.</p>");
+		}
+		else
+		{
+			type = 'alert alert-' + type;
+			msg = '';
+			switch (type) {
+				case 'block':
+					msg = '<strong>Warning:</strong>';
+					break;
+				case 'error':
+					msg = '<strong>Error:</strong>';
+					break;
+				case 'success':
+					msg = '<strong>Success:</strong>';
+					break;
+				case 'info':
+					msg = '<strong>Note:</strong>';
+					break;
+				default:
+					type = 'alert alert-block';
+					msg = '<strong>Warning!</strong>';
 
-        switch (alertType) {
-            case 'block':
-                msg = '<strong>Warning:</strong>';
-                break;
-            case 'error':
-                msg = '<strong>Error:</strong>';
-                break;
-            case 'success':
-                msg = '<strong>Success:</strong>';
-                break;
-            case 'info':
-                msg = '<strong>Note:</strong>';
-                break;
-            default:
-                type = 'alert alert-block';
-                msg = '<strong>Warning!</strong>';
+			}
+			msg +=  htmlMsg;
 
-        }
-        msg +=  htmlMsg;
+			// alert-block, alert-error, alert-success, alert-info
+			// are the 4 difference type of alert block.
+			alert = $('<div>');
+			alert.attr('class', type);
 
-        // alert-block, alert-error, alert-success, alert-info
-        // are the 4 difference type of alert block.
-        alert = $('<div>');
-        alert.attr('class', type);
+			// Adding the close button to close the alert box
+			button = $('<button>', {
+				'type':'button',
+				'class': 'close',
+				'data-dismiss': 'alert',
+				text: '&times;'
+			});
+			// display the &times; html extended characters
+			button.html(button.text());
 
-        // Adding the close button to close the alert box
-        button = $('<button>', {
-            'type':'button',
-            'class': 'close',
-            'data-dismiss': 'alert',
-            text: '&times;'
-        });
-        // display the &times; html extended characters
-        button.html(button.text());
+			// adding close button and message to alert box
+			alert.append(button);
+			alert.append(msg);
 
-        // adding close button and message to alert box
-        alert.append(button);
-        alert.append(msg);
-
-        // adding the alert box into the message area
-        $('.msg_area').append(alert);
-
-        // set timeout to dismiss alert message
-        window.setTimeout(function() {
-            alert.alert('close')
-        }, 2000);
-
+			// adding the alert box into the message area
+			$('.msg_area').append(alert);
+			
+			// set timeout to dismiss alert message
+			window.setTimeout(function() {
+				alert.alert('close')
+			}, 2000);
+		}
     };
 
     this.privilege = new PrivilegePortal();
@@ -100,7 +107,8 @@ ESA = new ESA();
 
 // Check for valid organization name as the user types.
 function checkForDuplicateEmployeeUserName() {
-	url = '/check_dup_employee_user_name'
+	
+	url = '/_check_dup_employee_user_name'
 	userName = $('input[name="username"]').val(),
 	data = { 'username': userName },
 	success = function(data) {
@@ -131,7 +139,7 @@ function checkForDuplicateOrgName() {
 		}
     },
 
-
+	
     ESA.ajaxJSON(url, data, success);
     return false;
 }
@@ -160,9 +168,9 @@ function updateIsValidEmployeeUserNameMsg(isActive) {
 
     // adding the alert box into the message area
     if(isActive){
-    	$('.alert_isValidOrgName').append(alert);
+    	$('.alert_isValidEmployeeUserName').append(alert);
 	} else {
-		$('.alert_isValidOrgName').children().remove()
+		$('.alert_isValidEmployeeUserName').children().remove()
 		//alert.alert('close');
 		//$('.alert_isValidOrgName').innerHTML = '';
 	}
@@ -203,7 +211,7 @@ function updateIsValidOrgNameMsg(isActive) {
 // create json object and send it to server
 function createJsonObjectForOrganization() {
     url = '/_submit_org_form',
-
+	
     data = {
         org_name: $('input[name="org_name"]').val(),
         org_desc: $('#org_desc').val(),
@@ -239,6 +247,7 @@ function createJsonObjectForOrganization() {
 
     success = function(data) {
         // check for server return data.result
+		
         if(typeof data.result != 'undefined' ) {
             // display the 2 type of alert box base of the result
             if(data.result == 'True') {
@@ -250,9 +259,8 @@ function createJsonObjectForOrganization() {
             }
         }
     },
-
     ESA.ajaxJSON(url, data, success);
-
+	
     return false;
 
 }
@@ -261,6 +269,7 @@ function createJsonObjectForOrganization() {
 function createJsonObjectForEmployee() {
 
 	url = '/_submit_employee_form',
+	
     data = {
 		username: $('input[name="username"]').val(),
 		password: $('input[name="pwd1"]').val(),
@@ -294,12 +303,14 @@ function createJsonObjectForEmployee() {
 			]
 		}
     },
+    
     success = function(data) {
         // check for server return data.result
+		
         if(typeof data.result != 'undefined' ) {
             // display the 2 type of alert box base of the result
-            if(data.result == 'True') {
-               ESA.display_alert('success', data.result);
+            if(data.result == 'EmpTrue') {
+                ESA.display_alert('success', data.result);
 
             } else {
                 ESA.display_alert('block', data.result);
@@ -307,12 +318,42 @@ function createJsonObjectForEmployee() {
             }
         }
     },
-
-    // ajax post request
-	ESA.ajaxJSON(url, data, success);
+    ESA.ajaxJSON(url, data, success);
+	
     return false;
 
 }
+
+function join_org(button, org_id) {
+    url = '/organization/' + org_id + '/members',
+
+    data = {},
+
+    //what needs to happen client-side on success (response)
+    success = function(data) {
+        // check for server return data.result
+        if(typeof data.result != 'undefined' ) {
+            // display the 2 type of alert box base of the result
+            if(data.result == 'True') {
+                ESA.display_alert('success', 'Added you to to organization');
+                setTimeout(function() { $(button).button('complete'); }, 500);
+                setTimeout(function() { $(button).attr('disabled', 'disabled').addClass('disabled'); }, 1000);
+            } else {
+                ESA.display_alert('block', data.result);
+                $(button).button('reset')
+            }
+        }
+    },
+
+    //disable button
+    $(button).button('loading')
+
+    ESA.ajaxJSON(url, data, success);
+
+    return false;
+}   
+
+
 
 
 // active carousel when DOM is fully loaded

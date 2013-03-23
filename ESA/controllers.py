@@ -29,7 +29,7 @@ def registerEmployee(employeeDict, db):
         db.session.commit()
         result = True
     if(result is True):
-        resultjson = '{"result": "True"}'
+        resultjson = '{"username":"'+employee.username+'"}'
     else:
         resultjson = '{' + '"result": "{val}"'.format(val=failcause) + '}'
     return resultjson
@@ -53,7 +53,7 @@ def checkForDuplicateEmployeeUserName(employeeUserNameDict):
    
     if(employeeUserNameDict is not None and employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY] is not None):
         employeeUserName = employeeUserNameDict[models.EMPLOYEE_USER_NAME_KEY]
-        employee = models.Employee()
+        employee = models.Person()
         employee.username = employeeUserName
         result = _checkForDuplicateEmployee(employee)
 
@@ -391,6 +391,8 @@ def _getPeopleInOrganization(organizationKey):
         returnValue = None
     return returnValue
     
+
+
 """ Retrieve all person objects associated with the given organization, in JSON format. """
 # Format: {"People":[<person json string>,...]}
 def getPeopleInOrganizationJSON(organizationKey):
@@ -409,3 +411,108 @@ def getPeopleInOrganizationJSON(organizationKey):
         jsonString += '"None"'
     jsonString += '}'
     return jsonString
+
+# validate a person has a required member privilege for an organiation
+# validate a person has a required global privilege
+
+
+""" Grant a privilege to a person. """
+# Returns True if the privilege was added or already existed.
+# Returns False if one of the given keys did not correlate to a necessary
+#   database object.
+def _grantPrivilegeToPerson(db, privilegeKey,personKey,organizationKey=None):
+    returnValue = False
+    privilege = models.Privilege.query.filter_by(pk=privilegeKey).first()
+    person = models.Person.query.filter_by(entityFK=personKey).first()
+    organization = None
+    if organizationKey is not None:
+        organization = models.Organization.query.filter_by(entityFK=organizationKey).first()
+        if person is not None and organization is not None:
+            member = models.Member.query.filter_by(personentityFK=personKey, organizationentityFK=organizationKey).first()
+            if member is not None and privilege is not None:
+                ppa = models.PrivilegePersonAssignment.query.filter_by(memberFK=member.pk, privilegeFK=privilegeKey).first()
+                if ppa is None:
+                    ppa = models.PrivilegePersonAssignment(memberFK=member.pk, privilegeFK=privilegeKey)
+                    if ppa is not None:
+                        db.session.add(ppa)
+                        db.session.commit()
+                        returnValue = True
+                else:
+                    returnValue = True
+    elif privilege is not None and person is not None:
+        gpa = models.GlobalPrivilegeAssignment.query.filter_by(privilegeFK=privilegeKey, personentityFK=personKey).first()
+        if gpa is None:
+            gpa = models.GlobalPrivilegeAssignment(privilegeFK=privilegeKey, personentityFK=personKey)
+            if gpa is not None:
+                db.session.add(gpa)
+                db.session.commit()
+                returnValue = True
+        else:
+            returnValue = True
+
+    return returnValue
+
+# revoke a privilege from a person
+def _revokePrivilegeForPerson(db, privilegeKey,personKey,organizationKey=None):
+    returnValue = False
+    privilege = models.Privilege.query.filter_by(pk=privilegeKey).first()
+    person = models.Person.query.filter_by(entityFK=personKey).first()
+    organization = None
+    if organizationKey is not None:
+        organization = models.Organization.query.filter_by(entityFK=organizationKey).first()
+        if person is not None and organization is not None:
+            member = models.Member.query.filter_by(personentityFK=personKey, organizationentityFK=organizationKey).first()
+            if member is not None and privilege is not None:
+                ppa = models.PrivilegePersonAssignment.query.filter_by(memberFK=member.pk, privilegeFK=privilegeKey).first()
+                if ppa is not None:
+                    db.session.delete(ppa)
+                    db.session.commit()
+                    returnValue = True
+                else:
+                    returnValue = True
+    elif privilege is not None and person is not None:
+        gpa = models.GlobalPrivilegeAssignment.query.filter_by(privilegeFK=privilegeKey, personentityFK=personKey).first()
+        if gpa is not None:
+            db.session.delete(gpa)
+            db.session.commit()
+            returnValue = True
+        else:
+            returnValue = True
+
+    return returnValue
+
+# Members
+
+""" Associate person with organization. """
+def putPersonInOrganization(orgid, db, personid):
+    print "********************** {0}".format( orgid)
+    result = False
+    failCause = 'Unknown'
+
+    ''' Parse the given JSON data and create our basic member. '''
+    newMember = models.Member()
+    # for key,value in member.iteritems():
+    #     if(key == models.ORGANIZATION_ENTITYFK_KEY and value != 'None'):
+    #         newMember.organizationentityFK = int(value)
+
+    org = models.Organization.query.filter_by(entityFK=orgid).first()
+    person = models.Person.query.filter_by(entityFK=personid).first()
+    if org is not None:
+        newMember.organizationentityFK = int(orgid)
+        if person is not None:
+            newMember.personentityFK = int(personid)
+            db.session.add(newMember)
+            db.session.commit()
+            result = True
+        else:
+            result = False
+            failCause = 'person not found'
+    else:
+        result = False
+        failCause = 'organization not found'
+
+    if(result is True):
+        resultJson = '{"result": "True"}'
+    else:
+        resultJson = '{' + '"result": "{val}"'.format(val=failCause) + '}'
+    return resultJson
