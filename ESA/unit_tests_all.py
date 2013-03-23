@@ -15,6 +15,7 @@ import unit_tests_shift
 import unit_tests_controller
 import unit_tests_event_controller
 import unit_tests_shifts_controller
+import unit_tests_shiftperson
 
 
 def suite():
@@ -36,6 +37,7 @@ def suite():
     allUnitTests.addTest(unit_tests_controller.suite())
     allUnitTests.addTest(unit_tests_event_controller.suite())
     allUnitTests.addTest(unit_tests_shifts_controller.suite())
+    allUnitTests.addTest(unit_tests_shiftperson.suite())
 
     return allUnitTests
 

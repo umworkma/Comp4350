@@ -100,7 +100,6 @@ def _insertEvent(event, db):
 #      or: {"success":"false", "msg":["BadOrg" | "Duplicate"], "event_pk":"None"}
 def insertEvent(orgFK, eventDict, db):
     event = extractEventFromDict(eventDict)
-    print event
     event.organizationFK = orgFK
     result = _insertEvent(event, db)
     if result != 'BadOrg' and result != 'Duplicate':

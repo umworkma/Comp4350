@@ -150,6 +150,26 @@ class PersonTestCase(TestCase):
             self.assertEqual(di.__repr__(), ti.__repr__())
         self.assertEqual(count, 2)
         
+    """ Test that we can retrieve members from the person relationship. """
+    def test_person_shiftperson_relationship_1(self):
+        # Define prerequisite data.
+        entityKey = 3
+        # Retrieve the target object directly.
+        directList = models.ShiftPerson.query.filter_by(personFK=entityKey)
+        self.assertIsNotNone(directList)
+        # Retrieve the containing object.
+        host = models.Person.query.filter_by(entityFK=entityKey).first()
+        self.assertIsNotNone(host)
+        self.assertEqual(host.entityFK, entityKey)
+        # Retrieve the target object through the containing object.
+        targetList = host.shifts
+        self.assertIsNotNone(targetList)
+        count = 0
+        for di,ti in zip(directList,targetList):
+            count += 1
+            self.assertEqual(di.__repr__(), ti.__repr__())
+        self.assertEqual(count, 3)
+        
         
     """ Test that we can retieve global privilege assignments from a person. """
     def test_person_gpa_relationship(self):

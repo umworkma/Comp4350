@@ -54,6 +54,7 @@ SHIFT_LOCATION_KEY = 'shift_location'
 SHIFT_MINWORKERS_KEY = 'shift_minworkers'
 SHIFT_MAXWORKERS_KEY = 'shift_maxworkers'
 
+SHIFTPERSON_PK_KEY = 'shiftperson_pk'
 SHIFTPERSON_SHIFT_KEY = 'shiftperson_shiftfk'
 SHIFTPERSON_PERSON_KEY = 'shiftperson_personfk'
 
@@ -177,6 +178,7 @@ class Person(db.Model):
     entity = db.relationship('Entity', uselist=False, cascade='all, delete')
     memberships = db.relationship('Member', cascade='all, delete-orphan', backref='person')
     gpaList = db.relationship('GlobalPrivilegeAssignment', cascade='all, delete-orphan', backref='person')
+    shifts = db.relationship('ShiftPerson', cascade='all, delete-orphan', backref='person')
     
     def __init__(self, fname=None, lname=None, username=None, passwd=None):
         self.firstname = fname
