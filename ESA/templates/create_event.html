@@ -7,6 +7,7 @@
             $(function() {
                     //$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
                     $('#datepicker_start_date').datetimepicker({ language: 'en' });
+                    $('#datepicker_end_date').datetimepicker({ language: 'en' });
                     //$("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });
                     // $('#datepicker2').datetimepicker({ language: 'en' });
                 });
@@ -35,8 +36,17 @@
                                 </span>
                             </div>
                         </div>
+                        <label class="control-label" for="event_end">Event End Date</label>
+                        <div class="controls">
+                            <div id="datepicker_end_date" class="input-append date">
+                                <input data-format="yyyy-MM-dd hh:mm" type="text"></input>
+                                <span class="add-on">
+                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
 
-                        <label class="control-label" for="event_start_time">Start Time</label>
+                        <!-- <label class="control-label" for="event_start_time">Start Time</label>
                         <div class="controls">
                             <select id="event_start_time">
                                 <option value="7">7 AM</option>
@@ -81,8 +91,8 @@
                                 <option value="21">9 PM</option>
                                 <option value="22">10 PM</option>
                             </select>
-                        </div>
-                        <label class="control-label" for="event_shift_length">Shifts Length</label>
+                        </div> -->
+                        <label class="control-label" for="event_shift_length">Shift Length</label>
                         <div class="controls">
                             <select>
                                 <option value="30">30 min</option>

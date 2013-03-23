@@ -300,18 +300,18 @@ function createJsonObjectForEmployee() {
 
 function eventOnSubmit(org_id) {
 
-	eventStartDateTime = input[name="event_start"].val() + ' ' + input[id="event_start_time"].val();
-	eventEndDateTime = input[name="event_end"].val() + ' ' + input[id="event_end_time"].val();
+	//eventStartDateTime = input[name="event_start"].val() + ' ' + input[id="event_start_time"].val();
+	//eventEndDateTime = input[name="event_end"].val() + ' ' + input[id="event_end_time"].val();
 
 
     url = '/organization/'+ org_id + '/events',
     data = {
         event_name: $('input[name="event_name"]').val(),
         event_desc: $('input[id="event_desc"]').val(),
-        //event_start: $('input[name="event_start"]').val(),
-        //event_end: $('input[name="event_end"]').val(),
-        event_start: eventStartDateTime,
-        event_end: eventEndDateTime,
+        event_start: $('input[name="event_start"]').val(),
+        event_end: $('input[name="event_end"]').val(),
+        //event_start: eventStartDateTime,
+        //event_end: eventEndDateTime,
         event_orgfk: org_id
     },
 
