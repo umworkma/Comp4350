@@ -54,6 +54,9 @@ SHIFT_LOCATION_KEY = 'shift_location'
 SHIFT_MINWORKERS_KEY = 'shift_minworkers'
 SHIFT_MAXWORKERS_KEY = 'shift_maxworkers'
 
+SHIFTPERSON_SHIFT_KEY = 'shiftperson_shiftfk'
+SHIFTPERSON_PERSON_KEY = 'shiftperson_personfk'
+
 # DB Initialization
 db = SQLAlchemy()
 
@@ -287,3 +290,15 @@ class Shift(db.Model):
         return "<Shift('%s', '%s', '%s', '%s', '%s', '%s', '%s')>" % (self.pk, self.eventFK, self.startdatetime, self.enddatetime, self.location, self.minWorkers, self.maxWorkers)
 
 
+class ShiftPerson(db.Model):
+    __tablename__ = 'shift_person_bridge'
+    pk = db.Column(db.Integer, primary_key=True)
+    shiftFK = db.Column(db.Integer, db.ForeignKey(Shift.pk, ondelete='cascade'))
+    personFK = db.Column(db.Integer, db.ForeignKey(Person.entityFK, ondelete='cascade'))
+
+    def __init__(self, shiftFK=None, personFK=None):
+        self.shiftFK = shiftFK
+        self.personFK = personFK
+
+    def __repr__(self):
+        return "<Shift('%s', '%s', '%s')>" % (self.pk, self.shiftFK, self.personFK)

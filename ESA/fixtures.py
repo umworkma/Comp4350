@@ -303,6 +303,43 @@ class ShiftData(DataSet):
         minWorkers=3
         maxWorkers=4
         
+class ShiftPersonData(DataSet):
+    class shiftperson01:
+        shiftFK=1
+        personFK=3
+        
+    class shiftperson02:
+        shiftFK=1
+        personFK=4
+        
+    class shiftperson03:
+        shiftFK=2
+        personFK=4
+        
+    class shiftperson04:
+        shiftFK=2
+        personFK=5
+        
+    class shiftperson05:
+        shiftFK=3
+        personFK=3
+        
+    class shiftperson06:
+        shiftFK=3
+        personFK=5
+        
+    class shiftperson07:
+        shiftFK=4
+        personFK=3
+        
+    class shiftperson08:
+        shiftFK=4
+        personFK=4
+        
+    class shiftperson09:
+        shiftFK=4
+        personFK=5
+        
 
 all_data = (EntityData, PersonData, AddressData, OrganizationData, ContactData,
             PrivilegeData, MemberData, PrivilegePersonAssignmentData,
@@ -317,4 +354,4 @@ privilege_test_data = (PrivilegeData, PrivilegePersonAssignmentData, GlobalPrivi
 ppa_test_data = (PrivilegeData, PrivilegePersonAssignmentData, MemberData)
 gpa_test_data = (PrivilegeData, GlobalPrivilegeAssignmentData, MemberData, PersonData)
 event_test_data = (EventData, OrganizationData, ShiftData)
-shift_test_data = (ShiftData, EventData)
+shift_test_data = (ShiftData, EventData, ShiftPersonData)
