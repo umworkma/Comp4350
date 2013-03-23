@@ -5,9 +5,10 @@ from flask.ext.testing import TestCase
 import config
 import models
 import controllers
-import events
+import events as controller_events
 import controller_privileges
-import re
+import shifts_controller
+import shiftperson_controller
 
 app.config.from_object(config)
 
@@ -208,6 +209,24 @@ def join_org(org_id):
 def create_event(org_id):
     return render_template('create_event.html', org_id = org_id)
 
+
+# privilege portal main handle function. If request is not support it will return error 403
+@app.route('/events', methods=['GET'])
+@login_required
+def events():
+    try:
+        user_id = current_user.entityFK
+
+        if request.method == 'GET':
+            org_json        = controller_privileges.getOrgsWithPrivilegesForPersonJSON(user_id)
+            org_dict = json.loads(org_json)
+            return render_template('events.html', orgs=org_dict)
+
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
 #@app.route('/organization/<org_id>/events', methods=['POST'])
 #@login_required
 #def event_org(org_id):
@@ -244,29 +263,34 @@ def removeEvent(org_id, event_id):
 @login_required
 def getEventsByOrg(org_id):
     try:
-        eventListJSON = events.getEventsByOrgJSON(org_id)
+        eventListJSON = controller_events.getEventsByOrgJSON(org_id)
+        eventListDict = json.loads(eventListJSON)
+        org           = controllers.getOrganizationByIDJSON(org_id)
+        org_dict      = json.loads(org)
+
         if is_request_json():
-            return Response(response=eventListJSON, mimetype='application/json')
-        else:
-            eventDict = json.loads(eventListJSON)
-            return render_template('events.html', events=eventDict)
+            return jsonify(eventListDict, Organization=org_dict)
+
     except Exception, e:
         return abort(404)
     return abort(403)
     
 # Events: Retrieve all shifts for the given event.
-@app.route('/organization/<org_id>/events/<event_id>/shifts', methods=['GET'])
+@app.route('/organization/<org_id>/events/<event_id>', methods=['GET'])
 @login_required
 def getShiftsByEvent(org_id, event_id):
     try:
         shiftListJSON = shifts_controller.getShiftsByEventJSON(event_id)
-        return Response(response=shiftListJSON, mimetype='application/json')
+        shiftListDict = json.loads(shiftListJSON)
+        if is_request_json():
+            return jsonify(shiftListDict, event_id=event_id)
+
     except Exception, e:
         return abort(404)
     return abort(403)
     
 # Events: Create a shift for the given event.
-@app.route('/organization/<org_id>/events/<event_id>/shifts', methods=['POST'])
+@app.route('/organization/<org_id>/events/<event_id>', methods=['POST'])
 @login_required
 def createShiftForEvent(org_id, event_id):
     try:
@@ -277,7 +301,7 @@ def createShiftForEvent(org_id, event_id):
     return abort(403)
     
 # Events: Delete a shift.
-@app.route('/organization/<org_id>/events/<event_id>/shifts/<shift_id>', methods=['DELETE'])
+@app.route('/organization/<org_id>/events/<event_id>/<shift_id>', methods=['DELETE'])
 @login_required
 def removeShiftFromEvent(org_id, event_id, shift_id):
     try:
@@ -287,6 +311,21 @@ def removeShiftFromEvent(org_id, event_id, shift_id):
         return abort(404)
     return abort(403)
 
+
+# Events: Retrieve workers for the given event shirts.
+@app.route('/organization/<org_id>/events/<event_id>/shifts/<shift_id>', methods=['GET'])
+@login_required
+def getPersonsByOrgEventShift(org_id, event_id, shift_id):
+    try:
+
+        shiftPersonJSON = shiftperson_controller.getPeopleByShiftJSON(shift_id)
+        shiftPersonDict = json.loads(shiftPersonJSON)
+        if is_request_json():
+            return jsonify(shiftPersonDict, event_id=event_id, shift_id=shift_id)
+            
+    except Exception, e:
+        return abort(404)
+    return abort(403)
 
 
 # privilege portal main handle function. If request is not support it will return error 403

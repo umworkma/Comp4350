@@ -14,7 +14,7 @@
                         <!-- template render generated organization drop down menu list -->
                         {% if orgs %}
                         {% for org in orgs['Organizations'] %}
-                        <li><a id="ep_org_id_{{ org['org_id'] }}" href='#' onclick="ESA.events.chooseOrganization(this)"> {{ org['org_name'] }}</a></li>
+                        <li><a id="pp_org_id_{{ org['org_id'] }}" href='#' onclick="ESA.privilege.chooseOrganization(this)"> {{ org['org_name'] }}</a></li>
                         {% endfor %}
                         {% else %}
                         <li>No organization available</li>
@@ -24,23 +24,29 @@
             </ul>
 
             <div class="row-fluid">
-                <div class="span8" id='ep_org_events'>
+                <div class="span8" id='pp_org_member'>
                     <!-- use of ajax to dynamically generated table -->
-                    <p>Please select an organization to assign events</p>
+                    <p>Please select an organization to assign privileges</p>
 
+<!--                     <p>Global permissions for selected person</p>
+ -->
                 </div>
-                <div class="span4"  id='ep_permission_list'>
+                <div class="span4"  id='pp_permission_list'>
 
                     <table class="table table-hover">
-                        <caption>Member List</caption>
+                        <caption>Permission List</caption>
                         <!-- template render generated privilege list -->
                         {% if privileges %}
                         {% for privilege in privileges['Privileges'] %}
-                        
+                        {# <tr class="success"><td>Normal Action</td></tr>
+                        <tr class="error"><td>Delete Action</td></tr>
+                        <tr class="warning"><td>Update Action</td></tr>
+                        <tr class="info"><td>Code Blue</td></tr> #}
+
                         <tr class="info" id="pp_privilege_id_{{ privilege['privilege_pk'] }}"><td>{{ privilege['privilege'] }}</td></tr>
                         {% endfor %}
                         {% else %}
-                        <tr class="error"><td>No members available</td></tr>
+                        <tr class="error"><td>No privilege available</td></tr>
                         {% endif %}
 
                     </table>

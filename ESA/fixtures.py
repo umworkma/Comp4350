@@ -366,7 +366,7 @@ class ShiftPersonData(DataSet):
 
 all_data = (EntityData, PersonData, AddressData, OrganizationData, ContactData,
             PrivilegeData, MemberData, PrivilegePersonAssignmentData,
-            GlobalPrivilegeAssignmentData, EventData)
+            GlobalPrivilegeAssignmentData, EventData, ShiftData, ShiftPersonData)
 entity_test_data = (EntityData, AddressData, ContactData, OrganizationData, PersonData)
 address_test_data = (AddressData, EntityData)
 contact_test_data = (ContactData, EntityData)

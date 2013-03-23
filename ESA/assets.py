@@ -13,6 +13,7 @@ from flask_assets import Bundle
 # common_js and qunit_js bundle.
 ESA_js = Bundle(
     'jClient/privilege.js',
+    'jClient/events.js',
     'jClient/ESA-client.js',
 
 )
