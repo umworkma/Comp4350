@@ -213,12 +213,12 @@ def create_event(org_id):
 @app.route('/organization/<org_id>/events', methods=['POST'])
 @login_required
 def createEventForOrg(org_id):
-    #try:
-    result = events.insertEvent(org_id, request.json, db)
-    return Response(response=result, mimetype='application/json')
-    #except Exception, e:
-    #    return abort(404)
-    #return abort(403)
+    try:
+        result = events.insertEvent(org_id, request.json, db)
+        return Response(response=result, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+    return abort(403)
     
 # Events: Delete an event.
 @app.route('/organization/<org_id>/events/<event_id>', methods=['DELETE'])

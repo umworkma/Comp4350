@@ -25,12 +25,12 @@
                         </div>
                         <label class="control-label" for="event_desc">Description</label>
                         <div class="controls">
-                            <textarea id="event_desc" name="event_desc" rows="3"></textarea>
+                            <textarea id="event_desc" name="event_desc_name" rows="3"></textarea>
                         </div>
                         <label class="control-label" for="event_start">Event Start Date</label>
                         <div class="controls">
                             <div id="datepicker_start_date" class="input-append date">
-                                <input data-format="yyyy-MM-dd hh:mm" type="text"></input>
+                                <input name="event_start" data-format="yyyy-MM-dd hh:mm:ss" type="text"></input>
                                 <span class="add-on">
                                     <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                                 </span>
@@ -39,7 +39,7 @@
                         <label class="control-label" for="event_end">Event End Date</label>
                         <div class="controls">
                             <div id="datepicker_end_date" class="input-append date">
-                                <input data-format="yyyy-MM-dd hh:mm" type="text"></input>
+                                <input name="event_end" data-format="yyyy-MM-dd hh:mm:ss" type="text"></input>
                                 <span class="add-on">
                                     <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                                 </span>

@@ -354,4 +354,4 @@ privilege_test_data = (PrivilegeData, PrivilegePersonAssignmentData, GlobalPrivi
 ppa_test_data = (PrivilegeData, PrivilegePersonAssignmentData, MemberData)
 gpa_test_data = (PrivilegeData, GlobalPrivilegeAssignmentData, MemberData, PersonData)
 event_test_data = (EventData, OrganizationData, ShiftData)
-shift_test_data = (ShiftData, EventData, ShiftPersonData)
+shift_test_data = (ShiftData, EventData, ShiftPersonData, EntityData, PersonData, OrganizationData)

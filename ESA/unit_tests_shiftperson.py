@@ -42,58 +42,58 @@ class ShiftPersonTestCase(TestCase):
         current = models.ShiftPerson.query.filter_by(pk=1).first()
         self.assertIsNotNone(current)
         self.assertEqual(current.shiftFK, 1)
-        self.assertEqual(current.shiftFK, 3)
+        self.assertEqual(current.personFK, 3)
         
         current = models.ShiftPerson.query.filter_by(pk=2).first()
         self.assertIsNotNone(current)
         self.assertEqual(current.shiftFK, 1)
-        self.assertEqual(current.shiftFK, 4)
+        self.assertEqual(current.personFK, 4)
         
         current = models.ShiftPerson.query.filter_by(pk=3).first()
         self.assertIsNotNone(current)
         self.assertEqual(current.shiftFK, 2)
-        self.assertEqual(current.shiftFK, 4)
+        self.assertEqual(current.personFK, 4)
         
         current = models.ShiftPerson.query.filter_by(pk=4).first()
         self.assertIsNotNone(current)
         self.assertEqual(current.shiftFK, 2)
-        self.assertEqual(current.shiftFK, 5)
+        self.assertEqual(current.personFK, 5)
         
         current = models.ShiftPerson.query.filter_by(pk=5).first()
         self.assertIsNotNone(current)
         self.assertEqual(current.shiftFK, 3)
-        self.assertEqual(current.shiftFK, 3)
+        self.assertEqual(current.personFK, 3)
         
         current = models.ShiftPerson.query.filter_by(pk=6).first()
         self.assertIsNotNone(current)
         self.assertEqual(current.shiftFK, 3)
-        self.assertEqual(current.shiftFK, 5)
+        self.assertEqual(current.personFK, 5)
         
         current = models.ShiftPerson.query.filter_by(pk=7).first()
         self.assertIsNotNone(current)
         self.assertEqual(current.shiftFK, 4)
-        self.assertEqual(current.shiftFK, 3)
+        self.assertEqual(current.personFK, 3)
         
         current = models.ShiftPerson.query.filter_by(pk=8).first()
         self.assertIsNotNone(current)
         self.assertEqual(current.shiftFK, 4)
-        self.assertEqual(current.shiftFK, 4)
+        self.assertEqual(current.personFK, 4)
         
         current = models.ShiftPerson.query.filter_by(pk=9).first()
         self.assertIsNotNone(current)
         self.assertEqual(current.shiftFK, 4)
-        self.assertEqual(current.shiftFK, 5)
+        self.assertEqual(current.personFK, 5)
 
 
     """ Test that we can retieve the shift from the shift-person assignment. """
     def test_shiftperson_shift_relationship(self):
         # Define prerequisite data.
-        key = 7
-        personKey = 3
+        key = 8
+        personKey = 4
         # Retrieve the target object directly.
-        direct = models.Person.query.filter_by(pk=personKey).first()
+        direct = models.Person.query.filter_by(entityFK=personKey).first()
         self.assertIsNotNone(direct)
-        self.assertEqual(direct.pk, key)
+        self.assertEqual(direct.entityFK, personKey)
         # Retrieve the containing object.
         host = models.ShiftPerson.query.filter_by(pk=key).first()
         self.assertIsNotNone(host)
@@ -114,10 +114,10 @@ class ShiftPersonTestCase(TestCase):
         # Define prerequisite data.
         shiftKey=1
         personKey=5
-        target = models.ShiftPerson(shiftKey=shiftKey, personKey=personKey)
+        target = models.ShiftPerson(shiftFK=shiftKey, personFK=personKey)
 
         # Verify that the data does not already exist.
-        fetched = models.ShiftPerson.query.filter_by(shiftKey=shiftKey, personKey=personKey).first()
+        fetched = models.ShiftPerson.query.filter_by(shiftFK=shiftKey, personFK=personKey).first()
         self.assertIsNone(fetched)
         
         # Perform the operation.
@@ -125,12 +125,12 @@ class ShiftPersonTestCase(TestCase):
         self.db.session.commit()
 
         # Verify that the data was added, and only added once.
-        fetchedList = models.ShiftPerson.query.filter_by(shiftKey=shiftKey, personKey=personKey)
+        fetchedList = models.ShiftPerson.query.filter_by(shiftFK=shiftKey, personFK=personKey)
         self.assertIsNotNone(fetchedList)
         count = 0
         for item in fetchedList:
-            self.assertEqual(item.shiftKey, shiftKey)
-            self.assertEqual(item.personKey, personKey)
+            self.assertEqual(item.shiftFK, shiftKey)
+            self.assertEqual(item.personFK, personKey)
             count += 1
         self.assertEqual(count, 1)
         
