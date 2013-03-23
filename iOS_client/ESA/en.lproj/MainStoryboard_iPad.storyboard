@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C60" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="yIv-X2-uTX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="yIv-X2-uTX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -12,12 +12,107 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="d8S-XZ-QzF" kind="relationship" relationship="rootViewController" id="ZwV-ae-UBT"/>
+                        <segue destination="urg-d7-Yy5" kind="relationship" relationship="rootViewController" id="sKK-pF-uFE"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v7t-gc-1lk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="939" y="644"/>
+            <point key="canvasLocation" x="23" y="448"/>
+        </scene>
+        <!--Org Details View Controller-->
+        <scene sceneID="GE9-mw-dNh">
+            <objects>
+                <viewController id="5sR-C7-rCb" customClass="OrgDetailsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QWL-3X-Piv">
+                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dTH-Uf-3hq">
+                                <items>
+                                    <barButtonItem title="Login" id="Gmh-YS-QTf">
+                                        <connections>
+                                            <segue destination="d8S-XZ-QzF" kind="push" id="ci2-Wi-lSa"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sca-3e-cV7">
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="916" id="BGq-jd-4E6"/>
+                                </constraints>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="sca-3e-cV7" firstAttribute="trailing" secondItem="QWL-3X-Piv" secondAttribute="trailing" type="default" id="1c0-MQ-TUJ"/>
+                            <constraint firstItem="dTH-Uf-3hq" firstAttribute="leading" secondItem="QWL-3X-Piv" secondAttribute="leading" type="default" id="1cj-Fm-vhd"/>
+                            <constraint firstItem="sca-3e-cV7" firstAttribute="leading" secondItem="QWL-3X-Piv" secondAttribute="leading" type="default" id="9VU-Pc-V3X"/>
+                            <constraint firstItem="dTH-Uf-3hq" firstAttribute="trailing" secondItem="QWL-3X-Piv" secondAttribute="trailing" type="default" id="T6s-TM-GyD"/>
+                            <constraint firstItem="dTH-Uf-3hq" firstAttribute="bottom" secondItem="QWL-3X-Piv" secondAttribute="bottom" type="default" id="cVD-gW-MPA"/>
+                            <constraint firstItem="sca-3e-cV7" firstAttribute="top" secondItem="QWL-3X-Piv" secondAttribute="top" constant="-7" id="fn8-0C-GEw"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="KAx-Co-Y2j"/>
+                    <connections>
+                        <outlet property="text" destination="sca-3e-cV7" id="fjp-gX-wVW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Um-i4-FIn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1557" y="-726"/>
+        </scene>
+        <!--Org List Table View View Controller - Browse Organizations-->
+        <scene sceneID="LPQ-DN-z3V">
+            <objects>
+                <tableViewController id="urg-d7-Yy5" customClass="OrgListTableViewViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="jLa-Od-DGt">
+                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <toolbar key="tableFooterView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="id0-BH-64b">
+                            <rect key="frame" x="0.0" y="66" width="768" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <items>
+                                <barButtonItem title="Login" id="fe7-9A-pVQ">
+                                    <connections>
+                                        <segue destination="d8S-XZ-QzF" kind="push" id="n5A-2K-sGp"/>
+                                    </connections>
+                                </barButtonItem>
+                            </items>
+                        </toolbar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="orgTableCell" textLabel="0Mn-tD-AP2" style="IBUITableViewCellStyleDefault" id="roC-3c-Ofl" customClass="OrgListTableViewCell">
+                                <rect key="frame" x="0.0" y="22" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="748" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Mn-tD-AP2">
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="orgName" destination="0Mn-tD-AP2" id="f9o-P3-CdR"/>
+                                    <segue destination="5sR-C7-rCb" kind="push" identifier="orgListDetailsSegue" id="feQ-CM-RkM"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="urg-d7-Yy5" id="GUv-es-IId"/>
+                            <outlet property="delegate" destination="urg-d7-Yy5" id="fZL-Kk-CIS"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Browse Organizations" id="bUS-kn-BZF"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="77E-ab-uJu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1178" y="451"/>
         </scene>
         <!--Login View Controller - ESA - Login-->
         <scene sceneID="9e8-ba-N7Y">
@@ -50,6 +145,7 @@
                                 </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="3jQ-Sx-Z73"/>
+                                    <constraint firstAttribute="height" constant="30" id="bnj-g3-yN9"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -108,22 +204,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="5GD-aV-s9X" firstAttribute="top" secondItem="Ozh-sM-ltr" secondAttribute="top" constant="463" id="1wR-XO-rVd"/>
                             <constraint firstItem="eT1-YD-eqC" firstAttribute="top" secondItem="68k-N8-QWk" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="3nd-7t-c1e"/>
                             <constraint firstItem="dO2-NY-Lah" firstAttribute="leading" secondItem="WqU-ag-Llv" secondAttribute="leading" type="default" id="6Fi-oY-YUC"/>
-                            <constraint firstAttribute="bottom" secondItem="eT1-YD-eqC" secondAttribute="bottom" constant="219" id="D5v-Y2-LLR"/>
+                            <constraint firstAttribute="bottom" secondItem="eT1-YD-eqC" secondAttribute="bottom" constant="220" id="6hw-DL-lbA"/>
+                            <constraint firstItem="vjZ-32-Ha1" firstAttribute="top" secondItem="Ozh-sM-ltr" secondAttribute="top" constant="424" id="AwW-Cf-JFL"/>
+                            <constraint firstAttribute="bottom" secondItem="Rbz-6h-3SC" secondAttribute="bottom" constant="407" id="CW5-wp-ayw"/>
                             <constraint firstItem="WqU-ag-Llv" firstAttribute="trailing" secondItem="dO2-NY-Lah" secondAttribute="trailing" type="default" id="DYy-4o-f5o"/>
-                            <constraint firstItem="5GD-aV-s9X" firstAttribute="top" secondItem="vjZ-32-Ha1" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="FsX-wk-Jda"/>
                             <constraint firstItem="eT1-YD-eqC" firstAttribute="centerX" secondItem="68k-N8-QWk" secondAttribute="centerX" type="default" id="I8f-mo-hTZ"/>
                             <constraint firstItem="1Nj-XS-j19" firstAttribute="top" secondItem="Ozh-sM-ltr" secondAttribute="top" constant="201" id="Igm-PU-fdh"/>
-                            <constraint firstItem="vjZ-32-Ha1" firstAttribute="top" secondItem="Ozh-sM-ltr" secondAttribute="top" constant="425" id="LQj-6L-g4v"/>
+                            <constraint firstItem="eT1-YD-eqC" firstAttribute="centerX" secondItem="Ozh-sM-ltr" secondAttribute="centerX" type="default" id="Lyd-PW-gqW"/>
                             <constraint firstItem="Rbz-6h-3SC" firstAttribute="trailing" secondItem="5GD-aV-s9X" secondAttribute="trailing" type="default" id="M0B-bQ-s5B"/>
-                            <constraint firstItem="1Nj-XS-j19" firstAttribute="centerX" secondItem="Ozh-sM-ltr" secondAttribute="centerX" type="default" id="MA3-uR-LU7"/>
                             <constraint firstItem="5GD-aV-s9X" firstAttribute="leading" secondItem="vjZ-32-Ha1" secondAttribute="leading" type="default" id="OhF-ND-1bk"/>
                             <constraint firstItem="WqU-ag-Llv" firstAttribute="top" secondItem="Ozh-sM-ltr" secondAttribute="top" constant="467" id="UOw-mv-qjC"/>
                             <constraint firstItem="dO2-NY-Lah" firstAttribute="leading" secondItem="Ozh-sM-ltr" secondAttribute="leading" constant="240" id="UU3-jr-LQa"/>
-                            <constraint firstAttribute="bottom" secondItem="Rbz-6h-3SC" secondAttribute="bottom" constant="406" id="VzM-Ir-TdG"/>
                             <constraint firstItem="dO2-NY-Lah" firstAttribute="baseline" secondItem="vjZ-32-Ha1" secondAttribute="baseline" type="default" id="Yt3-8T-5kz"/>
                             <constraint firstItem="vjZ-32-Ha1" firstAttribute="leading" secondItem="Ozh-sM-ltr" secondAttribute="leading" constant="379" id="Z9d-Gg-926"/>
+                            <constraint firstItem="dO2-NY-Lah" firstAttribute="top" secondItem="Ozh-sM-ltr" secondAttribute="top" constant="428" id="kMu-R0-Rl5"/>
                             <constraint firstItem="68k-N8-QWk" firstAttribute="centerX" secondItem="1Nj-XS-j19" secondAttribute="centerX" type="default" id="mUU-iq-VM5"/>
                             <constraint firstItem="vjZ-32-Ha1" firstAttribute="trailing" secondItem="5GD-aV-s9X" secondAttribute="trailing" type="default" id="oYJ-fn-Bcs"/>
                         </constraints>
@@ -136,7 +233,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2cb-UJ-jkP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1840" y="646"/>
+            <point key="canvasLocation" x="2114" y="458"/>
         </scene>
         <!--View Controller - Sign Up-->
         <scene sceneID="WTz-SH-tdD">
@@ -177,6 +274,21 @@
         <class className="NSLayoutConstraint" superclassName="NSObject">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
+        <class className="OrgDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="text" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="OrgListTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgListTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="orgName" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="OrgListTableViewViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgListTableViewViewController.h"/>
+        </class>
         <class className="ViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
         </class>
@@ -186,4 +298,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="ci2-Wi-lSa"/>
+    </inferredMetricsTieBreakers>
 </document>

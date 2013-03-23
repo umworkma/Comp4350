@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "Settings.h"
 
 @interface LoginViewController ()
 
@@ -48,7 +49,8 @@
             
         } else {
             // init url for request
-            NSURL *baseURL  = [NSURL URLWithString:@"http://localhost:5000"];
+            //NSString *baseURLString = @"http://aws.billiam.ca";
+            NSURL *baseURL = [NSURL URLWithString:BASE_URL];
             NSURL *url      = [NSURL URLWithString:@"/login" relativeToURL: baseURL];
             
             // init post request data

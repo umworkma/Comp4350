@@ -58,6 +58,10 @@ SHIFTPERSON_PK_KEY = 'shiftperson_pk'
 SHIFTPERSON_SHIFT_KEY = 'shiftperson_shiftfk'
 SHIFTPERSON_PERSON_KEY = 'shiftperson_personfk'
 
+PRIVILEGE_PK_KEY = 'privilege_pk'
+PRIVILEGE_VALUE = 'privilege'
+
+
 # DB Initialization
 db = SQLAlchemy()
 
@@ -204,7 +208,7 @@ class Person(db.Model):
         return unicode(self.entityFK)
 
     def __repr__(self):
-        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname)
+        return "<Person('%s', '%s', '%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname, self.username, self.password)
 
 
 class Member(db.Model):

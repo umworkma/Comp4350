@@ -14,6 +14,32 @@ function ESA() {
         });
     }
 
+    // POST ajax call to send json object to server
+    this.ajaxGetJSON = function(url, data, success) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: data,
+            success: success,
+
+        });
+    }
+
+    // POST ajax call to send json object to server
+    this.ajaxDeleteJSON = function(url, data, success) {
+        $.ajax({
+            type: 'DELETE',
+            url: url,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: data,
+            success: success,
+
+        });
+    }
+
     // display an alert box
     this.display_alert = function (type, htmlMsg) {
 		if(htmlMsg == "EmpTrue")
@@ -75,6 +101,7 @@ function ESA() {
 		}
     };
 
+    this.privilege = new PrivilegePortal();
 };
 // Active the singleton of ESA in Global object
 ESA = new ESA();
@@ -328,11 +355,9 @@ function eventOnSubmit(org_id) {
 }
 
 function join_org(button, org_id) {
-    url = '/_member',
+    url = '/organization/' + org_id + '/members',
 
-    data = {
-        org_id: org_id
-    },
+    data = {},
 
     //what needs to happen client-side on success (response)
     success = function(data) {
@@ -340,7 +365,7 @@ function join_org(button, org_id) {
         if(typeof data.result != 'undefined' ) {
             // display the 2 type of alert box base of the result
             if(data.result == 'True') {
-                ESA.display_alert('success', data.result);
+                ESA.display_alert('success', 'Added you to to organization');
                 setTimeout(function() { $(button).button('complete'); }, 500);
                 setTimeout(function() { $(button).attr('disabled', 'disabled').addClass('disabled'); }, 1000);
             } else {

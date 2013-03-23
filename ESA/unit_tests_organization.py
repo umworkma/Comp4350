@@ -91,7 +91,7 @@ class OrganizationTestCase(TestCase):
         for di,ti in zip(directList,targetList):
             count += 1
             self.assertEqual(di.__repr__(), ti.__repr__())
-        self.assertEqual(count, 2)
+        self.assertEqual(count, 3)
         
         
     """ Test that an event can be retrieved from an organization relationship. """
