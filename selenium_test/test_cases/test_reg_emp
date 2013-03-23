@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:5000/" />
+<title>test_signup</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">test_signup</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/signup</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=username</td>
+	<td>umbetcha</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=firstname</td>
+	<td>umbetcha</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=lastname</td>
+	<td>umbetcha</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=pwd1</td>
+	<td>umbetcha</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=pwd2</td>
+	<td>umbetcha</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=address1</td>
+	<td>393 lipton</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=city</td>
+	<td>winnipeg</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=province</td>
+	<td>manitoba</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=country</td>
+	<td>canada</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=postalcode</td>
+	<td>r3f0r3</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=phonenum</td>
+	<td>202-394-3949</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=email</td>
+	<td>umbetcha@dmt.ca</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=sub_btn</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
