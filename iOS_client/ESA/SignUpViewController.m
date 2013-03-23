@@ -67,12 +67,12 @@
             NSString *pwd = [textPassword1 text];
             
             
-            
+            // form an input string including given username and password
             NSString *input = [[NSString alloc] initWithFormat:@"{"
-                               @"\"username\":\"%@\",\"password\": \"%@\",\"firstname\": \"a\",\"lastname\": \"a\", \"Entity\":{ \"entity_type\": \"1\", \"addresses\""
-                               @":[{\"address1\":\"a\", \"address2\":\"a2\", \"address3\":\"a3\", \"city\":\"city\", \"province\":\"pro\", \"country\":\"c\","
-                               @"\"postalcode\":\"a\", \"isprimary\":\"True\"}], \"contacts\": [{\"type\": \"1\","
-                               @"\"value\":\"1\", \"isPrimary\":\"True\"}, {\"type\":\"2\", \"value\": \"a\", \"isprimary\":\"False\"}]}}",user,pwd];
+                               @"\"username\":\"%@\",\"password\": \"%@\",\"firstname\": \"N/A\",\"lastname\": \"N/A\", \"Entity\":{ \"entity_type\": \"1\", \"addresses\""
+                               @":[{\"address1\":\"N/A\", \"address2\":\"N/A\", \"address3\":\"N/A\", \"city\":\"N/A\", \"province\":\"N/A\", \"country\":\"N/A\","
+                               @"\"postalcode\":\"N/A\", \"isprimary\":\"True\"}], \"contacts\": [{\"type\": \"1\","
+                               @"\"value\":\"N/A\", \"isPrimary\":\"True\"}, {\"type\":\"2\", \"value\": \"N/A\", \"isprimary\":\"False\"}]}}",user,pwd];
             
             
             NSData *pData = [input dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion: YES];
@@ -90,7 +90,7 @@
             NSHTTPURLResponse *response = nil;
             
             NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&msg];
-            
+            // check the result from the server
             if([response statusCode] >= 200 && [response statusCode] < 300)
             {
                 NSString *responseData = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
