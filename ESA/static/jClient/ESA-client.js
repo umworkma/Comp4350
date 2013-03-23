@@ -240,7 +240,8 @@ function createJsonObjectForOrganization() {
 
 // create json object and send it to server
 function createJsonObjectForEmployee() {
-
+	
+	
 	url = '/_submit_employee_form',
 	
     data = {
@@ -329,7 +330,28 @@ function join_org(button, org_id) {
 }   
 
 
-
+function checkPassword()
+{
+	var pw1 = $('input[name="pwd1"]').val();
+	var pw2 = $('input[name="pwd2"]').val();
+	var bool;
+	if(pw1 == pw2)
+	{
+		bool=true;
+		$('.pwdMsg').text("");	
+		$('.pwdMsg2').text("");
+		document.getElementById("sub_btn").disabled=false;
+	}
+	else
+	{
+		bool=false;
+		$('.pwdMsg').text(" *Password does not match!!");
+		$('.pwdMsg2').text("**** You can not click 'Submit' because password does not match ****");
+		document.getElementById("sub_btn").disabled=true;
+		$('.pwdMsg').css('background-color', 'red');
+	}
+	return bool;
+}
 
 // active carousel when DOM is fully loaded
 $(document).ready(function() {
