@@ -182,59 +182,9 @@ def submit_employee_form():
        
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
-        
-        
-# Events: Display event browse page for the given organization
-@app.route('/organization/<org_id>/events', methods=['GET'])
-@login_required
-def getEventsByOrg(org_id):
-    try:
-        eventListJSON = events.getEventsByOrgJSON(org_id)
-        if is_request_json():
-            return eventListJSON
-        else:
-            eventDict = json.loads(eventListJSON)
-            return render_template('events.html', events=eventDict)
-    except Exception, e:
-        return abort(404)
-
-    return abort(403)
-    
-    
-# Events: Create an event for the given organization
-@app.route('/organization/<org_id>/events', methods=['POST'])
-@login_required
-def createEventForOrg(org_id):
-    try:
-        eventDict = request.json['eventData']
-        result = events.insertEvent(org_id, eventDict, db)
-        return Response(response=result, mimetype='application/json')
-    except Exception, e:
-        return abort(404)
-
-    return abort(403)
     
 
-# privilege portal get and post handle function. If request is not support it will return error 403
-@app.route('/privilege/<org_id>', methods=['GET', 'POST'])
-@login_required
-def privilege_org(org_id):
-    try:
-        user_id = current_user.entityFK
 
-        if request.method == 'GET':
-            persons      = controllers.getPeopleInOrganizationJSON(org_id)
-            persons_dict = json.loads(persons);
-            org          = controllers.getOrganizationByIDJSON(org_id)
-            org_dict     = json.loads(org);
-
-            if is_request_json():
-                return jsonify(persons_dict, Organization=org_dict)
-            
-    except Exception, e:
-        return abort(404)
-
-    return abort(403)
 
 
 # privilege portal get and post member privileges function. If request is not support it will return error 403
@@ -291,20 +241,93 @@ def join_org():
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
+
+
 @app.route('/createEvent/<org_id>', methods=['GET'])
 @login_required
 def create_event(org_id):
     return render_template('create_event.html', org_id = org_id)
 
+#@app.route('/organization/<org_id>/events', methods=['POST'])
+#@login_required
+#def event_org(org_id):
+#    if request.method=='POST' and is_request_json():
+#        result = events.insertEvent(org_id, request.json, db)
+#        return result
+#    else:
+#        return jsonify(msg='Other request method[%s]' % request.method)
+
+# Events: Create an event for the given organization.
 @app.route('/organization/<org_id>/events', methods=['POST'])
 @login_required
-def event_org(org_id):
-    if request.method=='POST' and is_request_json():
+def createEventForOrg(org_id):
+    try:
         result = events.insertEvent(org_id, request.json, db)
-        return result
-    else:
-        return jsonify(msg='Other request method[%s]' % request.method)
-        
+        return Response(response=result, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+    
+# Events: Delete an event.
+@app.route('/organization/<org_id>/events/<event_id>', methods=['DELETE'])
+@login_required
+def removeEvent(org_id, event_id):
+    try:
+        result = events.removeEvent(event_id, db)
+        return Response(response=result, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+
+# Events: Display event browse page for the given organization, or retrieve all events for the given organization (JSON).
+@app.route('/organization/<org_id>/events', methods=['GET'])
+@login_required
+def getEventsByOrg(org_id):
+    try:
+        eventListJSON = events.getEventsByOrgJSON(org_id)
+        if is_request_json():
+            return Response(response=eventListJSON, mimetype='application/json')
+        else:
+            eventDict = json.loads(eventListJSON)
+            return render_template('events.html', events=eventDict)
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+    
+# Events: Retrieve all shifts for the given event.
+@app.route('/organization/<org_id>/events/<event_id>/shifts', methods=['GET'])
+@login_required
+def getShiftsByEvent(org_id, event_id):
+    try:
+        shiftListJSON = shifts_controller.getShiftsByEventJSON(event_id)
+        return Response(response=shiftListJSON, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+    
+# Events: Create a shift for the given event.
+@app.route('/organization/<org_id>/events/<event_id>/shifts', methods=['POST'])
+@login_required
+def createShiftForEvent(org_id, event_id):
+    try:
+        result = shifts_controller.insertShift(event_id, request.json, db))
+        return Response(response=result, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+    
+# Events: Delete a shift.
+@app.route('/organization/<org_id>/events/<event_id>/shifts/<shift_id>', methods=['DELETE'])
+@login_required
+def removeShiftFromEvent(org_id, event_id, shift_id):
+    try:
+        result = shifts_controller.removeShift(event_id, db))
+        return Response(response=result, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+
+
 
 @app.teardown_request
 def shutdown_session(exception=None):
