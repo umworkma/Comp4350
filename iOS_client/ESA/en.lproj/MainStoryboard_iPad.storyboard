@@ -108,6 +108,7 @@
                         <connections>
                             <outlet property="dataSource" destination="urg-d7-Yy5" id="GUv-es-IId"/>
                             <outlet property="delegate" destination="urg-d7-Yy5" id="fZL-Kk-CIS"/>
+                            <outletCollection property="gestureRecognizers" destination="peC-NC-bS9" appends="YES" id="K0A-kM-izp"/>
                         </connections>
                     </tableView>
                     <toolbarItems/>
@@ -115,6 +116,12 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="77E-ab-uJu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="peC-NC-bS9">
+                    <connections>
+                        <action selector="handleLongPress:" destination="urg-d7-Yy5" id="JOL-wz-OMm"/>
+                        <outlet property="delegate" destination="urg-d7-Yy5" id="vJT-Tu-wYq"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1178" y="451"/>
         </scene>
@@ -266,6 +273,40 @@
             <point key="canvasLocation" x="2817" y="1783"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="LoginViewController" superclassName="ViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="login_btn_touch:"/>
+                <relationship kind="outlet" name="txt_password" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="txt_username" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="OrgDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="text" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="OrgListTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgListTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="orgName" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="OrgListTableViewViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgListTableViewViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleLongPress:" candidateClass="UILongPressGestureRecognizer"/>
+            </relationships>
+        </class>
+        <class className="ViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
