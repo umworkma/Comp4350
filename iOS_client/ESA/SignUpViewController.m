@@ -8,6 +8,8 @@
 
 #import "SignUpViewController.h"
 #import "Settings.h"
+#import "OrgListTableViewViewController.h"
+
 
 @interface SignUpViewController ()
 //- (IBAction)register:(id)sender;
@@ -49,7 +51,7 @@
     @try
     {
         // check if user provides all required inputs
-        
+
         if([textUsername.text length] == 0 || [textPassword1.text length] == 0 || [textPassword2.text length] == 0)
         {
             [self alertStatus: @"Field cannot be empty" : @"Input required"];
@@ -67,10 +69,10 @@
             
             // form an input string including given username and password
             NSString *input = [[NSString alloc] initWithFormat:@"{"
-                               @"\"username\":\"%@\",\"password\": \"%@\",\"firstname\": \"N/A\",\"lastname\": \"N/A\", \"Entity\":{ \"entity_type\": \"1\", \"addresses\""
+                               @"\"username\":\"%@\",\"password\": \"%@\",\"firstname\": \"%@\",\"lastname\": \"N/A\", \"Entity\":{ \"entity_type\": \"1\", \"addresses\""
                                @":[{\"address1\":\"N/A\", \"address2\":\"N/A\", \"address3\":\"N/A\", \"city\":\"N/A\", \"province\":\"N/A\", \"country\":\"N/A\","
                                @"\"postalcode\":\"N/A\", \"isprimary\":\"True\"}], \"contacts\": [{\"type\": \"1\","
-                               @"\"value\":\"N/A\", \"isPrimary\":\"True\"}, {\"type\":\"2\", \"value\": \"N/A\", \"isprimary\":\"False\"}]}}",user,pwd];
+                               @"\"value\":\"N/A\", \"isPrimary\":\"True\"}, {\"type\":\"2\", \"value\": \"N/A\", \"isprimary\":\"False\"}]}}",user,pwd,user];
             
             
             NSData *pData = [input dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion: YES];
@@ -104,6 +106,9 @@
                     
                     NSString *msg = (NSString *)[[NSString alloc] initWithFormat:@"\nHi %@", user];
                     [self alertStatus:msg :@"Signup Successful"];
+                    // go to the org list page 
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    
                 }
                 else
                 {

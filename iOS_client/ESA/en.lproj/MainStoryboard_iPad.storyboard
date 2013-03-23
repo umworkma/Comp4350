@@ -60,7 +60,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Um-i4-FIn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1557" y="-726"/>
+            <point key="canvasLocation" x="2005" y="-1350"/>
         </scene>
         <!--Org List Table View View Controller - Browse Organizations-->
         <scene sceneID="LPQ-DN-z3V">
@@ -74,7 +74,7 @@
                             <rect key="frame" x="0.0" y="66" width="768" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <items>
-                                <barButtonItem title="Login" id="fe7-9A-pVQ">
+                                <barButtonItem title="Login/Signup" id="fe7-9A-pVQ">
                                     <connections>
                                         <segue destination="d8S-XZ-QzF" kind="push" id="n5A-2K-sGp"/>
                                     </connections>
@@ -233,9 +233,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2cb-UJ-jkP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2114" y="458"/>
+            <point key="canvasLocation" x="2737" y="221"/>
         </scene>
-        <!--Sign Up View Controller - Title-->
+        <!--Sign Up View Controller - Signup-->
         <scene sceneID="TjY-Vc-nS7">
             <objects>
                 <viewController id="bg5-L1-84P" customClass="SignUpViewController" sceneMemberID="viewController">
@@ -264,7 +264,7 @@
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Kl-Np-NnE">
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="bg5-L1-84P" id="e0c-u6-WPY"/>
                                 </connections>
@@ -287,7 +287,7 @@
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vac-hc-lRn">
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="bg5-L1-84P" id="LUm-Nf-yFQ"/>
                                 </connections>
@@ -328,7 +328,7 @@
                             <constraint firstItem="M2Z-zW-bYC" firstAttribute="baseline" secondItem="9Kl-Np-NnE" secondAttribute="baseline" type="default" id="zqC-1o-bCS"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="IZD-Zm-YKU"/>
+                    <navigationItem key="navigationItem" title="Signup" id="IZD-Zm-YKU"/>
                     <connections>
                         <outlet property="textPassword1" destination="9Kl-Np-NnE" id="A0Z-5q-lC8"/>
                         <outlet property="textPassword2" destination="Vac-hc-lRn" id="5xb-GF-yO8"/>
@@ -337,7 +337,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cLe-Qe-8ah" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2786" y="-316"/>
+            <point key="canvasLocation" x="3780" y="-749"/>
         </scene>
     </scenes>
     <classes>
@@ -386,6 +386,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="n5A-2K-sGp"/>
+        <segue reference="ci2-Wi-lSa"/>
     </inferredMetricsTieBreakers>
 </document>
