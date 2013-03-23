@@ -143,10 +143,11 @@ def submit_org_form():
 @app.route('/organization')
 def browse_orgs():
     data = controllers.getAllOrgNamesJSON(db)
+    memberData = controllers.getMemberDataJSON(db, current_user.get_id())
     if request.method == 'GET' and is_request_json():
-        return data
+        return data, memberData
     else:
-        return render_template('browse_orgs.html', data=json.loads(data))
+        return render_template('browse_orgs.html', data=json.loads(data), memberData=json.loads(memberData))
 
 #No Login Required
 @app.route('/organization/<entityid>')

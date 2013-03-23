@@ -569,3 +569,23 @@ def putPersonInOrganization(orgid, db, personid):
     else:
         resultJson = '{' + '"result": "{val}"'.format(val=failCause) + '}'
     return resultJson
+
+""" Returns json indicating whether the current_user_id belongs to each of the orgs """
+def getMemberDataJSON(db, current_user_id):
+    joinedOrgs = getJoinedOrgs(db, current_user_id)
+    isFirst = True
+    jsonString = '{"Member":['
+    for org in joinedOrgs:
+        if (isFirst == False):
+            jsonString += ','
+        else:
+            isFirst = False
+        if org in joinedOrgs:
+            jsonString += '{' + '"{key}":{val}'.format(key=models.ORGANIZATION_ENTITYFK_KEY,val='"True"')
+        jsonString += '}'
+    jsonString += ']}'
+    return jsonString
+
+def getJoinedOrgs(db, current_user_id):
+    results = models.Member.query.filter_by(personentityFK = current_user_id)
+    return results
