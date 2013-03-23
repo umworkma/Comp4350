@@ -104,8 +104,34 @@
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     if (indexPath == nil)
         RKLogInfo(@"long press on table view but not on a row");
-    else
+    else {
         RKLogInfo(@"long press on table view at row %d", indexPath.row);
+        //get orgid
+        OrgNameEntry *org = [self.orgNames objectAtIndex:[indexPath row]];
+        NSInteger orgid = org.orgEntityFK;
+        // join the org
+        RKObjectMapping *orgnameMapping = [RKObjectMapping mappingForClass:[OrgNameEntry class]];
+        [orgnameMapping addAttributeMappingsFromDictionary:@{@"org_name":@"orgName", @"org_entityfk":@"orgEntityFK"}];
+        
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:orgnameMapping pathPattern:nil keyPath:@"OrgNames" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+        
+        NSURL *baseURL = [NSURL URLWithString:BASE_URL];
+        NSString *orgurl = [NSString stringWithFormat:@"/organization/%ld/members", (long)orgid];
+        NSURL *url = [NSURL URLWithString:orgurl relativeToURL:baseURL];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        request.HTTPMethod = @"POST";
+        [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
+        
+        RKObjectRequestOperation *objectRequestOperation2 = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ responseDescriptor ]];
+        [objectRequestOperation2 setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            RKLogInfo(@"Join organization: %@", mappingResult.array);
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            RKLogInfo(@"Operation failed with error: %@", error);
+        }];
+        
+        [objectRequestOperation2 start];
+        self.orgNames = objectRequestOperation2.mappingResult.array;
+    }
 }
 
 /*
