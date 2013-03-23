@@ -32,7 +32,9 @@
 		2A9CBBFB16EAABE800041DF2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9CBBF616EAABE800041DF2 /* SystemConfiguration.framework */; };
 		2A9CBBFE16EAAD0400041DF2 /* libsbjson-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9CBBDD16EAAA3400041DF2 /* libsbjson-ios.a */; };
 		2AC56EE616EBD357000052D1 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC56EE516EBD357000052D1 /* LoginViewController.m */; };
-		67E278D516FE176E00ABF537 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E278D416FE176E00ABF537 /* SignUpViewController.m */; };
+<<<<<<< HEAD
+		670A972716F509CA002719CA /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 670A972616F509CA002719CA /* SignUpViewController.m */; };
+=======
 		DA8BE29C16F8D3F500A26FBA /* OrgDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8BE29B16F8D3F500A26FBA /* OrgDetailsViewController.m */; };
 		DA8BE2A516F8D8F200A26FBA /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8BE2A416F8D8F200A26FBA /* Entity.m */; };
 		DA8DFE1616F8C8CE00E1EB79 /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8DFE1516F8C8CE00E1EB79 /* Address.m */; };
@@ -41,6 +43,7 @@
 		DAD516B616F0CC8B004096E0 /* OrgListTableViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD516B516F0CC8B004096E0 /* OrgListTableViewViewController.m */; };
 		DAD516BC16F0D3CB004096E0 /* OrgListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD516BB16F0D3CB004096E0 /* OrgListTableViewCell.m */; };
 		DAD516BF16F0D913004096E0 /* OrgNameEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD516BE16F0D913004096E0 /* OrgNameEntry.m */; };
+>>>>>>> master
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,8 +159,10 @@
 		2A9CBBF616EAABE800041DF2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2AC56EE416EBD357000052D1 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		2AC56EE516EBD357000052D1 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		67E278D316FE176E00ABF537 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
-		67E278D416FE176E00ABF537 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+<<<<<<< HEAD
+		670A972516F509CA002719CA /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
+		670A972616F509CA002719CA /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+=======
 		DA8BE29A16F8D3F500A26FBA /* OrgDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrgDetailsViewController.h; sourceTree = "<group>"; };
 		DA8BE29B16F8D3F500A26FBA /* OrgDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrgDetailsViewController.m; sourceTree = "<group>"; };
 		DA8BE2A316F8D8F200A26FBA /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
@@ -175,6 +180,7 @@
 		DAD516BB16F0D3CB004096E0 /* OrgListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrgListTableViewCell.m; sourceTree = "<group>"; };
 		DAD516BD16F0D913004096E0 /* OrgNameEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrgNameEntry.h; sourceTree = "<group>"; };
 		DAD516BE16F0D913004096E0 /* OrgNameEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrgNameEntry.m; sourceTree = "<group>"; };
+>>>>>>> master
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +255,11 @@
 			isa = PBXGroup;
 			children = (
 				2A9CBBA016EAA66400041DF2 /* AppDelegate.h */,
+<<<<<<< HEAD
+				2A9CBBA116EAA66400041DF2 /* AppDelegate.m */,
+				2A9CBBA916EAA66400041DF2 /* MainStoryboard_iPhone.storyboard */,
+				2A9CBBAC16EAA66400041DF2 /* MainStoryboard_iPad.storyboard */,
+=======
 				DAC8D15216F63BF500EC01D7 /* Organization.h */,
 				DAC8D15316F63BF500EC01D7 /* Organization.m */,
 				2A9CBBA116EAA66400041DF2 /* AppDelegate.m */,
@@ -256,11 +267,16 @@
 				2A9CBBAC16EAA66400041DF2 /* MainStoryboard_iPad.storyboard */,
 				DAD516BD16F0D913004096E0 /* OrgNameEntry.h */,
 				DAD516BE16F0D913004096E0 /* OrgNameEntry.m */,
+>>>>>>> master
 				2A9CBBAF16EAA66400041DF2 /* ViewController.h */,
 				2A9CBBB016EAA66400041DF2 /* ViewController.m */,
 				2A9CBB9816EAA66400041DF2 /* Supporting Files */,
 				2AC56EE416EBD357000052D1 /* LoginViewController.h */,
 				2AC56EE516EBD357000052D1 /* LoginViewController.m */,
+<<<<<<< HEAD
+				670A972516F509CA002719CA /* SignUpViewController.h */,
+				670A972616F509CA002719CA /* SignUpViewController.m */,
+=======
 				DAD516BA16F0D3CB004096E0 /* OrgListTableViewCell.h */,
 				DAD516BB16F0D3CB004096E0 /* OrgListTableViewCell.m */,
 				DAD516B416F0CC8B004096E0 /* OrgListTableViewViewController.h */,
@@ -274,8 +290,7 @@
 				DA8BE29B16F8D3F500A26FBA /* OrgDetailsViewController.m */,
 				DA8BE2A316F8D8F200A26FBA /* Entity.h */,
 				DA8BE2A416F8D8F200A26FBA /* Entity.m */,
-				67E278D316FE176E00ABF537 /* SignUpViewController.h */,
-				67E278D416FE176E00ABF537 /* SignUpViewController.m */,
+>>>>>>> master
 			);
 			path = ESA;
 			sourceTree = "<group>";
@@ -521,6 +536,9 @@
 				2A9CBBA216EAA66400041DF2 /* AppDelegate.m in Sources */,
 				2A9CBBB116EAA66400041DF2 /* ViewController.m in Sources */,
 				2AC56EE616EBD357000052D1 /* LoginViewController.m in Sources */,
+<<<<<<< HEAD
+				670A972716F509CA002719CA /* SignUpViewController.m in Sources */,
+=======
 				DAD516B616F0CC8B004096E0 /* OrgListTableViewViewController.m in Sources */,
 				DAD516BC16F0D3CB004096E0 /* OrgListTableViewCell.m in Sources */,
 				DAD516BF16F0D913004096E0 /* OrgNameEntry.m in Sources */,
@@ -529,7 +547,7 @@
 				DA8DFE1F16F8CAEE00E1EB79 /* Contact.m in Sources */,
 				DA8BE29C16F8D3F500A26FBA /* OrgDetailsViewController.m in Sources */,
 				DA8BE2A516F8D8F200A26FBA /* Entity.m in Sources */,
-				67E278D516FE176E00ABF537 /* SignUpViewController.m in Sources */,
+>>>>>>> master
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
