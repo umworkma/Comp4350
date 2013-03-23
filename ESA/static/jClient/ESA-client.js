@@ -96,6 +96,11 @@ function ESA() {
 			window.setTimeout(function() {
 				alert.alert('close')
 			}, 2000);
+			if(htmlMsg="True")
+			{
+				$("#org-reg-response").empty();
+				$("#org-reg-response").append("<p>Successfully Registered !!</p>");
+			}
 		}
     };
 
