@@ -15,6 +15,8 @@ def extractShiftFromDict(shiftDict):
     for key, value in shiftDict.iteritems():
         if(key == models.SHIFT_PK_KEY and value != 'None'):
             target.pk = int(value)
+        if(key == models.SHIFT_EVENTFK_KEY and value != 'None'):
+            target.eventFK = int(value)
         if(key == models.SHIFT_START_KEY):
             target.startdatetime = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         if(key == models.SHIFT_END_KEY):
@@ -29,6 +31,7 @@ def extractShiftFromDict(shiftDict):
 
 def shiftToJSON(shift):
     jsonString = '{' + '"{key}":{val},'.format(key=models.SHIFT_PK_KEY, val=shift.pk if shift.pk != None else '"None"')
+    jsonString += '"{key}":{val},'.format(key=models.SHIFT_EVENTFK_KEY, val=shift.eventFK if shift.eventFK != None else '"None"')
     jsonString += '"{key}":"{val}",'.format(key=models.SHIFT_START_KEY, val=shift.startdatetime)
     jsonString += '"{key}":"{val}",'.format(key=models.SHIFT_END_KEY, val=shift.enddatetime)
     jsonString += '"{key}":"{val}",'.format(key=models.SHIFT_LOCATION_KEY, val=shift.location)
@@ -40,6 +43,24 @@ def shiftToJSON(shift):
 def _getShiftsByEvent(eventFK):
     results = models.Shift.query.filter_by(eventFK=eventFK)
     return results
+    
+def getShiftsByEventJSON(eventFK):
+    shiftList = _getShiftsByEvent(eventFK)
+    resultJSON = '{"Shifts":'
+    counter = 0
+    if shiftList.count() > 0:
+        resultJSON += '['
+        for shift in shiftList:
+            shiftJSON = shiftToJSON(shift)
+            if counter > 0:
+                resultJSON += ','
+            resultJSON += shiftJSON
+            counter += 1
+        resultJSON += ']'
+    else:
+        resultJSON += '"None"'
+    resultJSON += '}'
+    return resultJSON
     
 
 # Returns True or False

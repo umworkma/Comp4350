@@ -61,6 +61,7 @@ def getEventsByOrgJSON(orgID):
             if counter > 0:
                 resultJSON += ','
             resultJSON += eventJSON
+            counter += 1
         resultJSON += ']'
     else:
         resultJSON += '"None"'

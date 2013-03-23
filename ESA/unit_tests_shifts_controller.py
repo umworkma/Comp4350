@@ -49,7 +49,7 @@ class ShiftControllerTestCase(TestCase):
     def test_shiftToJSON(self):
         control = models.Shift.query.first()
         controlJSON = shifts_controller.shiftToJSON(control)
-        expectedJSON = stringJSON = '{"shift_pk":1,"shift_start":"2013-07-12 12:00:00","shift_end":"2013-07-12 13:00:00","shift_location":"Booth A","shift_minworkers":2,"shift_maxworkers":4}'
+        expectedJSON = stringJSON = '{"shift_pk":1,"shift_eventfk":1,"shift_start":"2013-07-12 12:00:00","shift_end":"2013-07-12 13:00:00","shift_location":"Booth A","shift_minworkers":2,"shift_maxworkers":4}'
         self.assertEqual(controlJSON, expectedJSON)
         
     
@@ -60,6 +60,7 @@ class ShiftControllerTestCase(TestCase):
         target = shifts_controller.extractShiftFromDict(data)
 
         self.assertEqual(control.pk, target.pk)
+        self.assertEqual(control.eventFK, target.eventFK)
         self.assertEqual(control.startdatetime, target.startdatetime)
         self.assertEqual(control.enddatetime, target.enddatetime)
         self.assertEqual(control.location, target.location)
@@ -84,6 +85,52 @@ class ShiftControllerTestCase(TestCase):
         key = 9999
         shiftList = shifts_controller._getShiftsByEvent(key)
         self.assertEqual(shiftList.count(), 0)
+        
+        
+    def test_getShiftByEventJSON_true(self):
+        key = 1
+        shiftListJSON = shifts_controller.getShiftsByEventJSON(key)
+        shiftListDict = json.loads(shiftListJSON)
+        for rootKey, rootVal in shiftListDict.iteritems():
+            self.assertEqual(rootKey, 'Shifts')
+            counter = 0
+            for shiftJSON in rootVal:
+                shift = shifts_controller.extractShiftFromDict(shiftJSON)
+                self.assertEqual(shift.eventFK, key)
+                self.assertEqual(shift.location, 'Booth A')
+                if shift.pk == 1:
+                    counter += 1
+                    self.assertEqual(shift.startdatetime, datetime.datetime(2013, 7, 12, 12, 0))
+                    self.assertEqual(shift.enddatetime, datetime.datetime(2013, 7, 12, 13, 0))
+                    self.assertEqual(shift.minWorkers, 2)
+                    self.assertEqual(shift.maxWorkers, 4)
+                elif shift.pk == 2:
+                    counter += 1
+                    self.assertEqual(shift.startdatetime, datetime.datetime(2013, 7, 12, 13, 0))
+                    self.assertEqual(shift.enddatetime, datetime.datetime(2013, 7, 12, 14, 0))
+                    self.assertEqual(shift.minWorkers, 2)
+                    self.assertEqual(shift.maxWorkers, 4)
+                elif shift.pk == 3:
+                    counter += 1
+                    self.assertEqual(shift.startdatetime, datetime.datetime(2013, 7, 12, 14, 0))
+                    self.assertEqual(shift.enddatetime, datetime.datetime(2013, 7, 12, 15, 0))
+                    self.assertEqual(shift.minWorkers, 3)
+                    self.assertEqual(shift.maxWorkers, 4)
+                elif shift.pk == 4:
+                    counter += 1
+                    self.assertEqual(shift.startdatetime, datetime.datetime(2013, 7, 12, 15, 0))
+                    self.assertEqual(shift.enddatetime, datetime.datetime(2013, 7, 12, 16, 0))
+                    self.assertEqual(shift.minWorkers, 3)
+                    self.assertEqual(shift.maxWorkers, 4)
+            self.assertEqual(counter, 4)
+            
+    def test_getShiftByEventJSON_false(self):
+        key = 999
+        shiftListJSON = shifts_controller.getShiftsByEventJSON(key)
+        shiftListDict = json.loads(shiftListJSON)
+        for rootKey, rootVal in shiftListDict.iteritems():
+            self.assertEqual(rootKey, 'Shifts')
+            self.assertEqual(rootVal, 'None')
         
     
     def test__isDuplicateShift_true(self):
@@ -369,6 +416,8 @@ def suite():
     suite.addTest(ShiftControllerTestCase('test_extractShiftFromDict'))
     suite.addTest(ShiftControllerTestCase('test__getShiftByEvent_true'))
     suite.addTest(ShiftControllerTestCase('test__getShiftByEvent_false'))
+    suite.addTest(ShiftControllerTestCase('test_getShiftByEventJSON_true'))
+    suite.addTest(ShiftControllerTestCase('test_getShiftByEventJSON_false'))
     suite.addTest(ShiftControllerTestCase('test__isDuplicateShift_true'))
     suite.addTest(ShiftControllerTestCase('test__isDuplicateShift_false'))
     suite.addTest(ShiftControllerTestCase('test__insertShift_true'))
