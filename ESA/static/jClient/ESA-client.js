@@ -327,11 +327,15 @@ function createJsonObjectForEmployee() {
 
 function eventOnSubmit(org_id) {
     url = '/organization/'+ org_id + '/events',
+    eventStart = $('input[name="event_start"]').val(),
+    eventEnd = $('input[name="event_end"]').val(),
+    eventEnd += ':00',
+    eventStart += ':00',
     data = {
         event_name: $('input[name="event_name"]').val(),
         event_desc: $('textarea#event_desc').val(),
-        event_start: $('input[name="event_start"]').val(),
-        event_end: $('input[name="event_end"]').val(),
+        event_start: eventStart,
+        event_end: eventEnd,
         event_orgfk: org_id
     },
 
