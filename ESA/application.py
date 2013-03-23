@@ -7,6 +7,7 @@ import models
 import controllers
 import events
 import controller_privileges
+import shifts_controller
 import re
 
 app.config.from_object(config)

@@ -6,6 +6,7 @@
 from flask import *
 import models
 import controllers
+import shifts_controller
 from datetime import datetime
 
 #####################################
@@ -91,6 +92,7 @@ def _insertEvent(event, db):
         db.session.commit()
         if(event.pk > 0):
             result = event.pk
+            shifts_controller.autoGenerateShifts(event.pk, event.startdate, event.enddate, 60, db)
     if(result == 'Unknown'):
         result = 'Duplicate'
     return result

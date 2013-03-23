@@ -413,6 +413,15 @@ class ShiftControllerTestCase(TestCase):
         result = shifts_controller._isDuplicateShift(newShift)
         self.assertFalse(result)
         
+    def test_autoGenerateShifts(self):
+        shiftCount = models.Shift.query.count()
+        shiftStartDateTime = datetime.datetime(2013, 3, 22, 3, 0)
+        shiftEndDateTime = datetime.datetime(2013, 3, 23, 7, 30)
+        shiftLength = 60
+        eventFK = 1
+        shifts_controller.autoGenerateShifts(eventFK, shiftStartDateTime, shiftEndDateTime, shiftLength, self.db)
+        shiftCountAfter = models.Shift.query.count()
+        self.assertEqual(shiftCountAfter, shiftCount + 8)
         
         
         
@@ -445,6 +454,8 @@ def suite():
     suite.addTest(ShiftControllerTestCase('test__removeShift_invalid'))
     suite.addTest(ShiftControllerTestCase('test__removeShift_false'))
     suite.addTest(ShiftControllerTestCase('test_removeShift_true'))
+    suite.addTest(ShiftControllerTestCase('test_autoGenerateShifts'))
+    
     
     return suite
 
