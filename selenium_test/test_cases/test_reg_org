@@ -4,47 +4,57 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:5000/" />
-<title>test_reg_emp</title>
+<title>test_reg_org</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">test_reg_emp</td></tr>
+<tr><td rowspan="1" colspan="3">test_reg_org</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/signup</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Login</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>name=username</td>
-	<td>test1</td>
+	<td>user1</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>name=firstname</td>
-	<td>test</td>
+	<td>name=password</td>
+	<td>password1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=div.controls &gt; button.btn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=a.dropdown-toggle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create Organization</td>
+	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>name=lastname</td>
-	<td>test</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>name=pwd1</td>
-	<td>test</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>name=pwd2</td>
-	<td>test</td>
+	<td>name=org_name</td>
+	<td>neworg</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>name=address1</td>
-	<td>1234 test</td>
+	<td>123 neworg</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -64,26 +74,16 @@
 <tr>
 	<td>type</td>
 	<td>name=postalcode</td>
-	<td>r3f3e9</td>
+	<td>r3e3e4</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>name=phonenum</td>
-	<td>303-394-3949</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>name=email</td>
-	<td>test@test.com</td>
+	<td>name=phone</td>
+	<td>293-495-2949</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>id=sub_btn</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=here</td>
+	<td>css=input.btn.btn-primary</td>
 	<td></td>
 </tr>
 <tr>
