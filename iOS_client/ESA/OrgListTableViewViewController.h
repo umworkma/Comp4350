@@ -10,4 +10,6 @@
 @interface OrgListTableViewViewController : UITableViewController
 @property (nonatomic, strong) NSArray *orgNames;
 
+//- (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer;
+
 @end
