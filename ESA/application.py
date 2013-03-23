@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify, json, flash
+from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify, json, flash, Response
 from ESA import app, login_manager, login_required, login_user, current_user, logout_user
 from flask.ext.testing import TestCase
 
@@ -184,54 +184,6 @@ def submit_employee_form():
         return jsonify(msg='Other request method[%s]' % request.method)
     
 
-
-
-
-# privilege portal get and post member privileges function. If request is not support it will return error 403
-@app.route('/privilege/<org_id>/<person_id>', methods=['GET', 'POST'])
-@login_required
-def privilege_org_member(org_id, person_id):
-    try:
-        user_id = current_user.entityFK;
-
-        if request.method == 'GET':
-            privileges = controller_privileges.getPrivilegesForPersonJSON(person_id, org_id)
-
-            if is_request_json():
-                return Response(response=privileges, mimetype='application/json')
-
-        elif request.method == 'POST':
-
-            if is_request_json():
-                result = controller_privileges.grantPrivilegeToPersonJSON(db, request.json['privilege_id'], person_id, org_id)
-                return Response(response=result, mimetype='application/json')
-
-    except Exception, e:
-        return abort(404)
-
-    return abort(403)
-
-
-# privilege portal delete member privileges function. If request is not support it will return error 403
-# known issue: request.json does not parse delete request json body data to dict.
-@app.route('/privilege/<org_id>/<person_id>/<privilege_id>', methods=['DELETE'])
-@login_required
-def privilege_org_member_remove_privilege(org_id, person_id, privilege_id):
-    try:
-        user_id = current_user.entityFK;
-
-        if request.method == 'DELETE':
-
-            if is_request_json():
-                result = controller_privileges.revokePrivilegeForPersonJSON(db, privilege_id, person_id, org_id)
-                return Response(response=result, mimetype='application/json')
-
-    except Exception, e:
-        return abort(404)
-
-    return abort(403)
-    
-
 @app.route('/_member', methods=['POST'])
 @login_required
 def join_org():
@@ -261,12 +213,12 @@ def create_event(org_id):
 @app.route('/organization/<org_id>/events', methods=['POST'])
 @login_required
 def createEventForOrg(org_id):
-    try:
-        result = events.insertEvent(org_id, request.json, db)
-        return Response(response=result, mimetype='application/json')
-    except Exception, e:
-        return abort(404)
-    return abort(403)
+    #try:
+    result = events.insertEvent(org_id, request.json, db)
+    return Response(response=result, mimetype='application/json')
+    #except Exception, e:
+    #    return abort(404)
+    #return abort(403)
     
 # Events: Delete an event.
 @app.route('/organization/<org_id>/events/<event_id>', methods=['DELETE'])
@@ -310,7 +262,7 @@ def getShiftsByEvent(org_id, event_id):
 @login_required
 def createShiftForEvent(org_id, event_id):
     try:
-        result = shifts_controller.insertShift(event_id, request.json, db))
+        result = shifts_controller.insertShift(event_id, request.json, db)
         return Response(response=result, mimetype='application/json')
     except Exception, e:
         return abort(404)
@@ -321,7 +273,7 @@ def createShiftForEvent(org_id, event_id):
 @login_required
 def removeShiftFromEvent(org_id, event_id, shift_id):
     try:
-        result = shifts_controller.removeShift(event_id, db))
+        result = shifts_controller.removeShift(event_id, db)
         return Response(response=result, mimetype='application/json')
     except Exception, e:
         return abort(404)
