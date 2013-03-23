@@ -200,8 +200,8 @@ class ShiftControllerTestCase(TestCase):
         newKey = 0
         resultDict = json.loads(result)
         for key,value in resultDict.iteritems():
-            if key == 'result':
-                self.assertEqual(value, 'True')
+            if key == 'success':
+                self.assertEqual(value, 'true')
             if key == models.SHIFT_PK_KEY:
                 self.assertTrue(value > 0)
                 newKey = value
@@ -228,7 +228,9 @@ class ShiftControllerTestCase(TestCase):
         result = shifts_controller.insertShift(shift1.eventFK, shiftDict, self.db)
         resultDict = json.loads(result)
         for key,value in resultDict.iteritems():
-            if key == 'result':
+            if key == 'success':
+                self.assertEqual(value, 'false')
+            if key == 'msg':
                 self.assertEqual(value, 'Duplicate')
             elif key == 'shift_pk':
                 self.assertEqual(value, 'None')
@@ -253,7 +255,9 @@ class ShiftControllerTestCase(TestCase):
         result = shifts_controller.insertShift(eventFK, shiftDict, self.db)
         resultDict = json.loads(result)
         for key,value in resultDict.iteritems():
-            if key == 'result':
+            if key == 'success':
+                self.assertEqual(value, 'false')
+            if key == 'msg':
                 self.assertEqual(value, 'BadEvent')
             elif key == 'shift_pk':
                 self.assertEqual(value, 'None')        
@@ -340,8 +344,8 @@ class ShiftControllerTestCase(TestCase):
         self.assertIsNotNone(result)
         resultDict = json.loads(result)
         for key,value in resultDict.iteritems():
-            if key == 'result':
-                self.assertTrue(value)
+            if key == 'success':
+                self.assertEqual(value, 'true')
             if key == models.SHIFT_PK_KEY:
                 self.assertEqual(value, newShiftPK)
         

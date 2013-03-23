@@ -243,8 +243,8 @@ class EventTestCase(TestCase):
         newKey = 0
         resultDict = json.loads(result)
         for key,value in resultDict.iteritems():
-            if key == 'result':
-                self.assertEqual(value, 'True')
+            if key == 'success':
+                self.assertEqual(value, 'true')
             if key == models.EVENT_PK_KEY:
                 self.assertTrue(value > 0)
                 newKey = value
@@ -278,9 +278,11 @@ class EventTestCase(TestCase):
         result = events.insertEvent(orgFK, eventDict, self.db)
         resultDict = json.loads(result)
         for key,value in resultDict.iteritems():
-            if key == 'result':
+            if key == 'success':
+                self.assertEqual(value, 'false')
+            if key == 'msg':
                 self.assertEqual(value, 'Duplicate')
-            elif key == 'event_pk':
+            if key == 'event_pk':
                 self.assertEqual(value, 'None')
         
     ''' Test method from events.py '''    
@@ -301,7 +303,9 @@ class EventTestCase(TestCase):
         result = events.insertEvent(orgFK, eventDict, self.db)
         resultDict = json.loads(result)
         for key,value in resultDict.iteritems():
-            if key == 'result':
+            if key == 'success':
+                self.assertEqual(value, 'false')
+            if key == 'msg':
                 self.assertEqual(value, 'BadOrg')
             elif key == 'event_pk':
                 self.assertEqual(value, 'None')        
@@ -405,8 +409,8 @@ class EventTestCase(TestCase):
         self.assertIsNotNone(result)
         resultDict = json.loads(result)
         for key,value in resultDict.iteritems():
-            if key == 'result':
-                self.assertTrue(value)
+            if key == 'success':
+                self.assertEqual(value, 'true')
             if key == models.EVENT_PK_KEY:
                 self.assertEqual(value, newEventPK)
 

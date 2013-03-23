@@ -69,16 +69,16 @@ def _insertShift(shift, db):
     return result
 
 
-# returns: {"result":"True", "shift_pk":<pk>}
-#      or: {"result":["BadEvent" | "Duplicate"], "event_pk":"None"}
+# returns: {"success":"true", "shift_pk":<pk>}
+#      or: {"success":"false", "msg":["BadEvent" | "Duplicate"], "event_pk":"None"}
 def insertShift(eventFK, shiftDict, db):
     shift = extractShiftFromDict(shiftDict)
     shift.eventFK = eventFK
     result = _insertShift(shift, db)
     if result != 'BadEvent' and result != 'Duplicate':
-        resultJSON = '{"result":"True",'
+        resultJSON = '{"success":"true",'
     else:
-        resultJSON = '{' + '"result":"{val}",'.format(val=result)
+        resultJSON = '{' + '"success":"false","msg":"{val}",'.format(val=result)
     
     if shift.pk is not None:
         resultJSON += '"{key}":{val}'.format(key=models.SHIFT_PK_KEY, val=shift.pk)
@@ -99,10 +99,10 @@ def _removeShift(pk, db):
     return result
     
 
-# Returns JSON: {"result":["True" | "False"],"shift_pk":<pk>}
+# Returns JSON: {"success":["true" | "false"],"shift_pk":<pk>}
 def removeShift(pk, db):
     result = _removeShift(pk, db)
-    resultJSON = '{'+ '"result":"{result}",'
+    resultJSON = '{'+ '"success":"{val}",'.format(val="true" if result == True else "false")
     resultJSON += '"{key}":{val}'.format(result=result, key=models.SHIFT_PK_KEY, val=pk)
     resultJSON += '}'
     return resultJSON

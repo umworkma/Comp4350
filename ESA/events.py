@@ -95,16 +95,16 @@ def _insertEvent(event, db):
     return result
 
 
-# returns: {"result":"True", "event_pk":<pk>}
-#      or: {"result":["BadOrg" | "Duplicate"], "event_pk":"None"}
+# returns: {"success":"true", "event_pk":<pk>}
+#      or: {"success":"false", "msg":["BadOrg" | "Duplicate"], "event_pk":"None"}
 def insertEvent(orgFK, eventDict, db):
     event = extractEventFromDict(eventDict)
     event.organizationFK = orgFK
     result = _insertEvent(event, db)
     if result != 'BadOrg' and result != 'Duplicate':
-        resultJSON = '{"result":"True",'
+        resultJSON = '{"success":"true",'
     else:
-        resultJSON = '{' + '"result":"{val}",'.format(val=result)
+        resultJSON = '{' + '"success":"false", "msg":"{val}",'.format(val=result)
     
     if event.pk is not None:
         resultJSON += '"{key}":{val}'.format(key=models.EVENT_PK_KEY, val=event.pk)
@@ -131,10 +131,10 @@ def _removeEvent(pk, db):
     return result
     
 
-# Returns JSON: {"result":["True" | "False"],"event_pk":<pk>}
+# Returns JSON: {"success":["true" | "false"],"event_pk":<pk>}
 def removeEvent(pk, db):
     result = _removeEvent(pk, db)
-    resultJSON = '{'+ '"result":"{result}",'
+    resultJSON = '{'+ '"success":"{val}",'.format(val="true" if result == True else "false")
     resultJSON += '"{key}":{val}'.format(result=result, key=models.EVENT_PK_KEY, val=pk)
     resultJSON += '}'
     return resultJSON
