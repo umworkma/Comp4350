@@ -10,6 +10,8 @@
 <tr><td><b>Test Suite</b></td></tr>
 <tr><td><a href="test_cases/test_index_page">test_index_page</a></td></tr>
 <tr><td><a href="test_cases/test_login_page">test_login_page</a></td></tr>
+<tr><td><a href="test_cases/test_reg_emp">test_reg_emp</a></td></tr>
+<tr><td><a href="test_cases/test_privilege">test_reg_org</a></td></tr>
 <tr><td><a href="test_cases/test_join_org">test_join_org</a></td></tr>
 <tr><td><a href="test_cases/test_privilege">test_privilege</a></td></tr>
 </tbody></table>
