@@ -211,7 +211,7 @@ def create_event(org_id):
     return render_template('create_event.html', org_id = org_id)
 
 
-# privilege portal main handle function. If request is not support it will return error 403
+# Events: Main events browse page.
 @app.route('/events', methods=['GET'])
 @login_required
 def getEvents():
