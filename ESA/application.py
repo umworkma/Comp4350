@@ -228,14 +228,6 @@ def getEvents():
 
     return abort(403)
 
-#@app.route('/organization/<org_id>/events', methods=['POST'])
-#@login_required
-#def event_org(org_id):
-#    if request.method=='POST' and is_request_json():
-#        result = events.insertEvent(org_id, request.json, db)
-#        return result
-#    else:
-#        return jsonify(msg='Other request method[%s]' % request.method)
 
 # Events: Create an event for the given organization.
 @app.route('/organization/<org_id>/events', methods=['POST'])
