@@ -172,7 +172,7 @@ function EventsPortal() {
             for(i = 0; i < response.Shifts.length; i++) {
                 events_div_row = $('<h3>');
                 events_div_row.attr('id', 'ep_org_events_'+ response.event_id + '_shift_' + response.Shifts[i].shift_pk);
-                events_div_row.text(response.Shifts[i].shift_location);
+                events_div_row.text(response.Shifts[i].shift_start + ' - ' + response.Shifts[i].shift_end);
 
                 events_div_row_div = $('<div>');
                 events_div_row_div.attr('id', 'ep_org_events_detail_'+ response.event_id + '_shift_' + response.Shifts[i].shift_pk);
