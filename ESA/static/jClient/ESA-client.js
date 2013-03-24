@@ -341,13 +341,17 @@ function eventOnSubmit(org_id) {
 
     success = function(data) {
         // check for server return data.result
-        if(typeof data.result != 'undefined' ) {
+        if(typeof data.success != 'undefined' ) {
             // display the 2 type of alert box base of the result
-            if(data.result == 'EmpTrue') {
-                ESA.display_alert('success', data.result);
-
+            
+            if(data.success == 'true') {
+                ESA.display_alert('success', ' Event created successfully.');
+                $('input[name="event_name"]').val('')
+                $('textarea#event_desc').val('')
+                $('input[name="event_start"]').val('')
+                $('input[name="event_end"]').val('')
             } else {
-                ESA.display_alert('block', data.result);
+                // ESA.display_alert('block', data.success);
 
             }
         }
