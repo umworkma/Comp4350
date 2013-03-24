@@ -54,19 +54,20 @@ class EventTestCase(TestCase):
         self.assertEqual(event.description, 'This is your event')
         self.assertEqual(event.organizationFK, 2)
 
-        event = events._getEventByID(3)
+        event = events._getEventByID(999)
         self.assertIsNone(event)
         
         
     def test__getEventsByOrg_true(self):
         key = 1
         eventList = events._getEventsByOrg(key)
-        self.assertEqual(eventList.count(), 1);
+        self.assertEqual(eventList.count(), 3);
         for event in eventList:
-            self.assertEqual(event.pk, 1)
-            self.assertEqual(event.name, 'My Event')
-            self.assertEqual(event.description, 'This is my event')
-            self.assertEqual(event.organizationFK, key)
+            if event.pk == 1:
+                self.assertEqual(event.pk, 1)
+                self.assertEqual(event.name, 'My Event')
+                self.assertEqual(event.description, 'This is my event')
+                self.assertEqual(event.organizationFK, key)
             
     def test__getEventsByOrg_false(self):
         key = 999
@@ -82,12 +83,13 @@ class EventTestCase(TestCase):
             self.assertEqual(rootKey, 'Events')
             counter = 0
             for eventJSON in rootVal:
-                counter += 1
                 event = events.extractEventFromDict(eventJSON)
-                self.assertEqual(event.pk, 1)
-                self.assertEqual(event.name, 'My Event')
-                self.assertEqual(event.description, 'This is my event')
-                self.assertEqual(event.organizationFK, key)
+                if event.pk == 1:
+                    counter += 1
+                    self.assertEqual(event.pk, 1)
+                    self.assertEqual(event.name, 'My Event')
+                    self.assertEqual(event.description, 'This is my event')
+                    self.assertEqual(event.organizationFK, key)
             self.assertEqual(counter, 1)
             
     def test_getEventsByOrg_false(self):

@@ -10,6 +10,7 @@ import controller_privileges
 import shifts_controller
 import shiftperson_controller
 
+
 app.config.from_object(config)
 
 db = models.init_app(app)

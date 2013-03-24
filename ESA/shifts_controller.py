@@ -7,7 +7,7 @@ from flask import *
 import models
 import controllers
 import events
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def extractShiftFromDict(shiftDict):
     target = models.Shift()
@@ -132,3 +132,29 @@ def removeShift(pk, db):
     resultJSON += '}'
     return resultJSON
 
+def autoGenerateShifts(eventFK, startDateTime, endDateTime, shiftLength, db):
+
+    startDate = startDateTime.date()
+    startTime = startDateTime.time()
+    
+    maxDate = endDateTime.date()
+    maxTime = endDateTime.time()
+    
+    currentDay = 0
+    currentTime = startTime
+    currentShift = 0
+
+    numdays = (endDateTime - startDateTime).days + 1
+    numShiftsInDay = ((endDateTime - startDateTime).seconds)/60/shiftLength
+    numShifts = numdays*numShiftsInDay
+
+    while (currentDay < numdays):
+        currentTime = startTime
+        currentDate = startDate + timedelta(days=currentDay)
+        while (currentShift < numShiftsInDay):
+            currentDateTime = datetime.combine(currentDate, startTime) + timedelta(minutes=currentShift*shiftLength)
+            shift = models.Shift(eventFK, currentDateTime, currentDateTime + timedelta(minutes=shiftLength), 'location', 1, 999)
+            result = _insertShift(shift, db)
+            currentShift +=1
+        currentDay += 1
+        currentShift = 0

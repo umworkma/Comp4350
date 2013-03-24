@@ -112,7 +112,7 @@ class OrganizationTestCase(TestCase):
         for di,ti in zip(directList,targetList):
             count += 1
             self.assertEqual(di.__repr__(), ti.__repr__())
-        self.assertEqual(count, 1)
+        self.assertEqual(count, 3)
     
 
     """ Test adding an Organization. """
