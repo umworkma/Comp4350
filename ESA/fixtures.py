@@ -292,6 +292,20 @@ class EventData(DataSet):
         name='Your Event'
         description='This is your event'
         organizationFK=2
+
+    class event3:
+        name='Comic Con - Winnipeg'
+        description='A three-day pop culture event held in October or early November. The event features celebrity guests, comic book artists, exhibitors, costume contests, video rooms, gaming, and more.'
+        startdate=datetime(2013, 10, 25, 12, 0)
+        enddate=datetime(2013, 10, 27, 18, 0)
+        organizationFK=1
+
+    class event4:
+        name='SXSW - Austin, TX'
+        description='South by Southwest (SXSW) is a set of film, interactive, and music festivals and conferences that take place every spring.'
+        startdate=datetime(2013, 3, 9, 12, 0)
+        enddate=datetime(2013, 3, 12, 20, 0)
+        organizationFK=1
         
 class ShiftData(DataSet):
     class shift01:
@@ -325,6 +339,279 @@ class ShiftData(DataSet):
         location='Booth A'
         minWorkers=3
         maxWorkers=4
+
+    class shift05:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 25, 12, 0)
+        enddatetime=datetime(2013, 10, 25, 13, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift06:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 25, 13, 0)
+        enddatetime=datetime(2013, 10, 25, 14, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift07:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 25, 14, 0)
+        enddatetime=datetime(2013, 10, 25, 15, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift08:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 25, 15, 0)
+        enddatetime=datetime(2013, 10, 25, 16, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift09:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 25, 16, 0)
+        enddatetime=datetime(2013, 10, 25, 17, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift10:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 25, 17, 0)
+        enddatetime=datetime(2013, 10, 25, 18, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift11:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 26, 12, 0)
+        enddatetime=datetime(2013, 10, 26, 13, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift12:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 26, 13, 0)
+        enddatetime=datetime(2013, 10, 26, 14, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift13:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 26, 14, 0)
+        enddatetime=datetime(2013, 10, 26, 15, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift14:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 26, 15, 0)
+        enddatetime=datetime(2013, 10, 26, 16, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift15:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 26, 16, 0)
+        enddatetime=datetime(2013, 10, 26, 17, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift16:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 26, 17, 0)
+        enddatetime=datetime(2013, 10, 26, 18, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift17:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 27, 12, 0)
+        enddatetime=datetime(2013, 10, 27, 13, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift18:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 27, 13, 0)
+        enddatetime=datetime(2013, 10, 27, 14, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift19:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 27, 14, 0)
+        enddatetime=datetime(2013, 10, 27, 15, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift20:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 27, 15, 0)
+        enddatetime=datetime(2013, 10, 27, 16, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift21:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 27, 16, 0)
+        enddatetime=datetime(2013, 10, 27, 17, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift22:
+        eventFK=3
+        startdatetime=datetime(2013, 10, 27, 17, 0)
+        enddatetime=datetime(2013, 10, 27, 18, 0)
+        location='Booth A'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift23:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 9, 16, 0)
+        enddatetime=datetime(2013, 3, 9, 17, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift24:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 9, 17, 0)
+        enddatetime=datetime(2013, 3, 9, 18, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift25:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 9, 18, 0)
+        enddatetime=datetime(2013, 3, 9, 19, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift26:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 9, 19, 0)
+        enddatetime=datetime(2013, 3, 9, 20, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift27:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 10, 16, 0)
+        enddatetime=datetime(2013, 3, 10, 17, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift28:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 10, 17, 0)
+        enddatetime=datetime(2013, 3, 10, 18, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift29:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 10, 18, 0)
+        enddatetime=datetime(2013, 3, 10, 19, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift30:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 10, 19, 0)
+        enddatetime=datetime(2013, 3, 10, 20, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift31:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 11, 16, 0)
+        enddatetime=datetime(2013, 3, 11, 17, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift32:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 11, 17, 0)
+        enddatetime=datetime(2013, 3, 11, 18, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift33:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 11, 18, 0)
+        enddatetime=datetime(2013, 3, 11, 19, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift34:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 11, 19, 0)
+        enddatetime=datetime(2013, 3, 11, 20, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift35:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 12, 16, 0)
+        enddatetime=datetime(2013, 3, 12, 17, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift36:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 12, 17, 0)
+        enddatetime=datetime(2013, 3, 12, 18, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift37:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 12, 18, 0)
+        enddatetime=datetime(2013, 3, 12, 19, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
+    class shift38:
+        eventFK=4
+        startdatetime=datetime(2013, 3, 12, 19, 0)
+        enddatetime=datetime(2013, 3, 12, 20, 0)
+        location='Topfer Theatre'
+        minWorkers=3
+        maxWorkers=4
+
         
 class ShiftPersonData(DataSet):
     class shiftperson01:
