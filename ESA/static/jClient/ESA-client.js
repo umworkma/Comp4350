@@ -298,7 +298,7 @@ function createJsonObjectForEmployee() {
 			contacts: [
 				{
 					type: 		1,
-        			value:    	$('input[name="phone"]').val(),
+        			value:    	$('input[name="phonenum"]').val(),
         			isprimary:	"True"
 				},
 				{
@@ -349,7 +349,7 @@ function eventOnSubmit(org_id) {
         // check for server return data.result
         if(typeof data.success != 'undefined' ) {
             // display the 2 type of alert box base of the result
-            
+
             if(data.success == 'true') {
                 ESA.display_alert('success', ' Event created successfully.');
                 $('input[name="event_name"]').val('')
@@ -406,7 +406,7 @@ function checkPassword()
 	if(pw1 == pw2)
 	{
 		bool=true;
-		$('.pwdMsg').text("");	
+		$('.pwdMsg').text("");
 		$('.pwdMsg2').text("");
 		document.getElementById("sub_btn").disabled=false;
 	}
