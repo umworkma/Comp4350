@@ -17,7 +17,7 @@
 			<td>
 				{% if current_user.is_authenticated() %}
 					{% if memberData %}
-						{% if org.org_entityfk in memberData.Member.keys %}
+						{% if org.org_entityfk, "True" in memberData.Member %}
 							<button type="button" id="org_{{org.org_entityfk}}" onclick="join_org(this,{{org.org_entityfk}})" class="btn" data-loading-text="Joining..." data-complete-text="Joined!">
 								Join this Organization!
 							</button>

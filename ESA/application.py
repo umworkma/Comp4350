@@ -145,8 +145,10 @@ def browse_orgs():
     data = controllers.getAllOrgNamesJSON(db)
     memberData = controllers.getMemberDataJSON(db, current_user.get_id())
     if request.method == 'GET' and is_request_json():
+        print "********************", memberData
         return data, memberData
     else:
+        print "********************", memberData
         return render_template('browse_orgs.html', data=json.loads(data), memberData=json.loads(memberData))
 
 #No Login Required

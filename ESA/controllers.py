@@ -581,7 +581,7 @@ def getMemberDataJSON(db, current_user_id):
         else:
             isFirst = False
         if org in joinedOrgs:
-            jsonString += '{' + '"{key}":{val}'.format(key=models.ORGANIZATION_ENTITYFK_KEY,val='"True"')
+            jsonString += '{' + '"{key}":{val}'.format(key=org.organizationentityFK,val='"True"')
         jsonString += '}'
     jsonString += ']}'
     return jsonString
