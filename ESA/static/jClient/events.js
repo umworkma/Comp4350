@@ -91,31 +91,36 @@ function EventsPortal() {
             org_title.text(response.Organization.org_name);
             target_area.append(org_title);
 
-            events_div = $('<div>');
-            events_div.attr('id', 'ep_accordion');
+            if(response.Events != 'None') {
 
-            for(i = 0; i < response.Events.length; i++) {
-                events_div_row = $('<h3>');
-                events_div_row.attr('id', 'ep_org_events_' + response.Events[i].event_pk);
-                events_div_row.text( response.Events[i].event_name + ' - ' + response.Events[i].event_desc);
+                events_div = $('<div>');
+                events_div.attr('id', 'ep_accordion');
 
-                events_div_row_div = $('<div>');
-                events_div_row_div.attr('id', 'ep_org_events_detail_' + response.Events[i].event_pk);
-                events_div_row_div.text('This event has no shifts.');
+                    for(i = 0; i < response.Events.length; i++) {
+                        events_div_row = $('<h3>');
+                        events_div_row.attr('id', 'ep_org_events_' + response.Events[i].event_pk);
+                        events_div_row.text( response.Events[i].event_name + ' - ' + response.Events[i].event_desc);
 
-                events_div.append(events_div_row);
-                events_div.append(events_div_row_div);
+                        events_div_row_div = $('<div>');
+                        events_div_row_div.attr('id', 'ep_org_events_detail_' + response.Events[i].event_pk);
+                        events_div_row_div.text('This event has no shifts.');
 
-                // get this event shift
-                ESA.events.getEventShift(response.Events[i].event_pk);
+                        events_div.append(events_div_row);
+                        events_div.append(events_div_row_div);
+
+                        // get this event shift
+                        ESA.events.getEventShift(response.Events[i].event_pk);
+
+                    }
+                
+                target_area.append(events_div);
+                ESA.events.getMemberInOrganization();
+                // activate accordion
+                ESA.events.activeAccordion();
+            }else {
+                target_area.append($('<p>').text(response.Organization.org_name + ' has no event.'));
 
             }
-
-            target_area.append(events_div);
-            ESA.events.getMemberInOrganization();
-            // activate accordion
-            ESA.events.activeAccordion();
-
         } else {
             target_area.append('<p>Response did not contain any member</p>');
             console.debug("Response did not contain any member");
