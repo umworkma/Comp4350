@@ -17,7 +17,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v7t-gc-1lk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-<<<<<<< HEAD
+
             <point key="canvasLocation" x="380" y="-24"/>
         </scene>
         <!--Sign Up View Controller - Register-->
@@ -126,8 +126,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G9r-z7-xzp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2310" y="226"/>
-=======
+ 
             <point key="canvasLocation" x="23" y="448"/>
         </scene>
         <!--Org Details View Controller-->
@@ -224,7 +223,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="77E-ab-uJu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1178" y="451"/>
->>>>>>> master
+
         </scene>
         <!--Login View Controller - ESA - Login-->
         <scene sceneID="9e8-ba-N7Y">
@@ -345,10 +344,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2cb-UJ-jkP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-<<<<<<< HEAD
+
             <point key="canvasLocation" x="1333" y="413"/>
-=======
-            <point key="canvasLocation" x="2114" y="458"/>
+
         </scene>
         <!--View Controller - Sign Up-->
         <scene sceneID="WTz-SH-tdD">
@@ -375,7 +373,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jy4-iV-aT0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2817" y="1783"/>
->>>>>>> master
+
         </scene>
     </scenes>
     <classes>
@@ -390,7 +388,7 @@
         <class className="NSLayoutConstraint" superclassName="NSObject">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
-<<<<<<< HEAD
+
         <class className="SignUpViewController" superclassName="ViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SignUpViewController.h"/>
             <relationships>
@@ -400,7 +398,7 @@
                 <relationship kind="outlet" name="textUsername" candidateClass="UITextField"/>
             </relationships>
         </class>
-=======
+
         <class className="OrgDetailsViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgDetailsViewController.h"/>
             <relationships>
@@ -416,7 +414,7 @@
         <class className="OrgListTableViewViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/OrgListTableViewViewController.h"/>
         </class>
->>>>>>> master
+
         <class className="ViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
         </class>
