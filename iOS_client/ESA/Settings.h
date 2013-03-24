@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define BASE_URL  @"http://ec2-54-242-137-121.compute-1.amazonaws.com"
+#define BASE_URL  @"http://ec2-54-242-98-61.compute-1.amazonaws.com"
 
 #define TYPE_PHONE  1
 #define TYPE_EMAIL  2
