@@ -211,10 +211,10 @@ def create_event(org_id):
     return render_template('create_event.html', org_id = org_id)
 
 
-# privilege portal main handle function. If request is not support it will return error 403
+# Events: Main events browse page.
 @app.route('/events', methods=['GET'])
 @login_required
-def events():
+def getEvents():
     try:
         user_id = current_user.entityFK
 
@@ -228,21 +228,13 @@ def events():
 
     return abort(403)
 
-#@app.route('/organization/<org_id>/events', methods=['POST'])
-#@login_required
-#def event_org(org_id):
-#    if request.method=='POST' and is_request_json():
-#        result = events.insertEvent(org_id, request.json, db)
-#        return result
-#    else:
-#        return jsonify(msg='Other request method[%s]' % request.method)
 
 # Events: Create an event for the given organization.
 @app.route('/organization/<org_id>/events', methods=['POST'])
 @login_required
 def createEventForOrg(org_id):
     try:
-        result = events.insertEvent(org_id, request.json, db)
+        result = controller_events.insertEvent(org_id, request.json, db)
         return Response(response=result, mimetype='application/json')
     except Exception, e:
         return abort(404)
@@ -253,7 +245,7 @@ def createEventForOrg(org_id):
 @login_required
 def removeEvent(org_id, event_id):
     try:
-        result = events.removeEvent(event_id, db)
+        result = controller_events.removeEvent(event_id, db)
         return Response(response=result, mimetype='application/json')
     except Exception, e:
         return abort(404)
