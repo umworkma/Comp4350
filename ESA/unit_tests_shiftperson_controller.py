@@ -318,7 +318,7 @@ class ShiftPersonControllerTestCase(TestCase):
         self.assertTrue(result)
         
         # Now that we added it, lets delete it.
-        result = shiftperson_controller._removeShiftPerson(newShiftPersonPK, self.db)
+        result = shiftperson_controller._removeShiftPerson(shiftFK, personFK, self.db)
         self.assertTrue(result)
         
         # Ensure it's not in db.
@@ -336,12 +336,12 @@ class ShiftPersonControllerTestCase(TestCase):
         self.assertFalse(result)
         
         # Try to delete it even though we know it's not there
-        result = shiftperson_controller._removeShiftPerson(newShiftPerson.pk, self.db)
+        result = shiftperson_controller._removeShiftPerson(shiftFK, personFK, self.db)
         self.assertFalse(result)
         
     def test__removeShiftPerson_false(self):
         # Try to delete a record that's not there
-        result = shiftperson_controller._removeShiftPerson(9999999, self.db)
+        result = shiftperson_controller._removeShiftPerson(9999999, 9999999, self.db)
         self.assertFalse(result)
         
         
@@ -364,7 +364,7 @@ class ShiftPersonControllerTestCase(TestCase):
         self.assertTrue(result)
         
         # Now that we added it, lets delete it.
-        result = shiftperson_controller.removeShiftPerson(newShiftPersonPK, self.db)
+        result = shiftperson_controller.removeShiftPerson(shiftFK, personFK, self.db)
         self.assertIsNotNone(result)
         resultDict = json.loads(result)
         for key,value in resultDict.iteritems():

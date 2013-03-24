@@ -328,6 +328,37 @@ def getPersonsByOrgEventShift(org_id, event_id, shift_id):
     return abort(403)
 
 
+@app.route('/organization/<org_id>/events/<event_id>/shifts/<shift_id>', methods=['POST'])
+@login_required
+def setPersonsByOrgEventShift(org_id, event_id, shift_id):
+    try:
+
+        if is_request_json():
+            if not request.json.has_key('person_id') is None:
+                assignShirt = shiftperson_controller.insertShiftPerson(shift_id, request.json['person_id'], db)
+
+                return Response(response=assignShirt, mimetype='application/json')
+            
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+
+
+@app.route('/organization/<org_id>/events/<event_id>/shifts/<shift_id>/<person_id>', methods=['DELETE'])
+@login_required
+def removePersonsFromOrgEventShift(org_id, event_id, shift_id, person_id):
+    try:
+
+        if is_request_json():
+            removeWorker = shiftperson_controller.removeShiftPerson(shift_id, person_id, db)
+
+            return Response(response=removeWorker, mimetype='application/json')
+            
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+
+
 # privilege portal main handle function. If request is not support it will return error 403
 @app.route('/privilege', methods=['GET', 'POST'])
 @login_required
@@ -351,7 +382,9 @@ def privilege():
 
     return abort(403)
 
+
 # privilege portal get and post handle function. If request is not support it will return error 403
+@app.route('/organization/<org_id>/members', methods=['GET'])
 @app.route('/privilege/<org_id>', methods=['GET', 'POST'])
 @login_required
 def privilege_org(org_id):

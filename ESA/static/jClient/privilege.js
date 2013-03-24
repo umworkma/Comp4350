@@ -30,10 +30,6 @@ function PrivilegePortal() {
         $('#pp_org_member div#pp_accordion').children().each(function(){
             $(this).droppable({
                 drop: function(event, ui) {
-
-                    console.debug(this.id);
-                    console.debug(ui.draggable.context.id);
-
                     if(/pp_org_member_privilege_\d/.test(this.id))
                         member_id = this.id.replace(/pp_org_member_privilege_/, '');
 

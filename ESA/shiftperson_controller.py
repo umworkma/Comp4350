@@ -126,8 +126,8 @@ def insertShiftPerson(shiftFK, personFK, db):
 
 
 # Returns True on success or False on failure (couldn't find the ShiftPerson).
-def _removeShiftPerson(pk, db):
-    shiftPerson = models.ShiftPerson.query.filter_by(pk=pk).first()
+def _removeShiftPerson(shiftFK, personFK, db):
+    shiftPerson = models.ShiftPerson.query.filter_by(shiftFK=shiftFK,personFK=personFK).first()
     result = False
     if shiftPerson is not None:
         db.session.delete(shiftPerson)
@@ -137,10 +137,10 @@ def _removeShiftPerson(pk, db):
     
 
 # Returns JSON: {"success":["true" | "false"],"shiftperson_pk":<pk>}
-def removeShiftPerson(pk, db):
-    result = _removeShiftPerson(pk, db)
-    resultJSON = '{'+ '"success":"{val}",'.format(val="true" if result == True else "false")
-    resultJSON += '"{key}":{val}'.format(result=result, key=models.SHIFTPERSON_PK_KEY, val=pk)
+def removeShiftPerson(shiftFK, personFK, db):
+    result = _removeShiftPerson(shiftFK, personFK, db)
+    resultJSON = '{'+ '"success":"{val}"'.format(val="true" if result == True else "false")
+    # resultJSON += '"{key}":{val}'.format(result=result, key=models.SHIFTPERSON_PK_KEY, val=pk)
     resultJSON += '}'
     return resultJSON
 
