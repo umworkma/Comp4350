@@ -1,10 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify, json, flash
+from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify, json, flash, Response
 from ESA import app, login_manager, login_required, login_user, current_user, logout_user
 from flask.ext.testing import TestCase
 
 import config
 import models
 import controllers
+import events as controller_events
+import controller_privileges
+import shifts_controller
+import shiftperson_controller
+
 
 app.config.from_object(config)
 
@@ -91,10 +96,17 @@ def logout():
     return redirect(url_for('home'))
 
 # qunit - Javascript unit testing
-@app.route('/_test')
+@app.route('/_test', methods=['GET', 'POST', 'DELETE'])
 def qunit_test():
     # List of html pages that use the Javascript function, as might needed for testing 
-    pages = ['index.html', 'register_organization.html']
+    pages = ['index.html', 'register_organization.html', 'privilege.html']
+
+    if is_request_json():
+        # if request.method == 'GET':
+        print "I am here"
+        return jsonify(request=request.method, success=True, msg='testing')
+        # elif request.method == 'POST':
+
     return render_template('unit_test.html', qunit=True, testPage=pages)
 
 @app.route('/register_organization/')
@@ -117,8 +129,8 @@ def check_dup_employee_user_name():
         return result
     else :
         return jsonify(msg='Asses define')
-    	
-	
+        
+    
 
 @app.route('/_check_dup_org_name', methods=['GET', 'POST'])
 @login_required
@@ -145,7 +157,11 @@ def browse_orgs():
     data = controllers.getAllOrgNamesJSON(db)
     memberData = controllers.getMemberDataJSON(db, current_user.get_id())
     if request.method == 'GET' and is_request_json():
+<<<<<<< HEAD
         return data, memberData
+=======
+        return Response(response=data, status=200, mimetype='application/json')
+>>>>>>> master
     else:
         return render_template('browse_orgs.html', data=json.loads(data), memberData=json.loads(memberData))
 
@@ -157,7 +173,7 @@ def org_info(entityid):
         data = entityid
         return render_template('org_404.html', data=data)
     if request.method == 'GET' and is_request_json():
-        return data
+        return Response(response=data, status=200, mimetype='application/json')
     else:
         session.logged_in = True
         return render_template('org_info.html', org=json.loads(data))
@@ -182,6 +198,7 @@ def submit_employee_form():
        
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
+    
 
 @app.route('/organization/<org_id>/members', methods=['POST'])
 @login_required
@@ -191,6 +208,254 @@ def join_org(org_id):
         return result
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
+
+
+@app.route('/createEvent/<org_id>', methods=['GET'])
+@login_required
+def create_event(org_id):
+    return render_template('create_event.html', org_id = org_id)
+
+
+# Events: Main events browse page.
+@app.route('/events', methods=['GET'])
+@login_required
+def getEvents():
+    try:
+        user_id = current_user.entityFK
+
+        if request.method == 'GET':
+            org_json        = controller_privileges.getOrgsWithPrivilegesForPersonJSON(user_id)
+            org_dict = json.loads(org_json)
+            return render_template('events.html', orgs=org_dict)
+
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
+
+# Events: Create an event for the given organization.
+@app.route('/organization/<org_id>/events', methods=['POST'])
+@login_required
+def createEventForOrg(org_id):
+    try:
+        result = controller_events.insertEvent(org_id, request.json, db)
+        return Response(response=result, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+    
+# Events: Delete an event.
+@app.route('/organization/<org_id>/events/<event_id>', methods=['DELETE'])
+@login_required
+def removeEvent(org_id, event_id):
+    try:
+        result = controller_events.removeEvent(event_id, db)
+        return Response(response=result, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+
+# Events: Display event browse page for the given organization, or retrieve all events for the given organization (JSON).
+@app.route('/organization/<org_id>/events', methods=['GET'])
+@login_required
+def getEventsByOrg(org_id):
+    try:
+        eventListJSON = controller_events.getEventsByOrgJSON(org_id)
+        eventListDict = json.loads(eventListJSON)
+        org           = controllers.getOrganizationByIDJSON(org_id)
+        org_dict      = json.loads(org)
+
+        if is_request_json():
+            return jsonify(eventListDict, Organization=org_dict)
+
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+    
+# Events: Retrieve all shifts for the given event.
+@app.route('/organization/<org_id>/events/<event_id>', methods=['GET'])
+@login_required
+def getShiftsByEvent(org_id, event_id):
+    try:
+        shiftListJSON = shifts_controller.getShiftsByEventJSON(event_id)
+        shiftListDict = json.loads(shiftListJSON)
+        if is_request_json():
+            return jsonify(shiftListDict, event_id=event_id)
+
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+    
+# Events: Create a shift for the given event.
+@app.route('/organization/<org_id>/events/<event_id>', methods=['POST'])
+@login_required
+def createShiftForEvent(org_id, event_id):
+    try:
+        result = shifts_controller.insertShift(event_id, request.json, db)
+        return Response(response=result, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+    
+# Events: Delete a shift.
+@app.route('/organization/<org_id>/events/<event_id>/<shift_id>', methods=['DELETE'])
+@login_required
+def removeShiftFromEvent(org_id, event_id, shift_id):
+    try:
+        result = shifts_controller.removeShift(event_id, db)
+        return Response(response=result, mimetype='application/json')
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+
+
+# Events: Retrieve workers for the given event shirts.
+@app.route('/organization/<org_id>/events/<event_id>/shifts/<shift_id>', methods=['GET'])
+@login_required
+def getPersonsByOrgEventShift(org_id, event_id, shift_id):
+    try:
+
+        shiftPersonJSON = shiftperson_controller.getPeopleByShiftJSON(shift_id)
+        shiftPersonDict = json.loads(shiftPersonJSON)
+        if is_request_json():
+            return jsonify(shiftPersonDict, event_id=event_id, shift_id=shift_id)
+            
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+
+
+@app.route('/organization/<org_id>/events/<event_id>/shifts/<shift_id>', methods=['POST'])
+@login_required
+def setPersonsByOrgEventShift(org_id, event_id, shift_id):
+    try:
+
+        if is_request_json():
+            if not request.json.has_key('person_id') is None:
+                assignShirt = shiftperson_controller.insertShiftPerson(shift_id, request.json['person_id'], db)
+
+                return Response(response=assignShirt, mimetype='application/json')
+            
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+
+
+@app.route('/organization/<org_id>/events/<event_id>/shifts/<shift_id>/<person_id>', methods=['DELETE'])
+@login_required
+def removePersonsFromOrgEventShift(org_id, event_id, shift_id, person_id):
+    try:
+
+        if is_request_json():
+            removeWorker = shiftperson_controller.removeShiftPerson(shift_id, person_id, db)
+
+            return Response(response=removeWorker, mimetype='application/json')
+            
+    except Exception, e:
+        return abort(404)
+    return abort(403)
+
+
+# privilege portal main handle function. If request is not support it will return error 403
+@app.route('/privilege', methods=['GET', 'POST'])
+@login_required
+def privilege():
+    try:
+        user_id = current_user.entityFK
+
+        if request.method == 'GET':
+            org_json        = controller_privileges.getOrgsWithPrivilegesForPersonJSON(user_id)
+            privilege_json  = controller_privileges.getAllPrivilegesJSON()
+
+            if is_request_json():
+                return jsonify(privilege_data=org_json + privilege_json)
+
+            else:
+                org_dict = json.loads(org_json)
+                privilege_dict = json.loads(privilege_json)
+                return render_template('privilege.html', orgs=org_dict, privileges=privilege_dict)
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
+
+# privilege portal get and post handle function. If request is not support it will return error 403
+@app.route('/organization/<org_id>/members', methods=['GET'])
+@app.route('/privilege/<org_id>', methods=['GET', 'POST'])
+@login_required
+def privilege_org(org_id):
+    try:
+        user_id = current_user.entityFK
+
+        if request.method == 'GET':
+            persons      = controllers.getPeopleInOrganizationJSON(org_id)
+            persons_dict = json.loads(persons);
+            org          = controllers.getOrganizationByIDJSON(org_id)
+            org_dict     = json.loads(org);
+
+            if is_request_json():
+                return jsonify(persons_dict, Organization=org_dict)
+            
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
+
+# privilege portal get and post member privileges function. If request is not support it will return error 403
+@app.route('/privilege/<org_id>/<person_id>', methods=['GET', 'POST'])
+@login_required
+def privilege_org_member(org_id, person_id):
+    try:
+        user_id = current_user.entityFK;
+
+        if request.method == 'GET':
+            privileges = controller_privileges.getPrivilegesForPersonJSON(person_id, org_id)
+
+            if is_request_json():
+                return Response(response=privileges, mimetype='application/json')
+
+        elif request.method == 'POST':
+
+            if is_request_json():
+                result = controller_privileges.grantPrivilegeToPersonJSON(db, request.json['privilege_id'], person_id, org_id)
+                return Response(response=result, mimetype='application/json')
+
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
+
+# privilege portal delete member privileges function. If request is not support it will return error 403
+# known issue: request.json does not parse delete request json body data to dict.
+@app.route('/privilege/<org_id>/<person_id>/<privilege_id>', methods=['DELETE'])
+@login_required
+def privilege_org_member_remove_privilege(org_id, person_id, privilege_id):
+    try:
+        user_id = current_user.entityFK;
+
+        if request.method == 'DELETE':
+
+            if is_request_json():
+                result = controller_privileges.revokePrivilegeForPersonJSON(db, privilege_id, person_id, org_id)
+                return Response(response=result, mimetype='application/json')
+
+    except Exception, e:
+        return abort(404)
+
+    return abort(403)
+
+        
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('403.html'), 403
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 @app.teardown_request

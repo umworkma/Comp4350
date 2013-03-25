@@ -1,3 +1,5 @@
+
+
 function ESA() {
     // POST ajax call to send json object to server
     this.ajaxJSON = function(url, data, success) {
@@ -11,7 +13,33 @@ function ESA() {
 
         });
     }
-	
+
+    // POST ajax call to send json object to server
+    this.ajaxGetJSON = function(url, data, success) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: data,
+            success: success,
+
+        });
+    }
+
+    // POST ajax call to send json object to server
+    this.ajaxDeleteJSON = function(url, data, success) {
+        $.ajax({
+            type: 'DELETE',
+            url: url,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: data,
+            success: success,
+
+        });
+    }
+
     // display an alert box
     this.display_alert = function (type, htmlMsg) {
 		if(htmlMsg == "EmpTrue")
@@ -65,14 +93,21 @@ function ESA() {
 
 			// adding the alert box into the message area
 			$('.msg_area').append(alert);
-			
+
 			// set timeout to dismiss alert message
 			window.setTimeout(function() {
 				alert.alert('close')
 			}, 2000);
+			if(htmlMsg="True")
+			{
+				$("#org-reg-response").empty();
+				$("#org-reg-response").append("<p>Successfully Registered !!</p>");
+			}
 		}
     };
 
+    this.privilege = new PrivilegePortal();
+    this.events = new EventsPortal();
 };
 // Active the singleton of ESA in Global object
 ESA = new ESA();
@@ -80,8 +115,7 @@ ESA = new ESA();
 
 // Check for valid organization name as the user types.
 function checkForDuplicateEmployeeUserName() {
-	
-	url = '/_check_dup_employee_user_name'
+    url = '/_check_dup_employee_user_name'
 	userName = $('input[name="username"]').val(),
 	data = { 'username': userName },
 	success = function(data) {
@@ -112,7 +146,7 @@ function checkForDuplicateOrgName() {
 		}
     },
 
-	
+
     ESA.ajaxJSON(url, data, success);
     return false;
 }
@@ -141,9 +175,9 @@ function updateIsValidEmployeeUserNameMsg(isActive) {
 
     // adding the alert box into the message area
     if(isActive){
-    	$('.alert_isValidEmployeeUserName').append(alert);
-	} else {
-		$('.alert_isValidEmployeeUserName').children().remove()
+        $('.alert_isValidEmployeeUserName').append(alert);
+    } else {
+        $('.alert_isValidEmployeeUserName').children().remove()
 		//alert.alert('close');
 		//$('.alert_isValidOrgName').innerHTML = '';
 	}
@@ -184,7 +218,7 @@ function updateIsValidOrgNameMsg(isActive) {
 // create json object and send it to server
 function createJsonObjectForOrganization() {
     url = '/_submit_org_form',
-	
+
     data = {
         org_name: $('input[name="org_name"]').val(),
         org_desc: $('#org_desc').val(),
@@ -220,7 +254,6 @@ function createJsonObjectForOrganization() {
 
     success = function(data) {
         // check for server return data.result
-		
         if(typeof data.result != 'undefined' ) {
             // display the 2 type of alert box base of the result
             if(data.result == 'True') {
@@ -232,8 +265,9 @@ function createJsonObjectForOrganization() {
             }
         }
     },
+
     ESA.ajaxJSON(url, data, success);
-	
+
     return false;
 
 }
@@ -242,7 +276,6 @@ function createJsonObjectForOrganization() {
 function createJsonObjectForEmployee() {
 
 	url = '/_submit_employee_form',
-	
     data = {
 		username: $('input[name="username"]').val(),
 		password: $('input[name="pwd1"]').val(),
@@ -265,7 +298,7 @@ function createJsonObjectForEmployee() {
 			contacts: [
 				{
 					type: 		1,
-        			value:    	$('input[name="phone"]').val(),
+        			value:    	$('input[name="phonenum"]').val(),
         			isprimary:	"True"
 				},
 				{
@@ -276,10 +309,9 @@ function createJsonObjectForEmployee() {
 			]
 		}
     },
-    
+
     success = function(data) {
         // check for server return data.result
-		
         if(typeof data.result != 'undefined' ) {
             // display the 2 type of alert box base of the result
             if(data.result == 'EmpTrue') {
@@ -291,10 +323,49 @@ function createJsonObjectForEmployee() {
             }
         }
     },
-    ESA.ajaxJSON(url, data, success);
-	
+
+    // ajax post request
+	ESA.ajaxJSON(url, data, success);
+
     return false;
 
+}
+
+function eventOnSubmit(org_id) {
+    url = '/organization/'+ org_id + '/events',
+    eventStart = $('input[name="event_start"]').val(),
+    eventEnd = $('input[name="event_end"]').val(),
+    eventEnd += ':00',
+    eventStart += ':00',
+    data = {
+        event_name: $('input[name="event_name"]').val(),
+        event_desc: $('textarea#event_desc').val(),
+        event_start: eventStart,
+        event_end: eventEnd,
+        event_orgfk: org_id
+    },
+
+    success = function(data) {
+        // check for server return data.result
+        if(typeof data.success != 'undefined' ) {
+            // display the 2 type of alert box base of the result
+
+            if(data.success == 'true') {
+                ESA.display_alert('success', ' Event created successfully.');
+                $('input[name="event_name"]').val('')
+                $('textarea#event_desc').val('')
+                $('input[name="event_start"]').val('')
+                $('input[name="event_end"]').val('')
+            } else {
+                // ESA.display_alert('block', data.success);
+
+            }
+        }
+    },
+
+    // ajax post request
+    ESA.ajaxJSON(url, data, success);
+    return false;
 }
 
 function join_org(button, org_id) {
@@ -324,7 +395,32 @@ function join_org(button, org_id) {
     ESA.ajaxJSON(url, data, success);
 
     return false;
-}   
+}
+
+
+function checkPassword()
+{
+	var pw1 = $('input[name="pwd1"]').val();
+	var pw2 = $('input[name="pwd2"]').val();
+	var bool;
+	if(pw1 == pw2)
+	{
+		bool=true;
+		$('.pwdMsg').text("");
+		$('.pwdMsg2').text("");
+		document.getElementById("sub_btn").disabled=false;
+	}
+	else
+	{
+		bool=false;
+		$('.pwdMsg').text(" *Password does not match!!");
+		$('.pwdMsg2').text("**** You can not click 'Submit' because password does not match ****");
+		document.getElementById("sub_btn").disabled=true;
+		$('.pwdMsg').css('background-color', 'Thistle');
+		$('.pwdMsg2').css('background-color', 'Thistle');
+	}
+	return bool;
+}
 
 
 

@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:5000/" />
+<title>test_privilege</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">test_privilege</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=username</td>
+	<td>user0</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=password</td>
+	<td>password0</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=div.controls &gt; button.btn</td>
+	<td></td>
+</tr>
+<!--Open Privilege Protal-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Privilege Portal</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Privilege Portal</td>
+	<td></td>
+</tr>
+<!--Privilege Protal Elements-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/h2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/h2</td>
+	<td>Privilege Portal</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/ul/li/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/ul/li/a</td>
+	<td>Choose an organization</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_org_id_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_org_id_1</td>
+	<td>Ai-Kon</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_org_member</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_org_member</td>
+	<td>Please select an organization to assign privileges</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_permission_list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div[2]/table/caption</td>
+	<td>Permission List</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_privilege_id_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_privilege_id_1</td>
+	<td>REGISTER_NEW_ORGANIZATION</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_privilege_id_2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_privilege_id_2</td>
+	<td>MODIFY_ORGANIZATION</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_privilege_id_3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_privilege_id_3</td>
+	<td>DELETE_ORGANIZATION</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_privilege_id_4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_privilege_id_4</td>
+	<td>VIEW_ALL_ORGANIZATIONS</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_privilege_id_5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_privilege_id_5</td>
+	<td>VIEW_ALL_EMPLOYEES_IN_ORG</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_privilege_id_6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_privilege_id_6</td>
+	<td>ASSIGN_EMPS_TO_SHIFTS</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_privilege_id_7</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_privilege_id_7</td>
+	<td>SOME_OTHER_EMP_PRIVILEGE</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_org_member</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_privilege_id_8</td>
+	<td>YET_ANOTHER_EMP_PRIVILEGE</td>
+</tr>
+<!--Select Organization-->
+<tr>
+	<td>click</td>
+	<td>link=Choose an organization</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=pp_org_id_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/h3</td>
+	<td>Ai-Kon</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_org_member</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/h3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/h3</td>
+	<td>Ai-Kon</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_accordion</td>
+	<td></td>
+</tr>
+<!--Chris-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/h3[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/h3[1]</td>
+	<td>Chris Workman</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_org_member_3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_org_member_3</td>
+	<td>Chris Workman</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/caption</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/caption</td>
+	<td>Available Privileges</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/thead</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/thead/tr/td</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/thead/tr/td</td>
+	<td>Privilege List</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/tbody</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/tbody/tr[1]/td[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/tbody/tr[1]/td[1]</td>
+	<td>VIEW_ALL_EMPLOYEES_IN_ORG</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/tbody/tr[1]/td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/tbody/tr[1]/td[2]/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/tbody/tr[2]/td[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/tbody/tr[2]/td[1]</td>
+	<td>ASSIGN_EMPS_TO_SHIFTS</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/tbody/tr[2]/td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[1]/table/tbody/tr[2]/td[2]/button</td>
+	<td></td>
+</tr>
+<!--Ryoji-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/h3[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/h3[2]</td>
+	<td>Ryoji Betchaku</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_org_member_4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_org_member_4</td>
+	<td>Ryoji Betchaku</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table/caption</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table/caption</td>
+	<td>Available Privileges</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table/thead</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table/thead/tr/td</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table/thead/tr/td</td>
+	<td>Privilege List</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table/tbody</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table/tbody/tr[1]/td[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table/tbody/tr[1]/td[1]</td>
+	<td>SOME_OTHER_EMP_PRIVILEGE</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table/tbody/tr[1]/td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[2]/table/tbody/tr[1]/td[2]/button</td>
+	<td></td>
+</tr>
+<!--Cookie Monster-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/h3[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/h3[3]</td>
+	<td>Cookie Monster</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=pp_org_member_6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=pp_org_member_6</td>
+	<td>Cookie Monster</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table/caption</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table/caption</td>
+	<td>Available Privileges</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table/thead</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table/thead/tr/td</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table/thead/tr/td</td>
+	<td>Privilege List</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table/tbody</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table/tbody/tr[1]/td[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table/tbody/tr[1]/td[1]</td>
+	<td>This user has no privileges.</td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table/tbody/tr[1]/td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>xpath=/html/body/div[3]/div/div[2]/div/div/div/div/div[3]/table/tbody/tr[1]/td[2]/button</td>
+	<td></td>
+</tr>
+<!--Logout-->
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Sign Up</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Login</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

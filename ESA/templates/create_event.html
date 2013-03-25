@@ -1,0 +1,55 @@
+{# COMMENT: Insert the line below to every html start of render page to let qunit to include the content of the for testing which will exclude the layout.html page #}
+{% if qunit is undefined %}{% extends "layout.html" %}{% endif %}
+
+{% block content %}
+
+        <script>
+            $(function() {
+                    //$("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+                    $('#datepicker_start_date').datetimepicker({ language: 'en' });
+                    $('#datepicker_end_date').datetimepicker({ language: 'en' });
+                    //$("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });
+                    // $('#datepicker2').datetimepicker({ language: 'en' });
+                });
+        </script>
+
+        <div class="container">
+            <h2>Create an Event</h2>
+            <div class="well form-horizontal">
+                <form id="create-event" onsubmit="return eventOnSubmit({{org_id}})" method="post">
+                    <fieldset>
+                        <legend>Basic Info</legend>
+                        <label class="control-label" for="event_name">Name</label>
+                        <div class="controls">
+                            <input type="text" required name="event_name" placeholder="Event Name">
+                        </div>
+                        <label class="control-label" for="event_desc">Description</label>
+                        <div class="controls">
+                            <textarea id="event_desc" name="event_desc_name" rows="3"></textarea>
+                        </div>
+                        <label class="control-label" for="event_start">Event Start Date</label>
+                        <div class="controls">
+                            <div id="datepicker_start_date" class="input-append date">
+                                <input name="event_start" data-format="yyyy-MM-dd hh:mm" type="text"></input>
+                                <span class="add-on">
+                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <label class="control-label" for="event_end">Event End Date</label>
+                        <div class="controls">
+                            <div id="datepicker_end_date" class="input-append date">
+                                <input name="event_end" data-format="yyyy-MM-dd hh:mm" type="text"></input>
+                                <span class="add-on">
+                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-primary" />
+                    </div>
+                </form><!--/form-horizontal-->
+            </div><!--/.row-fluid-->
+        </div>
+{% endblock %}

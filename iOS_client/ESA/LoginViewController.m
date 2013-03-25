@@ -92,6 +92,8 @@
                     NSString *msg = [[NSString alloc] initWithFormat:@"%@\nHi %@!", msg0, msg1];
 
                     [self alertStatus:msg :@"Login Success!"];
+                    // go to the org list page
+                    [self.navigationController popToRootViewControllerAnimated:YES];
                     
                 } else {
                     NSString *msg = (NSString *) [jsonData objectForKey:@"msg"];

@@ -35,13 +35,13 @@
                         <label>Password</label>
                     </div>
                     <div>
-                        <input name="pwd1" type="password" class="input-xlarge">
+                        <input name="pwd1" required="required" type="password" class="input-xlarge">
                     </div>
                     <div>
                         <label>Re-Enter Password</label>
                     </div>
                     <div>
-                        <input name="pwd2" type="password" class="input-xlarge">
+                        <input name="pwd2" onkeyup="checkPassword()" required="required" type="password" class="input-xlarge"><label class="pwdMsg"></label>
                     </div>
                 </fieldset>
                 <fieldset>
@@ -92,14 +92,15 @@
                         <label>Email</label>
                     </div>
                     <div>
-                        <input name="email" required data-validation-matches-match="email" data-validation-matches-messag="hey" type="email" class="input-xlarge">
+                        <input name="email" required="required" data-validation-matches-match="email" type="email" class="input-xlarge">
                     </div>
                 </fieldset>
 
                 <br />
 
                 <div>
-                    <input class="btn btn-primary" type="submit" />
+                    <input id="sub_btn" class="btn btn-primary" type="submit" />
+					<label class="pwdMsg2">
                 </div>
             </form>
         </div>

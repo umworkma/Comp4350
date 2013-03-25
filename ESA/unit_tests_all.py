@@ -10,7 +10,14 @@ import unit_tests_privilege
 import unit_tests_member
 import unit_tests_privilegepersonassignment
 import unit_tests_globalprivilegeassignment
+import unit_tests_event
+import unit_tests_shift
 import unit_tests_controller
+import unit_tests_event_controller
+import unit_tests_shifts_controller
+import unit_tests_shiftperson
+import unit_tests_shiftperson_controller
+import unit_tests_controller_privileges
 
 
 def suite():
@@ -27,7 +34,14 @@ def suite():
     allUnitTests.addTest(unit_tests_member.suite())
     allUnitTests.addTest(unit_tests_privilegepersonassignment.suite())
     allUnitTests.addTest(unit_tests_globalprivilegeassignment.suite())
+    allUnitTests.addTest(unit_tests_event.suite())
+    allUnitTests.addTest(unit_tests_shift.suite())
     allUnitTests.addTest(unit_tests_controller.suite())
+    allUnitTests.addTest(unit_tests_event_controller.suite())
+    allUnitTests.addTest(unit_tests_shifts_controller.suite())
+    allUnitTests.addTest(unit_tests_shiftperson.suite())
+    allUnitTests.addTest(unit_tests_shiftperson_controller.suite())
+    allUnitTests.addTest(unit_tests_controller_privileges.suite())
 
     return allUnitTests
 

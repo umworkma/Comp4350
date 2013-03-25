@@ -1,5 +1,6 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+from datetime import datetime
 
 # Globals
 TYPE_ORGANIZATION   = 1
@@ -37,6 +38,28 @@ CONTACT_PHONE_KEY = 'phone'
 CONTACT_TYPE_KEY = 'type'
 CONTACT_VALUE_KEY = 'value'
 CONTACT_ISPRIMARY_KEY = 'isprimary'
+
+EVENT_PK_KEY = 'event_pk'
+EVENT_NAME_KEY = 'event_name'
+EVENT_DESC_KEY = 'event_desc'
+EVENT_START_KEY = 'event_start'
+EVENT_END_KEY = 'event_end'
+EVENT_ORGFK_KEY = 'event_orgfk'
+
+SHIFT_PK_KEY = 'shift_pk'
+SHIFT_EVENTFK_KEY = 'shift_eventfk'
+SHIFT_START_KEY = 'shift_start'
+SHIFT_END_KEY = 'shift_end'
+SHIFT_LOCATION_KEY = 'shift_location'
+SHIFT_MINWORKERS_KEY = 'shift_minworkers'
+SHIFT_MAXWORKERS_KEY = 'shift_maxworkers'
+
+SHIFTPERSON_PK_KEY = 'shiftperson_pk'
+SHIFTPERSON_SHIFT_KEY = 'shiftperson_shiftfk'
+SHIFTPERSON_PERSON_KEY = 'shiftperson_personfk'
+
+PRIVILEGE_PK_KEY = 'privilege_pk'
+PRIVILEGE_VALUE = 'privilege'
 
 
 # DB Initialization
@@ -137,6 +160,7 @@ class Organization(db.Model):
     description = db.Column(db.Text)
     entity = db.relationship('Entity', uselist=False, cascade='all,delete')
     employees = db.relationship('Member', cascade='all, delete-orphan', backref='organization')
+    events = db.relationship('Event', cascade='all, delete-orphan', backref='organization')
 
     def __init__(self, name=None, description=None):
         self.name = name
@@ -158,6 +182,7 @@ class Person(db.Model):
     entity = db.relationship('Entity', uselist=False, cascade='all, delete')
     memberships = db.relationship('Member', cascade='all, delete-orphan', backref='person')
     gpaList = db.relationship('GlobalPrivilegeAssignment', cascade='all, delete-orphan', backref='person')
+    shifts = db.relationship('ShiftPerson', cascade='all, delete-orphan', backref='person')
     
     def __init__(self, fname=None, lname=None, username=None, passwd=None):
         self.firstname = fname
@@ -183,7 +208,7 @@ class Person(db.Model):
         return unicode(self.entityFK)
 
     def __repr__(self):
-        return "<Person('%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname)
+        return "<Person('%s', '%s', '%s', '%s', '%s')>" % (self.entityFK, self.firstname, self.lastname, self.username, self.password)
 
 
 class Member(db.Model):
@@ -228,3 +253,58 @@ class GlobalPrivilegeAssignment(db.Model):
     def __repr__(self):
         return "<Privilege('%s','%s','%s')>" % (self.pk, self.privilegeFK, self.personentityFK)
 
+class Event(db.Model):
+    __tablename__ = 'event'
+    pk = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    description = db.Column(db.Text)
+    startdate = db.Column(db.DateTime, default=datetime.now)
+    enddate = db.Column(db.DateTime, default=datetime.now)
+    organizationFK = db.Column(db.Integer, db.ForeignKey(Organization.entityFK, ondelete='cascade'))
+    shifts = db.relationship('Shift', cascade='all,delete-orphan', backref='event')
+
+    def __init__(self, name=None, description=None, startdate=None, enddate=None, organizationFK=None):
+        self.name = name
+        self.description = description
+        self.startdate = startdate
+        self.enddate = enddate
+        self.organizationFK = organizationFK
+        
+    def __repr__(self):
+        return "<Event('%s','%s', '%s', '%s', '%s', '%s')>" % (self.pk, self.name, self.description, self.startdate, self.enddate, self.organizationFK)
+
+
+class Shift(db.Model):
+    __tablename__ = 'shift'
+    pk = db.Column(db.Integer, primary_key=True)
+    eventFK = db.Column(db.Integer, db.ForeignKey(Event.pk, ondelete='cascade'))
+    startdatetime = db.Column(db.DateTime)
+    enddatetime = db.Column(db.DateTime)
+    location = db.Column(db.String(100))
+    minWorkers = db.Column(db.Integer)
+    maxWorkers = db.Column(db.Integer)
+
+    def __init__(self, eventFK=None, startdatetime=None, enddatetime=None, location=None, minWorkers=None, maxWorkers=None):
+        self.eventFK = eventFK
+        self.startdatetime = startdatetime
+        self.enddatetime = enddatetime
+        self.location = location
+        self.minWorkers = minWorkers
+        self.maxWorkers = maxWorkers
+
+    def __repr__(self):
+        return "<Shift('%s', '%s', '%s', '%s', '%s', '%s', '%s')>" % (self.pk, self.eventFK, self.startdatetime, self.enddatetime, self.location, self.minWorkers, self.maxWorkers)
+
+
+class ShiftPerson(db.Model):
+    __tablename__ = 'shift_person_bridge'
+    pk = db.Column(db.Integer, primary_key=True)
+    shiftFK = db.Column(db.Integer, db.ForeignKey(Shift.pk, ondelete='cascade'))
+    personFK = db.Column(db.Integer, db.ForeignKey(Person.entityFK, ondelete='cascade'))
+
+    def __init__(self, shiftFK=None, personFK=None):
+        self.shiftFK = shiftFK
+        self.personFK = personFK
+
+    def __repr__(self):
+        return "<Shift('%s', '%s', '%s')>" % (self.pk, self.shiftFK, self.personFK)

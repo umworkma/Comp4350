@@ -41,7 +41,7 @@ def registerEmployee(employeeDict, db):
 def _checkForDuplicateEmployee(employee):
     result = False
     if(employee is not None and employee.username is not None):
-        existing = models.Person.query.filter_by(username = employee.username).first()		
+        existing = models.Person.query.filter_by(username = employee.username).first()      
         if(existing is not None):
             result = True
     return result
@@ -172,9 +172,15 @@ def updateOrganization(entityid, name, description):
     result = controller.update(entityid, name, description);
     print result
 
-def getOrganizationByIDJSON(entityid):
+def _getOrganizationByID(entityid):
     controller = models.Organization()
     results = controller.query.filter_by(entityFK=entityid).first()
+    return results
+
+def getOrganizationByIDJSON(entityid):
+    #controller = models.Organization()
+    #results = controller.query.filter_by(entityFK=entityid).first()
+    results = _getOrganizationByID(entityid)
 
     if results == None:
         return None
@@ -241,6 +247,16 @@ def contactToJSON(contact):
     jsonString += '"{key}":"{val}",'.format(key=models.CONTACT_TYPE_KEY,val=contact.type)
     jsonString += '"{key}":"{val}",'.format(key=models.CONTACT_VALUE_KEY,val=contact.value)
     jsonString += '"{key}":"{val}"'.format(key=models.CONTACT_ISPRIMARY_KEY,val=contact.isprimary if contact.isprimary != None else 'False')
+    jsonString += '}'
+    return jsonString
+    
+""" Converts a Person into JSON format. """
+def personToJSON(person):
+    jsonString = '{' + '"{key}":{val},'.format(key=models.EMPLOYEE_ENTITYFK_KEY,val=person.entityFK if person.entityFK != None else '"None"')
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_FIRST_NAME_KEY,val=person.firstname)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_LAST_NAME_KEY,val=person.lastname)
+    jsonString += '"{key}":"{val}",'.format(key=models.EMPLOYEE_USER_NAME_KEY,val=person.username)
+    jsonString += '"{key}":"{val}"'.format(key=models.EMPLOYEE_PASSWORD_KEY,val=person.password)
     jsonString += '}'
     return jsonString
 
@@ -337,110 +353,29 @@ def extractContactFromDict(contact):
         if(contactKey == models.CONTACT_ISPRIMARY_KEY):
             newContact.isprimary = True if (contactValue == 'True') else False
     return newContact
-
-
-
-""" Controller code related to Permissions/Privileges """
-""" Retrieve all privileges for a person in an organization. """
-# Returns a list of Privilege objects on success, or None on failure.
-def _getPrivilegesForPerson(personKey, organizationKey):
-    privileges = list()
-    returnValue = None
     
-    member = models.Member.query.filter_by(personentityFK=personKey, organizationentityFK=organizationKey).first()
-    if member is not None:
-        personPrivs = models.PrivilegePersonAssignment.query.filter_by(memberFK=member.pk)
-
-        count = 0
-        for key in personPrivs:
-            privilege = models.Privilege.query.filter_by(pk=key.privilegeFK).first()
-            privileges.append(privilege)
-            count += 1
-        if count > 0:
-            returnValue = privileges
-        else:
-            returnValue = None
-    else:
-        returnValue = None
-
-    return returnValue
-
-""" Retrieve all organizations that the given person has privileges for. """
-# Returns a list of organizationentityFK values on success, or None on failure.
-def _getOrgsWithPrivilegesForPerson(personKey):
-    orgKeys = list()
-    returnValue = None
     
-    memberList = models.Member.query.filter_by(personentityFK=personKey)
-    if memberList is not None:
-        count = 0
-        for member in memberList:
-            hasPrivs = False
-            ppaList = models.PrivilegePersonAssignment.query.filter_by(memberFK=member.pk)
-            if ppaList is not None and member.organizationentityFK not in orgKeys:
-                count += 1
-                orgKeys.append(member.organizationentityFK)
-
-        if count > 0:
-            returnValue = orgKeys
-        else:
-            returnValue = None
-    else:
-        returnValue = None
-
-    return returnValue
-
-""" Retrieve all global privileges for a given person. """
-# Returns a list of Privilege objects on success, or None on failure.
-def _getGlobalPrivilegesForPerson(personKey):
-    privileges = list()
-    returnValue = None
-
-    globalPrivs = models.GlobalPrivilegeAssignment.query.filter_by(personentityFK=personKey)
+""" Extracts a Person in Dict format to a Person object. """
+def extractPersonFromDict(person):
+    newPerson = models.Person()
+    for key,value in person.iteritems():
+        if(key == models.EMPLOYEE_ENTITYFK_KEY and value != 'None'):
+            newPerson.entityFK = int(value)
+        if(key == models.EMPLOYEE_FIRST_NAME_KEY):
+            newPerson.firstname = value
+        if(key == models.EMPLOYEE_LAST_NAME_KEY):
+            newPerson.lastname = value
+        if(key == models.EMPLOYEE_USER_NAME_KEY):
+            newPerson.username = value
+        if(key == models.EMPLOYEE_PASSWORD_KEY):
+            newPerson.password = value
+    return newPerson
     
-    count = 0
-    for key in globalPrivs:
-        privilege = models.Privilege.query.filter_by(pk=key.privilegeFK).first()
-        privileges.append(privilege)
-        count += 1
-    if count > 0:
-        returnValue = privileges
-    else:
-        returnValue = None
-
-    return returnValue
-
-
-""" Retrieves all organization keys where the given person has the given privilege. """
-# Returns a list of organization entityFK values where the given person has
-#   the given privilege, or None if the person does not have that privilege
-#   with any organizations, or if the personKey or privilegeKey are invalid.
-# NOTE that this will return None if the person has the privilege as a global
-#   privilege and not as one related to a specific organization.
-def _getOrgsWithPersonPrivilege(personKey, privilegeKey):
-    orgKeys = list()
-    returnValue = None
     
-    memberList = models.Member.query.filter_by(personentityFK=personKey)
-    if memberList is not None:
-        count = 0
-        for member in memberList:
-            ppaList = models.PrivilegePersonAssignment.query.filter_by(memberFK=member.pk, privilegeFK=privilegeKey)
-            if ppaList is not None and member.organizationentityFK not in orgKeys:
-                orgKeys.append(member.organizationentityFK)
-                count += 1
-        if count > 0:
-            returnValue = orgKeys
-    else:
-        returnValue = None
-
-    return returnValue
-
-
-""" Retrieve all person keys associated with the given organization. """
-# Returns a list of person entityFK values, or None if the person has no
-#   privileges in the given organization, or the organization key is invalid.
+""" Retrieve all person objects associated with the given organization. """
+# Returns a list of person objects associated with the organization, or None if the organization key is invalid or no people are associated.
 def _getPeopleInOrganization(organizationKey):
+    personList = list()
     personKeys = list()
     returnValue = None
 
@@ -449,21 +384,39 @@ def _getPeopleInOrganization(organizationKey):
         count = 0
         for member in memberList:
             if member.personentityFK not in personKeys:
-                personKeys.append(member.personentityFK)
-                count += 1
+                person = models.Person.query.filter_by(entityFK=member.personentityFK).first()
+                if person is not None:
+                    person.username = ""
+                    person.password = ""
+                    personList.append(person)
+                    personKeys.append(person.entityFK)
+                    count += 1
         if count > 0:
-            returnValue = personKeys
+            returnValue = personList
     else:
         returnValue = None
-
     return returnValue
-
-""" Public method to retrieve privileges for a person. """
-# Can optionally include an organization key to get privileges specific
-# to that organization.
-# JSON format: {"emp_entityfk":<number>[, "org_entityfk":<organizationKey>]}
-#def getPrivilegesForPerson(jsonString):
     
+
+
+""" Retrieve all person objects associated with the given organization, in JSON format. """
+# Format: {"People":[<person json string>,...]}
+def getPeopleInOrganizationJSON(organizationKey):
+    people = _getPeopleInOrganization(organizationKey)
+    jsonString = '{"People":'
+    if len(people) > 0:
+        jsonString += '['
+        count = 0
+        for person in people:
+            if count > 0:
+                jsonString += ','
+            count += 1
+            jsonString += personToJSON(person)
+        jsonString += ']'
+    else:
+        jsonString += '"None"'
+    jsonString += '}'
+    return jsonString
 
 # validate a person has a required member privilege for an organiation
 # validate a person has a required global privilege
@@ -538,7 +491,6 @@ def _revokePrivilegeForPerson(db, privilegeKey,personKey,organizationKey=None):
 
 """ Associate person with organization. """
 def putPersonInOrganization(orgid, db, personid):
-    print "********************** {0}".format( orgid)
     result = False
     failCause = 'Unknown'
 
