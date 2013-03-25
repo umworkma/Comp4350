@@ -200,6 +200,7 @@ def submit_employee_form():
 @login_required
 def join_org(org_id):
     if request.method == 'POST' and is_request_json():
+        request.data # Reading the data will avoid uwsgi bug. Thanks to Jasdeep(Sunny) Bhumber.
         result = controllers.putPersonInOrganization(org_id, db, current_user.get_id())
         return Response(response=result, mimetype='application/json')
     else:
