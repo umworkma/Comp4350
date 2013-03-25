@@ -156,7 +156,7 @@ def submit_org_form():
 def browse_orgs():
     data = controllers.getAllOrgNamesJSON(db)
     if request.method == 'GET' and is_request_json():
-        return data
+        return Response(response=data, status=200, mimetype='application/json')
     else:
         return render_template('browse_orgs.html', data=json.loads(data))
 
@@ -168,7 +168,7 @@ def org_info(entityid):
         data = entityid
         return render_template('org_404.html', data=data)
     if request.method == 'GET' and is_request_json():
-        return data
+        return Response(response=data, status=200, mimetype='application/json')
     else:
         session.logged_in = True
         return render_template('org_info.html', org=json.loads(data))
