@@ -574,15 +574,15 @@ def putPersonInOrganization(orgid, db, personid):
 def getMemberDataJSON(db, current_user_id):
     joinedOrgs = getJoinedOrgs(db, current_user_id)
     isFirst = True
-    jsonString = '{"Member":['
+    jsonString = '{"Orgs_id":['
     for org in joinedOrgs:
         if (isFirst == False):
             jsonString += ','
         else:
             isFirst = False
         if org in joinedOrgs:
-            jsonString += '{' + '"{key}":{val}'.format(key=org.organizationentityFK,val='"True"')
-        jsonString += '}'
+            jsonString += '{key}'.format(key=org.organizationentityFK)
+        # jsonString += '}'
     jsonString += ']}'
     return jsonString
 
