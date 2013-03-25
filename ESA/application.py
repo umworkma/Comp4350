@@ -201,7 +201,7 @@ def submit_employee_form():
 def join_org(org_id):
     if request.method == 'POST' and is_request_json():
         result = controllers.putPersonInOrganization(org_id, db, current_user.get_id())
-        return result
+        return Response(response=result, mimetype='application/json')
     else:
         return jsonify(msg='Other request method[%s]' % request.method)
 
