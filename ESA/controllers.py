@@ -196,7 +196,7 @@ def removeOrganization():
 def organizationToJSON(org):
     jsonString = '{' + '"{key}":{val},'.format(key=models.ORGANIZATION_ENTITYFK_KEY,val=org.entityFK if (org.entityFK is not None) else '"None"')
     jsonString += '"{key}":"{val}",'.format(key=models.ORGANIZATION_NAME_KEY,val=org.name)
-    jsonString += '"{key}":"{val}",'.format(key=models.ORGANIZATION_DESCRIPTION_KEY,val=org.description)
+    jsonString += '"{key}":"{val}",'.format(key=models.ORGANIZATION_DESCRIPTION_KEY,val=org.description.replace('\n', '\\n'))
     jsonString += '"Entity":{val}'.format(val=entityToJSON(org.entity))
     jsonString += '}'
     return jsonString
