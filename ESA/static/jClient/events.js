@@ -36,26 +36,26 @@ function EventsPortal() {
     // Active Shift Drappable for shift assignment and drop handle function
     this.activeShiftDrappable = function() {
         $('#ep_org_events div#ep_accordion').children().each(function(){
-            if (/ep_org_events_detail_\d/.test(this.id)) {
+            if (/ep_org_events_detail_\d{0,9}/.test(this.id)) {
                 $(this).children().each(function() {
 
-                    if (/ep_accordion_\d/.test(this.id)) {
+                    if (/ep_accordion_\d{0,9}/.test(this.id)) {
                         $(this).children().each(function() {
 
                             $(this).droppable({
                                 drop: function(event, ui) {
-                                    if(/ep_org_events_detail_\d_shift_\d/.test(this.id)) {
-                                        shift_id = this.id.replace(/ep_org_events_detail_\d_shift_/, '');
+                                    if(/ep_org_events_detail_\d{0,9}_shift_\d{0,9}/.test(this.id)) {
+                                        shift_id = this.id.replace(/ep_org_events_detail_\d{0,9}_shift_/, '');
                                         event_id = this.id.replace(/ep_org_events_detail_/, '');
-                                        event_id = event_id.replace(/_shift_\d/, '');
+                                        event_id = event_id.replace(/_shift_\d{0,9}/, '');
 
-                                    } else if(/ep_org_events_\d_shift_\d/.test(this.id)) {
-                                        shift_id = this.id.replace(/ep_org_events_\d_shift_/, '');
+                                    } else if(/ep_org_events_\d{0,9}_shift_\d{0,9}/.test(this.id)) {
+                                        shift_id = this.id.replace(/ep_org_events_\d{0,9}_shift_/, '');
                                         event_id = this.id.replace(/ep_org_events_/, '');
-                                        event_id = event_id.replace(/_shift_\d/, '');
+                                        event_id = event_id.replace(/_shift_\d{0,9}/, '');
                                     }
 
-                                    if(/ep_org_table_member_\d/.test(ui.draggable.context.id))
+                                    if(/ep_org_table_member_\d{0,9}/.test(ui.draggable.context.id))
                                         member_id = ui.draggable.context.id.replace(/ep_org_table_member_/, '');
 
                                     if(typeof shift_id != 'undefined' && typeof event_id != 'undefined' && typeof member_id != 'undefined') {
@@ -389,10 +389,10 @@ function EventsPortal() {
     this.assignMemberToShiftSuccessFn = function(response) {
         if( typeof response != 'undefined' && typeof response.success != 'undefined' &&
             response.success == 'true') {
-            if(/\/organization\/\d\/events\/\d\/shifts\/\d/.test(this.url)) {
-                shift_id = this.url.replace(/\/organization\/\d\/events\/\d\/shifts\//,'');
-                event_id = this.url.replace(/\/organization\/\d\/events\//,'');
-                event_id = event_id.replace(/\/shifts\/\d/,'');
+            if(/\/organization\/\d{0,9}\/events\/\d{0,9}\/shifts\/\d{0,9}/.test(this.url)) {
+                shift_id = this.url.replace(/\/organization\/\d{0,9}\/events\/\d{0,9}\/shifts\//,'');
+                event_id = this.url.replace(/\/organization\/\d{0,9}\/events\//,'');
+                event_id = event_id.replace(/\/shifts\/\d{0,9}/,'');
 
                 if(typeof shift_id != 'undefined' && typeof event_id != 'undefined')
                     ESA.events.getEventShiftWorker(event_id, shift_id);
@@ -433,11 +433,11 @@ function EventsPortal() {
             response.success == 'true') {
 
 
-            if(/\/organization\/\d\/events\/\d\/shifts\/\d\/\d/.test(this.url)) {
-                shift_id = this.url.replace(/\/organization\/\d\/events\/\d\/shifts\//,'');
-                shift_id = shift_id.replace(/\/\d/, '');
-                event_id = this.url.replace(/\/organization\/\d\/events\//,'');
-                event_id = event_id.replace(/\/shifts\/\d\/\d/,'');
+            if(/\/organization\/\d{0,9}\/events\/\d{0,9}\/shifts\/\d{0,9}\/\d{0,9}/.test(this.url)) {
+                shift_id = this.url.replace(/\/organization\/\d{0,9}\/events\/\d{0,9}\/shifts\//,'');
+                shift_id = shift_id.replace(/\/\d{0,9}/, '');
+                event_id = this.url.replace(/\/organization\/\d{0,9}\/events\//,'');
+                event_id = event_id.replace(/\/shifts\/\d{0,9}\/\d{0,9}/,'');
 
                 if(typeof shift_id != 'undefined' && typeof event_id != 'undefined')
                     ESA.events.getEventShiftWorker(event_id, shift_id);

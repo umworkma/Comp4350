@@ -30,13 +30,13 @@ function PrivilegePortal() {
         $('#pp_org_member div#pp_accordion').children().each(function(){
             $(this).droppable({
                 drop: function(event, ui) {
-                    if(/pp_org_member_privilege_\d/.test(this.id))
+                    if(/pp_org_member_privilege_\d{0,9}/.test(this.id))
                         member_id = this.id.replace(/pp_org_member_privilege_/, '');
 
-                    else if(/pp_org_member_\d/.test(this.id))
+                    else if(/pp_org_member_\d{0,9}/.test(this.id))
                         member_id = this.id.replace(/pp_org_member_/, '');
 
-                    if(/pp_privilege_id_\d/.test(ui.draggable.context.id))
+                    if(/pp_privilege_id_\d{0,9}/.test(ui.draggable.context.id))
                         privilege_id = ui.draggable.context.id.replace(/pp_privilege_id_/, '');
 
                     if(typeof member_id != 'undefined' && typeof privilege_id != 'undefined') {
@@ -222,8 +222,8 @@ function PrivilegePortal() {
     this.setMemberPrivilegeSuccessFn = function(response) {
         if( typeof response != 'undefined' && typeof response.success != 'undefined' &&
             response.success == 'true') {
-            if(/\/privilege\/\d\/\d/.test(this.url)) {
-                member_id = this.url.replace(/\/privilege\/\d\//,'');
+            if(/\/privilege\/\d{0,9}\/\d{0,9}/.test(this.url)) {
+                member_id = this.url.replace(/\/privilege\/\d{0,9}\//,'');
                 ESA.privilege.getMemberPrivilege(member_id);
 
             }
@@ -261,9 +261,9 @@ function PrivilegePortal() {
     this.removeMemberPrivilegeSuccessFn = function(response) {
         if( typeof response != 'undefined' && typeof response.success != 'undefined' &&
             response.success == 'true') {
-            if(/\/privilege\/\d\/\d/.test(this.url)) {
-                member_id = this.url.replace(/\/privilege\/\d\//,'');
-                member_id = member_id.replace(/\/\d/, '')
+            if(/\/privilege\/\d{0,9}\/\d{0,9}/.test(this.url)) {
+                member_id = this.url.replace(/\/privilege\/\d{0,9}\//,'');
+                member_id = member_id.replace(/\/\d{0,9}/, '')
                 ESA.privilege.getMemberPrivilege(member_id);
 
             }
