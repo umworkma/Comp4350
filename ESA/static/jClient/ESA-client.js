@@ -54,21 +54,26 @@ function ESA() {
 			msg = '';
 			switch (type) {
 				case 'block':
-					msg = '<strong>Warning:</strong>';
+					msg = '<strong>Warning: </strong>';
 					break;
 				case 'error':
-					msg = '<strong>Error:</strong>';
+					msg = '<strong>Error: </strong>';
 					break;
 				case 'success':
-					msg = '<strong>Success:</strong>';
+					msg = '<strong>Success: </strong>';
 					break;
 				case 'info':
-					msg = '<strong>Note:</strong>';
+					msg = '<strong>Note: </strong>';
 					break;
 				default:
 					type = 'alert alert-block';
-					msg = '<strong>Warning!</strong>';
+					msg = '<strong>Note: </strong>';
 
+			}
+			
+			if(htmlMsg == 'True')
+			{
+				htmlMsg = 'Registration Successful !'
 			}
 			msg +=  htmlMsg;
 
