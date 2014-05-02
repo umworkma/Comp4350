@@ -7,7 +7,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `person` WRITE;
 /*!40000 ALTER TABLE `person` DISABLE KEYS */;
-INSERT INTO `person` VALUES (1,'F. Demo','L. Demo','demo','demo'),(5,'Chris','Workman','user0','password0'),(6,'Ryoji','Betchaku','user1','password1'),(7,'Dan','Nelson','user2','password2');
+INSERT INTO `person` VALUES (1,'F. Demo','L. Demo','demo','demo'),(5,'Chris','Workman','user0','password0'),(6,'R','B','user1','password1'),(7,'Dan','Nelson','user2','password2');
 /*!40000 ALTER TABLE `person` ENABLE KEYS */;
 UNLOCK TABLES;
 
